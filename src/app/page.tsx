@@ -141,9 +141,9 @@ export default function Home() {
               Aster 2.0 guided skin scan
             </p>
             <h1 className="mt-6 text-[clamp(3rem,7vw,6.6rem)] font-semibold leading-[0.9] tracking-tight">
-              Three photos,
+              Skin insight,
               <br />
-              calmer results.
+              product match.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-[#8f5f70]">
               Aster now checks a front portrait, a close-up, and a side angle before creating a skincare profile
