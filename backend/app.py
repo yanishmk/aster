@@ -11,6 +11,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 from torchvision import models, transforms
 
+from aggregation import aggregate_predictions, build_recommendation_predictions
+from image_validation import validate_image_quality
+from prediction import predict_image
 from recommender import build_routine, load_products, score_products
 
 
@@ -89,31 +92,15 @@ def health() -> dict:
 
 @app.post("/analyze")
 async def analyze(file: UploadFile = File(...)) -> dict:
-    if not file.content_type or not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="Please upload an image file.")
-
-    content = await file.read()
-    try:
-        image = Image.open(io.BytesIO(content)).convert("RGB")
-    except (OSError, UnidentifiedImageError) as exc:
-        raise HTTPException(status_code=400, detail="Image is not readable.") from exc
-
-    tensor = preprocess(image).unsqueeze(0).to(device)
-    with torch.no_grad():
-        logits = model(tensor)
-        probabilities = torch.sigmoid(logits).detach().cpu().numpy()[0]
-
-    predictions = []
-    for index, label in enumerate(target_cols):
-        probability = float(probabilities[index])
-        threshold = float(thresholds.get(label, 0.5))
-        predictions.append({
-            "key": label,
-            "label": label.replace("_", " ").title(),
-            "probability": probability,
-            "threshold": threshold,
-            "prediction": "yes" if probability >= threshold else "no",
-        })
+    image = await read_upload_image(file)
+    predictions = predict_image(
+        model=model,
+        preprocess=preprocess,
+        device=device,
+        image=image,
+        target_cols=target_cols,
+        thresholds=thresholds,
+    )
 
     scored_products = score_products(products, predictions)
     routine = build_routine(scored_products)
@@ -126,3 +113,68 @@ async def analyze(file: UploadFile = File(...)) -> dict:
             "They are not medical diagnosis or treatment advice."
         ),
     }
+
+
+@app.post("/analyze-session")
+async def analyze_session(
+    front: UploadFile = File(...),
+    closeup: UploadFile = File(...),
+    side: UploadFile = File(...),
+) -> dict:
+    uploads = {
+        "front": front,
+        "closeup": closeup,
+        "side": side,
+    }
+    images = {role: await read_upload_image(upload) for role, upload in uploads.items()}
+    validations = [
+        validate_image_quality(image, role).to_dict()
+        for role, image in images.items()
+    ]
+
+    if any(not item["ok"] for item in validations):
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": "Some photos need to be retaken before analysis.",
+                "validations": validations,
+            },
+        )
+
+    per_image_predictions = {
+        role: predict_image(
+            model=model,
+            preprocess=preprocess,
+            device=device,
+            image=image,
+            target_cols=target_cols,
+            thresholds=thresholds,
+        )
+        for role, image in images.items()
+    }
+    aggregated = aggregate_predictions(per_image_predictions, target_cols)
+    recommendation_predictions = build_recommendation_predictions(aggregated, target_cols, thresholds)
+    scored_products = score_products(products, recommendation_predictions)
+    routine = build_routine(scored_products)
+
+    return {
+        "imageValidations": validations,
+        "perImagePredictions": per_image_predictions,
+        "result": aggregated,
+        "routine": routine,
+        "disclaimer": (
+            "Recommendations are cosmetic skincare suggestions based on image analysis. "
+            "They are not medical diagnosis or treatment advice."
+        ),
+    }
+
+
+async def read_upload_image(file: UploadFile) -> Image.Image:
+    if not file.content_type or not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Please upload an image file.")
+
+    content = await file.read()
+    try:
+        return Image.open(io.BytesIO(content)).convert("RGB")
+    except (OSError, UnidentifiedImageError) as exc:
+        raise HTTPException(status_code=400, detail="Image is not readable.") from exc
