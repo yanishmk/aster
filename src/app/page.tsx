@@ -95,7 +95,19 @@ export default function Home() {
     setSlots((current) =>
       current.map((slot) => {
         const validation = validations.find((item) => item.role === slot.role);
-        return { ...slot, messages: validation?.messages ?? [] };
+        if (!validation) return slot;
+
+        if (validation.ok) {
+          return { ...slot, messages: [] };
+        }
+
+        if (slot.previewUrl) URL.revokeObjectURL(slot.previewUrl);
+        return {
+          ...slot,
+          file: null,
+          previewUrl: null,
+          messages: validation.messages,
+        };
       }),
     );
   }

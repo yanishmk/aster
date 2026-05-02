@@ -412,34 +412,15 @@ function checkCameraQuality(
 
   context.drawImage(video, 0, 0, width, height);
   const data = context.getImageData(0, 0, width, height).data;
-  let brightness = 0;
-  let contrastSeed = 0;
-  let skinPixels = 0;
-  const pixels = data.length / 4;
+  const metrics = getFrameMetrics(data, width, height);
 
-  for (let index = 0; index < data.length; index += 4) {
-    const red = data[index];
-    const green = data[index + 1];
-    const blue = data[index + 2];
-    const light = red * 0.299 + green * 0.587 + blue * 0.114;
-    brightness += light;
-    contrastSeed += light * light;
-
-    if (red > 55 && green > 35 && blue > 25 && red > green && green > blue && red - blue > 15) {
-      skinPixels += 1;
-    }
-  }
-
-  brightness /= pixels;
-  const contrast = Math.sqrt(Math.max(contrastSeed / pixels - brightness * brightness, 0));
-  const skinRatio = skinPixels / pixels;
-
-  if (brightness < 52) return { ready: false, message: "Lighting is too low. Move closer to soft light." };
-  if (brightness > 235) return { ready: false, message: "Lighting is too bright. Reduce direct light." };
-  if (contrast < 13) return { ready: false, message: "Image looks flat. Face a window or softer light." };
-  if (skinRatio < (role === "closeup" ? 0.02 : 0.012)) {
+  if (metrics.brightness < 52) return { ready: false, message: "Lighting is too low. Move closer to soft light." };
+  if (metrics.brightness > 235) return { ready: false, message: "Lighting is too bright. Reduce direct light." };
+  if (metrics.contrast < 13) return { ready: false, message: "Image looks flat. Face a window or softer light." };
+  if (metrics.skinRatio < (role === "closeup" ? 0.02 : 0.012)) {
     return { ready: false, message: "Place your face or skin inside the guide." };
   }
+  if (metrics.blurScore < 25) return { ready: false, message: "Image is blurry. Hold the camera steady." };
 
   const roleMessage = {
     front: "Great. Keep your face centered, photo will capture automatically.",
@@ -471,7 +452,7 @@ function validateCapturedFrame(canvas: HTMLCanvasElement, role: ImageRole): Came
   if (metrics.skinRatio < (role === "closeup" ? 0.02 : 0.012)) {
     return { ready: false, message: "Face or skin is not visible. Please try again." };
   }
-  if (metrics.blurScore < 16) {
+  if (metrics.blurScore < 35) {
     return { ready: false, message: "Image is blurry. Please hold the camera steady." };
   }
 
