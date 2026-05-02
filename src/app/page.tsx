@@ -91,6 +91,24 @@ export default function Home() {
     }
   }
 
+  async function validatePhoto(role: ImageRole, file: File) {
+    const formData = new FormData();
+    formData.append("role", role);
+    formData.append("file", file);
+
+    const response = await fetch(`${API_URL}/validate-image`, {
+      method: "POST",
+      body: formData,
+    });
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok || !payload) {
+      throw new Error("Photo validation failed.");
+    }
+
+    return payload as ImageValidation;
+  }
+
   function applyValidationMessages(validations: ImageValidation[]) {
     setSlots((current) =>
       current.map((slot) => {
@@ -207,6 +225,7 @@ export default function Home() {
                 isAnalyzing={isAnalyzing}
                 onAnalyze={runAnalysis}
                 onPhotoChange={handlePhotoChange}
+                onValidatePhoto={validatePhoto}
                 slots={slots}
               />
             </div>
@@ -284,6 +303,7 @@ export default function Home() {
                 isAnalyzing={isAnalyzing}
                 onAnalyze={runAnalysis}
                 onPhotoChange={handlePhotoChange}
+                onValidatePhoto={validatePhoto}
                 slots={slots}
               />
             </div>

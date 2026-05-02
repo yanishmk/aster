@@ -3,13 +3,14 @@
 import { Camera, CheckCircle2, Loader2, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import type { ImageRole, PhotoSlot } from "@/types/aster";
+import type { ImageRole, ImageValidation, PhotoSlot } from "@/types/aster";
 
 type ThreePhotoUploadProps = {
   slots: PhotoSlot[];
   isAnalyzing: boolean;
   canAnalyze: boolean;
   onPhotoChange: (role: ImageRole, file: File) => void;
+  onValidatePhoto: (role: ImageRole, file: File) => Promise<ImageValidation>;
   onAnalyze: () => void;
 };
 
@@ -26,6 +27,7 @@ export function ThreePhotoUpload({
   isAnalyzing,
   canAnalyze,
   onPhotoChange,
+  onValidatePhoto,
   onAnalyze,
 }: ThreePhotoUploadProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -33,6 +35,7 @@ export function ThreePhotoUpload({
   const streamRef = useRef<MediaStream | null>(null);
   const readySinceRef = useRef<number | null>(null);
   const capturedRoleRef = useRef<ImageRole | null>(null);
+  const validatingCaptureRef = useRef(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [quality, setQuality] = useState<CameraQuality>({
@@ -61,6 +64,8 @@ export function ThreePhotoUpload({
   }, []);
 
   const captureCurrentFrame = useCallback((role: ImageRole) => {
+    if (validatingCaptureRef.current) return;
+
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas || !video.videoWidth || !video.videoHeight) return;
@@ -79,12 +84,37 @@ export function ThreePhotoUpload({
       return;
     }
 
-    canvas.toBlob((blob) => {
+    canvas.toBlob(async (blob) => {
       if (!blob) return;
       const file = new File([blob], `aster-${role}-${Date.now()}.jpg`, { type: "image/jpeg" });
+      validatingCaptureRef.current = true;
+      setQuality({ ready: false, message: "Checking photo quality..." });
+
+      try {
+        const validation = await onValidatePhoto(role, file);
+        if (!validation.ok) {
+          readySinceRef.current = null;
+          capturedRoleRef.current = null;
+          setQuality({
+            ready: false,
+            message: validation.messages[0] ?? "Photo quality is not good enough. Please try again.",
+          });
+          return;
+        }
+
+        setQuality({ ready: true, message: "Photo captured." });
+      } catch {
+        readySinceRef.current = null;
+        capturedRoleRef.current = null;
+        setQuality({ ready: false, message: "Could not validate this photo. Please try again." });
+        return;
+      } finally {
+        validatingCaptureRef.current = false;
+      }
+
       onPhotoChange(role, file);
     }, "image/jpeg", 0.92);
-  }, [onPhotoChange]);
+  }, [onPhotoChange, onValidatePhoto]);
 
   useEffect(() => {
     if (!cameraOpen) {
@@ -134,6 +164,8 @@ export function ThreePhotoUpload({
     if (!cameraOpen) return;
 
     const interval = window.setInterval(() => {
+      if (validatingCaptureRef.current) return;
+
       const currentQuality = checkCameraQuality(videoRef.current, canvasRef.current, activeRole);
       setQuality(currentQuality);
 

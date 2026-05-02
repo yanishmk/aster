@@ -6,7 +6,7 @@ from pathlib import Path
 
 import torch
 import torch.nn as nn
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 from torchvision import models, transforms
@@ -113,6 +113,13 @@ async def analyze(file: UploadFile = File(...)) -> dict:
             "They are not medical diagnosis or treatment advice."
         ),
     }
+
+
+@app.post("/validate-image")
+async def validate_image(file: UploadFile = File(...), role: str = Form("front")) -> dict:
+    image = await read_upload_image(file)
+    safe_role = role if role in {"front", "closeup", "side"} else "front"
+    return validate_image_quality(image, safe_role).to_dict()
 
 
 @app.post("/analyze-session")
