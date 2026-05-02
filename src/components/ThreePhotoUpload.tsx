@@ -152,7 +152,7 @@ export function ThreePhotoUpload({
   }, [activeRole]);
 
   return (
-    <section id="scan" className="rounded-[1.75rem] bg-white p-4 shadow-[0_24px_70px_rgba(114,42,69,0.12)] ring-1 ring-[#f2c8d7] sm:p-5">
+    <section id="scan" className="rounded-[1.25rem] bg-white p-4 shadow-[0_18px_55px_rgba(114,42,69,0.1)] ring-1 ring-[#f0ceda] sm:p-5">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-2xl font-semibold tracking-tight text-[#28171d]">Scan</h2>
         <span className="rounded-full bg-[#fff1f5] px-3 py-2 text-xs font-semibold text-[#b83263]">
@@ -162,20 +162,20 @@ export function ThreePhotoUpload({
 
       {!cameraOpen ? (
         <button
-          className="mt-4 flex min-h-[420px] w-full flex-col items-center justify-center rounded-[1.35rem] border border-dashed border-[#e6aabd] bg-[#fff8fa] px-6 text-center transition hover:bg-[#fde8ef]"
+          className="mt-4 flex min-h-[460px] w-full flex-col items-center justify-center rounded-[1rem] border border-dashed border-[#e7b6c7] bg-[#fffafb] px-6 text-center transition hover:bg-[#fff3f7]"
           onClick={() => setCameraOpen(true)}
           type="button"
         >
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#b83263] text-white">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#b83263] text-white">
             <Camera size={28} />
           </span>
-          <span className="mt-5 text-2xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</span>
+          <span className="mt-5 text-xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</span>
         </button>
       ) : null}
 
       {cameraOpen ? (
-        <div className="mt-5 rounded-[1.35rem] border border-[#f2c8d7] bg-[#160d11] p-3 text-white">
-          <div className="relative overflow-hidden rounded-[1.1rem] bg-black">
+        <div className="mt-5 rounded-[1rem] border border-[#f2c8d7] bg-[#160d11] p-2 text-white">
+          <div className="relative overflow-hidden rounded-[0.8rem] bg-black">
             <video ref={videoRef} className="aspect-[4/5] w-full scale-x-[-1] object-cover md:aspect-video" muted playsInline />
             <GuideOverlay role={activeRole} />
             <div className="absolute left-3 right-3 top-3 flex items-start justify-between gap-3">

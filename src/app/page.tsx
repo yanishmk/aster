@@ -114,7 +114,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#fff4f7] text-[#28171d]">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-10 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pb-10 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between py-5">
           <a href="#">
             <AsterLogo />
@@ -127,17 +127,16 @@ export default function Home() {
           </a>
         </nav>
 
-        <section className="grid items-center gap-6 rounded-[2rem] bg-[#fff8fa] p-4 ring-1 ring-[#f2c8d7] sm:p-6 lg:grid-cols-[0.72fr_1.28fr]">
-          <div className="flex min-h-[420px] flex-col justify-between rounded-[1.5rem] bg-[#28171d] p-6 text-white sm:p-8">
-            <AsterLogo compact />
-            <h1 className="text-[clamp(3.2rem,7vw,6.8rem)] font-semibold leading-[0.88] tracking-tight">
+        <section className="grid items-start gap-8 py-4 lg:grid-cols-[0.78fr_1.22fr]">
+          <div className="pt-8 lg:sticky lg:top-6">
+            <h1 className="text-[clamp(3.4rem,7vw,5.8rem)] font-semibold leading-[0.9] tracking-tight text-[#28171d]">
               Skin insight,
               <br />
               product match.
             </h1>
-            <div className="flex flex-wrap gap-2 text-xs font-semibold text-[#28171d]">
-              <span className="rounded-full bg-[#fbcfe8] px-3 py-2">3-photo scan</span>
-              <span className="rounded-full bg-white px-3 py-2">Aster AI</span>
+            <div className="mt-8 flex w-fit items-center gap-2 rounded-full border border-[#efb5ca] bg-white px-4 py-2 text-sm font-medium text-[#8f244d]">
+              <span className="h-2 w-2 rounded-full bg-[#b83263]" />
+              3-photo skin scan
             </div>
           </div>
 
