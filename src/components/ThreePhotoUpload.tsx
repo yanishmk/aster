@@ -204,7 +204,7 @@ export function ThreePhotoUpload({
       {cameraOpen ? (
         <div className="mt-5 rounded-[1.35rem] border border-[#f2c8d7] bg-[#160d11] p-3 text-white">
           <div className="relative overflow-hidden rounded-[1.1rem] bg-black">
-            <video ref={videoRef} className="aspect-[4/5] w-full object-cover md:aspect-video" muted playsInline />
+            <video ref={videoRef} className="aspect-[4/5] w-full scale-x-[-1] object-cover md:aspect-video" muted playsInline />
             <GuideOverlay role={activeRole} />
             <div className="absolute left-3 right-3 top-3 flex items-start justify-between gap-3">
               <div className="rounded-2xl bg-black/55 px-3 py-2 backdrop-blur">
