@@ -32,7 +32,7 @@ MIN_SKIN_RATIO = 0.012
 MIN_CENTER_SKIN_RATIO = 0.008
 
 
-def validate_image_quality(image: Image.Image, role: str) -> ImageValidationResult:
+def validate_image_quality(image: Image.Image, role: str, block_blur: bool = True) -> ImageValidationResult:
     width, height = image.size
     rgb = np.asarray(image.convert("RGB")).astype(np.float32)
     gray = np.asarray(image.convert("L")).astype(np.float32)
@@ -51,7 +51,7 @@ def validate_image_quality(image: Image.Image, role: str) -> ImageValidationResu
     if width < MIN_WIDTH or height < MIN_HEIGHT:
         messages.append("Resolution is too low. Please use a clearer photo.")
 
-    if metrics["blur_score"] < MIN_BLUR_SCORE:
+    if block_blur and metrics["blur_score"] < MIN_BLUR_SCORE:
         messages.append("Image is blurry. Please hold the camera steady.")
 
     if metrics["brightness"] < MIN_LIGHT:

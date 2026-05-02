@@ -135,7 +135,7 @@ async def analyze_session(
     }
     images = {role: await read_upload_image(upload) for role, upload in uploads.items()}
     validations = [
-        validate_image_quality(image, role).to_dict()
+        validate_image_quality(image, role, block_blur=False).to_dict()
         for role, image in images.items()
     ]
 
