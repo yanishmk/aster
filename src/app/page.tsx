@@ -1,7 +1,7 @@
 "use client";
 
 import { Camera, CheckCircle, FlaskConical, Layers } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import { AsterLogo } from "@/components/AsterLogo";
 import { ProductRecommendations } from "@/components/ProductRecommendations";
@@ -44,6 +44,7 @@ export default function Home() {
   const [analysis, setAnalysis] = useState<AnalyzeSessionResponse | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const resultsRef = useRef<HTMLElement | null>(null);
 
   const canAnalyze = useMemo(() => slots.every((slot) => slot.file), [slots]);
 
@@ -84,6 +85,9 @@ export default function Home() {
       }
 
       setAnalysis(payload as AnalyzeSessionResponse);
+      window.setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Aster could not reach the analysis API.");
     } finally {
@@ -125,7 +129,7 @@ export default function Home() {
 
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" style={{ color: "var(--text-2)" }}>
             <a href="#scan"     className="transition-colors hover:text-[#15080e]">Scan</a>
-            <a href="#routine"  className="transition-colors hover:text-[#15080e]">Routine</a>
+            <a href="#results"  className="transition-colors hover:text-[#15080e]">Results</a>
             <a href="#products" className="transition-colors hover:text-[#15080e]">Products</a>
           </nav>
 
@@ -300,12 +304,23 @@ export default function Home() {
         </section>
 
         {/* ── Results ── */}
-        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <section id="results" ref={resultsRef} className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <div className="mb-8">
             <span className="grad-text text-sm font-bold uppercase tracking-widest">Your results</span>
             <h2 className="mt-3 text-4xl font-black tracking-tight">What Aster found</h2>
           </div>
           <ResultReport analysis={analysis} />
+
+          <div id="products" className="mt-12">
+            <div className="mb-8">
+              <span className="grad-text text-sm font-bold uppercase tracking-widest">Recommendations</span>
+              <h2 className="mt-3 text-4xl font-black tracking-tight">Products to buy</h2>
+              <p className="mt-3 text-lg" style={{ color: "var(--text-2)" }}>
+                Matched to your scan and ready to add to your routine.
+              </p>
+            </div>
+            <ProductRecommendations products={analysis?.routine.products ?? []} />
+          </div>
         </section>
 
         {/* ── Routine ── */}
@@ -330,17 +345,6 @@ export default function Home() {
         </section>
 
         {/* ── Products ── */}
-        <section id="products" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <div className="mb-8">
-            <span className="grad-text text-sm font-bold uppercase tracking-widest">Recommendations</span>
-            <h2 className="mt-3 text-4xl font-black tracking-tight">Products matched to your skin</h2>
-            <p className="mt-3 text-lg" style={{ color: "var(--text-2)" }}>
-              Curated from a catalog of 36 dermatologist-backed products.
-            </p>
-          </div>
-          <ProductRecommendations products={analysis?.routine.products ?? []} />
-        </section>
-
         {/* ── CTA banner ── */}
         <section className="relative overflow-hidden py-24" style={{ background: "var(--grad)" }}>
           <div className="pointer-events-none absolute inset-0" aria-hidden>
