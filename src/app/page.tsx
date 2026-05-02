@@ -113,40 +113,56 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fff4f7] text-[#28171d]">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pb-10 sm:px-6 lg:px-8">
-        <nav className="flex items-center justify-between py-5">
+    <main className="min-h-screen bg-[#fff7fa] text-[#201318]">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-10 sm:px-6 lg:px-8">
+        <nav className="mt-4 flex items-center justify-between rounded-full border border-[#f1d1dc] bg-white/85 px-4 py-3 shadow-[0_14px_40px_rgba(114,42,69,0.06)] backdrop-blur">
           <a href="#">
             <AsterLogo />
           </a>
           <a
-            className="rounded-full border border-[#b83263] px-4 py-2 text-sm font-medium text-[#b83263] transition hover:bg-[#b83263] hover:text-white"
+            className="rounded-full bg-[#b83263] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#98294f]"
             href="#scan"
           >
             Start scan
           </a>
         </nav>
 
-        <section className="grid items-start gap-8 py-4 lg:grid-cols-[0.78fr_1.22fr]">
-          <div className="pt-8 lg:sticky lg:top-6">
-            <h1 className="text-[clamp(3.4rem,7vw,5.8rem)] font-semibold leading-[0.9] tracking-tight text-[#28171d]">
-              Skin insight,
-              <br />
-              product match.
-            </h1>
-            <div className="mt-8 flex w-fit items-center gap-2 rounded-full border border-[#efb5ca] bg-white px-4 py-2 text-sm font-medium text-[#8f244d]">
-              <span className="h-2 w-2 rounded-full bg-[#b83263]" />
-              3-photo skin scan
-            </div>
+        <section className="mx-auto max-w-4xl pb-2 pt-10 text-center">
+          <div className="mx-auto flex w-fit items-center gap-2 rounded-full border border-[#efb5ca] bg-white px-4 py-2 text-sm font-medium text-[#8f244d]">
+            <span className="h-2 w-2 rounded-full bg-[#b83263]" />
+            3-photo skin scan
+          </div>
+          <h1 className="mt-6 text-[clamp(3.2rem,8vw,6.8rem)] font-semibold leading-[0.88] tracking-tight text-[#201318]">
+            Skin insight,
+            <br />
+            product match.
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#7c5966]">
+            A guided skin scan that turns visible concerns into a simple product routine.
+          </p>
+        </section>
+
+        <section className="mx-auto grid w-full max-w-6xl items-start gap-6 lg:grid-cols-[1.4fr_0.6fr]">
+          <div>
+            <ThreePhotoUpload
+              canAnalyze={canAnalyze}
+              isAnalyzing={isAnalyzing}
+              onAnalyze={runAnalysis}
+              onPhotoChange={handlePhotoChange}
+              slots={slots}
+            />
           </div>
 
-          <ThreePhotoUpload
-            canAnalyze={canAnalyze}
-            isAnalyzing={isAnalyzing}
-            onAnalyze={runAnalysis}
-            onPhotoChange={handlePhotoChange}
-            slots={slots}
-          />
+          <aside className="grid gap-3">
+            <div className="rounded-[1.25rem] border border-[#f1d1dc] bg-white p-5 shadow-[0_14px_40px_rgba(114,42,69,0.06)]">
+              <p className="text-sm font-semibold text-[#b83263]">Aster scan</p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight">Front, close-up, side.</h2>
+            </div>
+            <div className="rounded-[1.25rem] border border-[#f1d1dc] bg-white p-5 shadow-[0_14px_40px_rgba(114,42,69,0.06)]">
+              <p className="text-sm font-semibold text-[#b83263]">Output</p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight">Results, routine, products.</h2>
+            </div>
+          </aside>
         </section>
 
         {errorMessage ? (
