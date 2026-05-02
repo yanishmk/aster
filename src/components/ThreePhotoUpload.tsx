@@ -71,6 +71,14 @@ export function ThreePhotoUpload({
     if (!context) return;
 
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const finalQuality = validateCapturedFrame(canvas, role);
+    if (!finalQuality.ready) {
+      readySinceRef.current = null;
+      capturedRoleRef.current = null;
+      setQuality(finalQuality);
+      return;
+    }
+
     canvas.toBlob((blob) => {
       if (!blob) return;
       const file = new File([blob], `aster-${role}-${Date.now()}.jpg`, { type: "image/jpeg" });
@@ -249,7 +257,7 @@ export function ThreePhotoUpload({
           type="button"
         >
           {isAnalyzing ? <Loader2 className="animate-spin" size={16} /> : <Camera size={16} />}
-          {isAnalyzing ? "Analyse en cours…" : "Analyser ma peau"}
+          {isAnalyzing ? "Analyse en cours..." : "Analyser ma peau"}
         </button>
       </div>
 
@@ -440,4 +448,89 @@ function checkCameraQuality(
   };
 
   return { ready: true, message: roleMessage[role] };
+}
+
+function validateCapturedFrame(canvas: HTMLCanvasElement, role: ImageRole): CameraQuality {
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (!context || !canvas.width || !canvas.height) {
+    return { ready: false, message: "Camera is starting..." };
+  }
+
+  const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
+  const metrics = getFrameMetrics(data, canvas.width, canvas.height);
+
+  if (metrics.brightness < 52) {
+    return { ready: false, message: "Lighting is too low. Please retake this photo." };
+  }
+  if (metrics.brightness > 235) {
+    return { ready: false, message: "Lighting is too bright. Please retake this photo." };
+  }
+  if (metrics.contrast < 13) {
+    return { ready: false, message: "Lighting is too flat. Please retake this photo." };
+  }
+  if (metrics.skinRatio < (role === "closeup" ? 0.02 : 0.012)) {
+    return { ready: false, message: "Face or skin is not visible. Please try again." };
+  }
+  if (metrics.blurScore < 16) {
+    return { ready: false, message: "Image is blurry. Please hold the camera steady." };
+  }
+
+  return { ready: true, message: "Photo captured." };
+}
+
+function getFrameMetrics(data: Uint8ClampedArray, width: number, height: number) {
+  const gray = new Float32Array(width * height);
+  let brightness = 0;
+  let contrastSeed = 0;
+  let skinPixels = 0;
+  const pixels = width * height;
+
+  for (let pixel = 0, dataIndex = 0; pixel < pixels; pixel += 1, dataIndex += 4) {
+    const red = data[dataIndex];
+    const green = data[dataIndex + 1];
+    const blue = data[dataIndex + 2];
+    const light = red * 0.299 + green * 0.587 + blue * 0.114;
+    gray[pixel] = light;
+    brightness += light;
+    contrastSeed += light * light;
+
+    if (red > 55 && green > 35 && blue > 25 && red > green && green > blue && red - blue > 15) {
+      skinPixels += 1;
+    }
+  }
+
+  brightness /= pixels;
+  const contrast = Math.sqrt(Math.max(contrastSeed / pixels - brightness * brightness, 0));
+
+  return {
+    brightness,
+    contrast,
+    skinRatio: skinPixels / pixels,
+    blurScore: getBlurScore(gray, width, height),
+  };
+}
+
+function getBlurScore(gray: Float32Array, width: number, height: number) {
+  let sum = 0;
+  let sumSquares = 0;
+  let count = 0;
+
+  for (let y = 1; y < height - 1; y += 1) {
+    for (let x = 1; x < width - 1; x += 1) {
+      const index = y * width + x;
+      const laplacian =
+        gray[index - width] +
+        gray[index - 1] -
+        gray[index] * 4 +
+        gray[index + 1] +
+        gray[index + width];
+      sum += laplacian;
+      sumSquares += laplacian * laplacian;
+      count += 1;
+    }
+  }
+
+  if (!count) return 0;
+  const mean = sum / count;
+  return sumSquares / count - mean * mean;
 }
