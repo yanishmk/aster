@@ -152,47 +152,26 @@ export function ThreePhotoUpload({
   }, [activeRole]);
 
   return (
-    <section id="scan" className="rounded-[1.75rem] border border-[#f2c8d7] bg-white/80 p-4 shadow-[0_24px_70px_rgba(114,42,69,0.12)] sm:p-5">
-      <div className="flex flex-col gap-4">
-        <div>
-          <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</h2>
-        </div>
-
-        {!cameraOpen ? (
-          <button
-            className="flex min-h-[360px] flex-col items-center justify-center rounded-[1.35rem] border border-dashed border-[#e6aabd] bg-[#fff8fa] px-6 text-center transition hover:bg-[#fde8ef]"
-            onClick={() => setCameraOpen(true)}
-            type="button"
-          >
-            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#b83263] text-white">
-              <Camera size={28} />
-            </span>
-            <span className="mt-5 text-2xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</span>
-          </button>
-        ) : null}
-
-        <div className="flex flex-col gap-2 sm:flex-row">
-          {cameraOpen ? (
-            <button
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#b83263] bg-white px-5 text-sm font-semibold text-[#b83263] transition hover:bg-[#fde8ef]"
-              onClick={() => setCameraOpen(false)}
-              type="button"
-            >
-              <X size={17} />
-              Fermer la camera
-            </button>
-          ) : null}
-          <button
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#b83263] px-5 text-sm font-semibold text-white transition hover:bg-[#98294f] disabled:cursor-not-allowed disabled:opacity-45"
-            disabled={!canAnalyze || isAnalyzing}
-            onClick={onAnalyze}
-            type="button"
-          >
-            {isAnalyzing ? <Loader2 className="animate-spin" size={17} /> : <Camera size={17} />}
-            {isAnalyzing ? "Analyse en cours" : "Analyser mes photos"}
-          </button>
-        </div>
+    <section id="scan" className="rounded-[1.75rem] bg-white p-4 shadow-[0_24px_70px_rgba(114,42,69,0.12)] ring-1 ring-[#f2c8d7] sm:p-5">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-2xl font-semibold tracking-tight text-[#28171d]">Scan</h2>
+        <span className="rounded-full bg-[#fff1f5] px-3 py-2 text-xs font-semibold text-[#b83263]">
+          {completedCount}/3
+        </span>
       </div>
+
+      {!cameraOpen ? (
+        <button
+          className="mt-4 flex min-h-[420px] w-full flex-col items-center justify-center rounded-[1.35rem] border border-dashed border-[#e6aabd] bg-[#fff8fa] px-6 text-center transition hover:bg-[#fde8ef]"
+          onClick={() => setCameraOpen(true)}
+          type="button"
+        >
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#b83263] text-white">
+            <Camera size={28} />
+          </span>
+          <span className="mt-5 text-2xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</span>
+        </button>
+      ) : null}
 
       {cameraOpen ? (
         <div className="mt-5 rounded-[1.35rem] border border-[#f2c8d7] bg-[#160d11] p-3 text-white">
@@ -219,6 +198,28 @@ export function ThreePhotoUpload({
           </div>
         </div>
       ) : null}
+
+      <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+        {cameraOpen ? (
+          <button
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#b83263] bg-white px-5 text-sm font-semibold text-[#b83263] transition hover:bg-[#fde8ef]"
+            onClick={() => setCameraOpen(false)}
+            type="button"
+          >
+            <X size={17} />
+            Fermer
+          </button>
+        ) : null}
+        <button
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#b83263] px-5 text-sm font-semibold text-white transition hover:bg-[#98294f] disabled:cursor-not-allowed disabled:opacity-45"
+          disabled={!canAnalyze || isAnalyzing}
+          onClick={onAnalyze}
+          type="button"
+        >
+          {isAnalyzing ? <Loader2 className="animate-spin" size={17} /> : <Camera size={17} />}
+          {isAnalyzing ? "Analyse" : "Analyser"}
+        </button>
+      </div>
 
       {cameraError ? (
         <p className="mt-4 rounded-xl bg-[#fff1f2] px-3 py-2 text-sm leading-5 text-[#9f1239]">{cameraError}</p>
