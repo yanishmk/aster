@@ -14,7 +14,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
   return (
     <div
-      className="overflow-hidden rounded-xl"
+      className="card-lift overflow-hidden rounded-2xl"
       style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
       {/* Header */}
@@ -23,13 +23,13 @@ export function ResultReport({ analysis }: ResultReportProps) {
         style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-alt)" }}
       >
         <span
-          className="flex h-9 w-9 items-center justify-center rounded-lg"
-          style={{ background: "var(--accent-light)", color: "var(--accent)" }}
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
+          style={{ background: "var(--grad)" }}
         >
-          <Sparkles size={18} />
+          <Sparkles size={17} />
         </span>
         <div>
-          <p className="font-semibold">Skin analysis results</p>
+          <p className="font-bold">Skin analysis results</p>
           <p className="text-sm" style={{ color: "var(--text-2)" }}>Based on your 3-photo scan</p>
         </div>
       </div>
@@ -41,15 +41,13 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
             {/* Detected + possible */}
             <div>
-              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>
-                Detected concerns
-              </p>
+              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>Detected concerns</p>
               {detected.length ? (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {detected.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full px-4 py-1.5 text-sm font-semibold capitalize"
+                      className="rounded-full px-4 py-1.5 text-sm font-bold capitalize"
                       style={{
                         background: "var(--accent-light)",
                         border: "1px solid var(--accent-border)",
@@ -61,16 +59,12 @@ export function ResultReport({ analysis }: ResultReportProps) {
                   ))}
                 </div>
               ) : (
-                <p className="mt-3 text-xl font-bold" style={{ color: "var(--text)" }}>
-                  No strong concern detected.
-                </p>
+                <p className="mt-3 text-xl font-bold">No strong concern detected.</p>
               )}
 
               {possible.length ? (
                 <div className="mt-5">
-                  <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>
-                    Low-confidence signals
-                  </p>
+                  <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>Low-confidence signals</p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {possible.map((item) => (
                       <span
@@ -95,17 +89,15 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
             {/* Focus panel */}
             <div
-              className="rounded-xl p-5"
+              className="rounded-2xl p-5"
               style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}
             >
-              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>
-                Recommendation focus
-              </p>
+              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>Recommendation focus</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {focus.map((item) => (
                   <span
                     key={item}
-                    className="rounded-full px-4 py-1.5 text-sm font-semibold capitalize"
+                    className="rounded-full px-4 py-1.5 text-sm font-bold capitalize"
                     style={{
                       background: "var(--accent-light)",
                       border: "1px solid var(--accent-border)",
@@ -117,9 +109,8 @@ export function ResultReport({ analysis }: ResultReportProps) {
                 ))}
               </div>
               <a
-                className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="btn-grad mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold text-white"
                 href="#products"
-                style={{ background: "var(--accent)" }}
               >
                 See matched products
                 <ArrowRight size={15} />
@@ -128,7 +119,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
           </div>
         ) : (
           <div className="py-12 text-center" style={{ color: "var(--text-3)" }}>
-            <Sparkles className="mx-auto mb-3 opacity-25" size={28} />
+            <Sparkles className="mx-auto mb-3 opacity-20" size={28} />
             <p className="font-medium">Complete the 3-photo scan to see your results.</p>
           </div>
         )}

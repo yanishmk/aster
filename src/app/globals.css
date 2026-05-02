@@ -2,16 +2,18 @@
 
 :root {
   --bg: #ffffff;
-  --bg-alt: #f8f5f7;
+  --bg-alt: #fdf5f9;
   --surface: #ffffff;
-  --border: #e9dfe4;
-  --text: #1a0e13;
-  --text-2: #6b5260;
-  --text-3: #9b8390;
-  --accent: #c53065;
-  --accent-hover: #a2264f;
-  --accent-light: #fdf0f4;
-  --accent-border: #f4c5d5;
+  --border: #f0d5e6;
+  --text: #15080e;
+  --text-2: #6b4558;
+  --text-3: #b088a0;
+  --accent: #f0277b;
+  --accent-hover: #c8185f;
+  --accent-light: #fff0f7;
+  --accent-border: #ffc0de;
+  --grad: linear-gradient(135deg, #f0277b 0%, #9b1fae 100%);
+  --grad-soft: linear-gradient(135deg, rgba(240,39,123,0.12) 0%, rgba(155,31,174,0.08) 100%);
 }
 
 @theme inline {
@@ -32,4 +34,44 @@ button,
 a,
 input {
   outline-color: var(--accent);
+}
+
+/* Animated hero blobs */
+@keyframes float-a {
+  0%, 100% { transform: translate(0, 0) scale(1);     opacity: 0.35; }
+  50%       { transform: translate(16px, -18px) scale(1.08); opacity: 0.5;  }
+}
+@keyframes float-b {
+  0%, 100% { transform: translate(0, 0) scale(1);     opacity: 0.25; }
+  50%       { transform: translate(-14px, 14px) scale(1.07); opacity: 0.4;  }
+}
+.blob-a { animation: float-a 10s ease-in-out infinite; }
+.blob-b { animation: float-b 13s ease-in-out infinite; }
+
+/* Card hover lift */
+.card-lift {
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(240, 39, 123, 0.14);
+}
+
+/* Gradient text */
+.grad-text {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient button */
+.btn-grad {
+  background: var(--grad);
+  transition: opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+.btn-grad:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(240, 39, 123, 0.38);
 }

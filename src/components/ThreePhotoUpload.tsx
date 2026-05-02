@@ -159,13 +159,13 @@ export function ThreePhotoUpload({
           className="rounded-full px-3 py-1 text-xs font-bold"
           style={{ background: "var(--accent-light)", color: "var(--accent)" }}
         >
-          {completedCount}/3 photos
+          {completedCount} / 3 photos
         </span>
       </div>
 
       {!cameraOpen ? (
         <button
-          className="flex min-h-[480px] w-full flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 text-center transition-colors"
+          className="flex min-h-[480px] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 text-center transition-all"
           style={{ borderColor: "var(--border)", background: "var(--bg-alt)" }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = "var(--accent)";
@@ -180,7 +180,7 @@ export function ThreePhotoUpload({
         >
           <span
             className="flex h-14 w-14 items-center justify-center rounded-xl text-white"
-            style={{ background: "var(--accent)" }}
+            style={{ background: "var(--grad)" }}
           >
             <Camera size={26} />
           </span>
@@ -234,7 +234,7 @@ export function ThreePhotoUpload({
         {cameraOpen ? (
           <button
             className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-semibold transition-colors"
-            style={{ borderColor: "var(--accent)", color: "var(--accent)", background: "white" }}
+            style={{ borderColor: "var(--accent-border)", color: "var(--accent)", background: "white" }}
             onClick={() => setCameraOpen(false)}
             type="button"
           >
@@ -243,8 +243,7 @@ export function ThreePhotoUpload({
           </button>
         ) : null}
         <button
-          className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-          style={{ background: "var(--accent)" }}
+          className="btn-grad inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-xl text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
           disabled={!canAnalyze || isAnalyzing}
           onClick={onAnalyze}
           type="button"

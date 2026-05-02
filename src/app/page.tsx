@@ -105,27 +105,19 @@ export default function Home() {
 
       {/* ── Navigation ── */}
       <header
-        className="sticky top-0 z-50 bg-white"
-        style={{ borderBottom: "1px solid var(--border)" }}
+        className="sticky top-0 z-50 bg-white/90"
+        style={{ borderBottom: "1px solid var(--border)", backdropFilter: "blur(16px)" }}
       >
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="#">
-            <AsterLogo />
-          </a>
+          <a href="#"><AsterLogo /></a>
 
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" style={{ color: "var(--text-2)" }}>
-            <a href="#scan" className="transition-colors hover:text-[#1a0e13]">Scan</a>
-            <a href="#routine" className="transition-colors hover:text-[#1a0e13]">Routine</a>
-            <a href="#products" className="transition-colors hover:text-[#1a0e13]">Products</a>
+            <a href="#scan"     className="transition-colors hover:text-[#15080e]">Scan</a>
+            <a href="#routine"  className="transition-colors hover:text-[#15080e]">Routine</a>
+            <a href="#products" className="transition-colors hover:text-[#15080e]">Products</a>
           </nav>
 
-          <a
-            href="#scan"
-            className="rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors"
-            style={{ background: "var(--accent)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--accent-hover)")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "var(--accent)")}
-          >
+          <a href="#scan" className="btn-grad rounded-xl px-5 py-2.5 text-sm font-bold text-white">
             Start free scan
           </a>
         </div>
@@ -134,93 +126,103 @@ export default function Home() {
       <main>
 
         {/* ── Hero ── */}
-        <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
-          <div>
-            <p
-              className="text-sm font-bold uppercase tracking-widest"
-              style={{ color: "var(--accent)" }}
-            >
-              AI Skincare Analysis
-            </p>
-            <h1 className="mt-4 text-5xl font-bold leading-[1.1] tracking-tight lg:text-6xl">
-              Know your skin,<br />era after era.
-            </h1>
-            <p className="mt-5 max-w-lg text-xl leading-8" style={{ color: "var(--text-2)" }}>
-              Aster detects visible skin concerns from 3 photos and builds a personalised
-              morning &amp; evening routine with products you can buy today.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href="#scan"
-                className="inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white transition-colors"
-                style={{ background: "var(--accent)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "var(--accent-hover)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "var(--accent)")}
-              >
-                Start free scan →
-              </a>
-              <a
-                href="#how-it-works"
-                className="text-sm font-semibold underline underline-offset-4 transition-colors hover:opacity-70"
-                style={{ color: "var(--text)" }}
-              >
-                See how it works
-              </a>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-5 text-sm" style={{ color: "var(--text-2)" }}>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle size={15} style={{ color: "var(--accent)" }} />
-                No account needed
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle size={15} style={{ color: "var(--accent)" }} />
-                Completely free
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle size={15} style={{ color: "var(--accent)" }} />
-                Results in seconds
-              </span>
-            </div>
+        <section className="relative overflow-hidden">
+          {/* Animated background blobs */}
+          <div className="pointer-events-none absolute inset-0" aria-hidden>
+            <div
+              className="blob-a absolute -right-24 -top-24 h-[650px] w-[650px] rounded-full"
+              style={{ background: "radial-gradient(circle, rgba(240,39,123,0.22) 0%, transparent 65%)" }}
+            />
+            <div
+              className="blob-b absolute -bottom-16 -left-16 h-[450px] w-[450px] rounded-full"
+              style={{ background: "radial-gradient(circle, rgba(155,31,174,0.16) 0%, transparent 65%)" }}
+            />
           </div>
 
-          <div
-            className="overflow-hidden rounded-xl shadow-sm"
-            style={{ border: "1px solid var(--border)" }}
-          >
-            <ThreePhotoUpload
-              canAnalyze={canAnalyze}
-              isAnalyzing={isAnalyzing}
-              onAnalyze={runAnalysis}
-              onPhotoChange={handlePhotoChange}
-              slots={slots}
-            />
+          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28">
+
+            {/* Left: copy */}
+            <div>
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-wider"
+                style={{ borderColor: "var(--accent-border)", background: "var(--accent-light)", color: "var(--accent)" }}
+              >
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--accent)" }} />
+                AI Skincare Analysis
+              </span>
+
+              <h1 className="mt-5 text-5xl font-black leading-[1.06] tracking-tight lg:text-[3.8rem]">
+                Know your skin,
+                <br />
+                <span className="grad-text">era after era.</span>
+              </h1>
+
+              <p className="mt-5 max-w-lg text-lg leading-7" style={{ color: "var(--text-2)" }}>
+                Aster detects visible skin concerns from 3 photos and builds a
+                personalised morning &amp; evening routine with products you can buy today.
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <a href="#scan" className="btn-grad inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-bold text-white shadow-lg">
+                  Start free scan →
+                </a>
+                <a
+                  href="#how-it-works"
+                  className="text-sm font-semibold underline underline-offset-4 transition-opacity hover:opacity-60"
+                  style={{ color: "var(--text-2)" }}
+                >
+                  See how it works
+                </a>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-5 text-sm" style={{ color: "var(--text-2)" }}>
+                {["No account needed", "Completely free", "Results in seconds"].map((text) => (
+                  <span key={text} className="flex items-center gap-1.5">
+                    <CheckCircle size={14} style={{ color: "var(--accent)" }} />
+                    {text}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: scan demo */}
+            <div
+              className="card-lift overflow-hidden rounded-2xl"
+              style={{ border: "1px solid var(--border)", boxShadow: "0 8px 40px rgba(240,39,123,0.1)" }}
+            >
+              <ThreePhotoUpload
+                canAnalyze={canAnalyze}
+                isAnalyzing={isAnalyzing}
+                onAnalyze={runAnalysis}
+                onPhotoChange={handlePhotoChange}
+                slots={slots}
+              />
+            </div>
           </div>
         </section>
 
-        {/* ── Trust / metrics strip ── */}
+        {/* ── Metrics strip ── */}
         <div style={{ background: "var(--bg-alt)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-0 px-4 sm:px-6">
-            <Stat value="3" label="Photo angles" />
-            <Divider />
-            <Stat value="6" label="Skin conditions" />
-            <Divider />
-            <Stat value="36+" label="Products in catalog" />
-            <Divider />
-            <Stat value="AM + PM" label="Routines built" />
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center px-4 sm:px-6">
+            <Stat value="3"      label="Photo angles" />
+            <StatDivider />
+            <Stat value="6"      label="Skin conditions detected" />
+            <StatDivider />
+            <Stat value="36+"    label="Products in catalog" />
+            <StatDivider />
+            <Stat value="AM+PM"  label="Routines built" />
           </div>
         </div>
 
         {/* ── How it works ── */}
         <section id="how-it-works" className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-bold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
-              How it works
-            </p>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight">
+            <span className="grad-text text-sm font-bold uppercase tracking-widest">How it works</span>
+            <h2 className="mt-3 text-4xl font-black tracking-tight">
               Built for how your skin looks today
             </h2>
             <p className="mt-4 text-lg" style={{ color: "var(--text-2)" }}>
-              Three steps. Personalized results. Products you can buy now.
+              Three steps. Personalized results. Products you can buy right now.
             </p>
           </div>
 
@@ -247,21 +249,24 @@ export default function Home() {
         </section>
 
         {/* ── Scan tool ── */}
-        <section id="scan" style={{ background: "var(--bg-alt)", borderTop: "1px solid var(--border)" }} className="py-16">
+        <section
+          id="scan"
+          className="py-20"
+          style={{ background: "var(--bg-alt)", borderTop: "1px solid var(--border)" }}
+        >
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-10 text-center">
-              <p className="text-sm font-bold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
-                Start here
-              </p>
-              <h2 className="mt-4 text-4xl font-bold tracking-tight">
-                Scan your skin in 3 photos
-              </h2>
+              <span className="grad-text text-sm font-bold uppercase tracking-widest">Start here</span>
+              <h2 className="mt-3 text-4xl font-black tracking-tight">Scan your skin in 3 photos</h2>
               <p className="mt-3 text-lg" style={{ color: "var(--text-2)" }}>
-                Open your camera or upload existing photos — results appear instantly.
+                Open your camera or upload — results appear in seconds.
               </p>
             </div>
 
-            <div className="mx-auto max-w-2xl overflow-hidden rounded-xl bg-white shadow-sm" style={{ border: "1px solid var(--border)" }}>
+            <div
+              className="mx-auto max-w-2xl overflow-hidden rounded-2xl bg-white"
+              style={{ border: "1px solid var(--border)", boxShadow: "0 8px 40px rgba(240,39,123,0.08)" }}
+            >
               <ThreePhotoUpload
                 canAnalyze={canAnalyze}
                 isAnalyzing={isAnalyzing}
@@ -273,7 +278,7 @@ export default function Home() {
 
             {errorMessage && (
               <p
-                className="mx-auto mt-4 max-w-2xl rounded-lg px-4 py-3 text-sm font-medium"
+                className="mx-auto mt-4 max-w-2xl rounded-xl px-4 py-3 text-sm font-medium"
                 style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
               >
                 {errorMessage}
@@ -285,24 +290,24 @@ export default function Home() {
         {/* ── Results ── */}
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <div className="mb-8">
-            <p className="text-sm font-bold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
-              Your results
-            </p>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight">What Aster found</h2>
+            <span className="grad-text text-sm font-bold uppercase tracking-widest">Your results</span>
+            <h2 className="mt-3 text-4xl font-black tracking-tight">What Aster found</h2>
           </div>
           <ResultReport analysis={analysis} />
         </section>
 
         {/* ── Routine ── */}
-        <section id="routine" style={{ background: "var(--bg-alt)", borderTop: "1px solid var(--border)" }} className="py-16">
+        <section
+          id="routine"
+          className="py-16"
+          style={{ background: "var(--bg-alt)", borderTop: "1px solid var(--border)" }}
+        >
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <div className="mb-8">
-              <p className="text-sm font-bold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
-                Your routine
-              </p>
-              <h2 className="mt-3 text-4xl font-bold tracking-tight">Morning &amp; evening plan</h2>
+              <span className="grad-text text-sm font-bold uppercase tracking-widest">Your routine</span>
+              <h2 className="mt-3 text-4xl font-black tracking-tight">Morning &amp; evening plan</h2>
               <p className="mt-3 text-lg" style={{ color: "var(--text-2)" }}>
-                Built on a cleanse–hydrate–protect base with targeted actives added where needed.
+                Cleanse, hydrate, protect — with targeted actives added only where needed.
               </p>
             </div>
             <RoutinePreview
@@ -315,29 +320,29 @@ export default function Home() {
         {/* ── Products ── */}
         <section id="products" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <div className="mb-8">
-            <p className="text-sm font-bold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
-              Recommendations
-            </p>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight">Products matched to your skin</h2>
+            <span className="grad-text text-sm font-bold uppercase tracking-widest">Recommendations</span>
+            <h2 className="mt-3 text-4xl font-black tracking-tight">Products matched to your skin</h2>
             <p className="mt-3 text-lg" style={{ color: "var(--text-2)" }}>
-              Selected from a catalog of 36 dermatologist-backed products.
+              Curated from a catalog of 36 dermatologist-backed products.
             </p>
           </div>
           <ProductRecommendations products={analysis?.routine.products ?? []} />
         </section>
 
         {/* ── CTA banner ── */}
-        <section style={{ background: "var(--accent)" }} className="py-20">
-          <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-            <h2 className="text-4xl font-bold text-white">
-              Start your free skin scan today
-            </h2>
-            <p className="mt-4 text-lg" style={{ color: "rgba(255,255,255,0.8)" }}>
+        <section className="relative overflow-hidden py-24" style={{ background: "var(--grad)" }}>
+          <div className="pointer-events-none absolute inset-0" aria-hidden>
+            <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-white/10" />
+            <div className="absolute -bottom-12 -left-12 h-56 w-56 rounded-full bg-white/8" />
+          </div>
+          <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
+            <h2 className="text-4xl font-black text-white">Start your free skin scan today</h2>
+            <p className="mt-4 text-lg" style={{ color: "rgba(255,255,255,0.78)" }}>
               No account. No credit card. Upload 3 photos and get your personalised routine in seconds.
             </p>
             <a
               href="#scan"
-              className="mt-8 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3.5 text-sm font-bold transition-opacity hover:opacity-90"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-sm font-bold shadow-xl transition-all hover:shadow-2xl hover:-translate-y-0.5"
               style={{ color: "var(--accent)" }}
             >
               Start free scan →
@@ -360,61 +365,35 @@ export default function Home() {
   );
 }
 
-/* ── Local sub-components ── */
+/* ── Sub-components ── */
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="flex flex-col items-center px-10 py-6">
-      <p className="text-3xl font-bold tracking-tight" style={{ color: "var(--text)" }}>
-        {value}
-      </p>
-      <p className="mt-1 text-sm font-medium" style={{ color: "var(--text-2)" }}>
-        {label}
-      </p>
+    <div className="flex flex-col items-center px-8 py-6">
+      <p className="grad-text text-3xl font-black">{value}</p>
+      <p className="mt-1 text-sm font-medium" style={{ color: "var(--text-2)" }}>{label}</p>
     </div>
   );
 }
 
-function Divider() {
-  return (
-    <div
-      className="hidden h-12 w-px sm:block"
-      style={{ background: "var(--border)" }}
-    />
-  );
+function StatDivider() {
+  return <div className="hidden h-10 w-px sm:block" style={{ background: "var(--border)" }} />;
 }
 
-function FeatureCard({
-  icon,
-  step,
-  title,
-  desc,
-}: {
-  icon: ReactNode;
-  step: string;
-  title: string;
-  desc: string;
-}) {
+function FeatureCard({ icon, step, title, desc }: { icon: ReactNode; step: string; title: string; desc: string }) {
   return (
     <div
-      className="rounded-xl p-6"
+      className="card-lift rounded-2xl p-6"
       style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <span
-          className="flex h-11 w-11 items-center justify-center rounded-lg"
-          style={{ background: "var(--accent-light)", color: "var(--accent)" }}
-        >
+      <div className="mb-5 flex items-start justify-between">
+        <span className="flex h-12 w-12 items-center justify-center rounded-xl text-white" style={{ background: "var(--grad)" }}>
           {icon}
         </span>
-        <span className="text-sm font-bold" style={{ color: "var(--accent-border)" }}>
-          {step}
-        </span>
+        <span className="text-sm font-black" style={{ color: "var(--accent-border)" }}>{step}</span>
       </div>
       <h3 className="text-lg font-bold">{title}</h3>
-      <p className="mt-2 text-sm leading-6" style={{ color: "var(--text-2)" }}>
-        {desc}
-      </p>
+      <p className="mt-2 text-sm leading-6" style={{ color: "var(--text-2)" }}>{desc}</p>
     </div>
   );
 }
