@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
+from urllib.parse import quote
 
 import pandas as pd
 
@@ -73,12 +75,32 @@ def score_products(products: pd.DataFrame, predictions: list[dict]) -> pd.DataFr
             "ingredients": getattr(product, "active_ingredients"),
             "why": getattr(product, "why"),
             "imageUrl": getattr(product, "image_url", ""),
-            "url": getattr(product, "affiliate_url")
-            if getattr(product, "affiliate_url") != "REPLACE_WITH_AFFILIATE_LINK"
-            else getattr(product, "product_url"),
+            "url": resolve_product_url(product),
         })
 
     return pd.DataFrame(rows).sort_values("score", ascending=False).reset_index(drop=True)
+
+
+def resolve_product_url(product) -> str:
+    product_url = str(getattr(product, "product_url", ""))
+    affiliate_url = str(getattr(product, "affiliate_url", ""))
+    retailer = str(getattr(product, "retailer", "")).lower()
+
+    if affiliate_url and not affiliate_url.startswith("REPLACE_WITH"):
+        return affiliate_url
+
+    if retailer == "amazon":
+        associate_tag = os.getenv("AMAZON_ASSOCIATE_TAG", "").strip()
+        if associate_tag:
+            separator = "&" if "?" in product_url else "?"
+            return f"{product_url}{separator}tag={associate_tag}"
+
+    if retailer == "sephora":
+        deeplink_prefix = os.getenv("SEPHORA_DEEPLINK_PREFIX", "").strip()
+        if deeplink_prefix:
+            return f"{deeplink_prefix}{quote(product_url, safe='')}"
+
+    return product_url
 
 
 def build_routine(scored: pd.DataFrame) -> dict:
