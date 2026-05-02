@@ -1,7 +1,7 @@
 "use client";
 
-import { Camera, CheckCircle2, Loader2, Upload, X } from "lucide-react";
-import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Camera, CheckCircle2, Loader2, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { ImageRole, PhotoSlot } from "@/types/aster";
 
@@ -47,6 +47,12 @@ export function ThreePhotoUpload({
     [activeRole, slots],
   );
   const completedCount = slots.filter((slot) => slot.file).length;
+  const validationMessages = slots.flatMap((slot) =>
+    slot.messages.map((message) => ({
+      role: slot.title,
+      message,
+    })),
+  );
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((track) => track.stop());
@@ -147,20 +153,42 @@ export function ThreePhotoUpload({
 
   return (
     <section id="scan" className="rounded-[1.75rem] border border-[#f2c8d7] bg-white/80 p-4 shadow-[0_24px_70px_rgba(114,42,69,0.12)] sm:p-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-4">
         <div>
           <p className="text-sm font-medium text-[#8f5f70]">Guided scan</p>
-          <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#28171d]">Camera-guided 3 photo scan</h2>
+          <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</h2>
+          <p className="mt-2 text-sm leading-6 text-[#8f5f70]">
+            Aster vous guide pour prendre automatiquement les 3 photos necessaires.
+          </p>
         </div>
-        <div className="flex flex-col gap-2 sm:flex-row">
+
+        {!cameraOpen ? (
           <button
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#b83263] bg-white px-5 text-sm font-semibold text-[#b83263] transition hover:bg-[#fde8ef]"
-            onClick={() => setCameraOpen((current) => !current)}
+            className="flex min-h-[360px] flex-col items-center justify-center rounded-[1.35rem] border border-dashed border-[#e6aabd] bg-[#fff8fa] px-6 text-center transition hover:bg-[#fde8ef]"
+            onClick={() => setCameraOpen(true)}
             type="button"
           >
-            {cameraOpen ? <X size={17} /> : <Camera size={17} />}
-            {cameraOpen ? "Close camera" : "Open camera"}
+            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#b83263] text-white">
+              <Camera size={28} />
+            </span>
+            <span className="mt-5 text-2xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</span>
+            <span className="mt-2 max-w-sm text-sm leading-6 text-[#8f5f70]">
+              Placez votre visage dans le schema. La photo se prend automatiquement quand le cadrage et la lumiere sont bons.
+            </span>
           </button>
+        ) : null}
+
+        <div className="flex flex-col gap-2 sm:flex-row">
+          {cameraOpen ? (
+            <button
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#b83263] bg-white px-5 text-sm font-semibold text-[#b83263] transition hover:bg-[#fde8ef]"
+              onClick={() => setCameraOpen(false)}
+              type="button"
+            >
+              <X size={17} />
+              Fermer la camera
+            </button>
+          ) : null}
           <button
             className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#b83263] px-5 text-sm font-semibold text-white transition hover:bg-[#98294f] disabled:cursor-not-allowed disabled:opacity-45"
             disabled={!canAnalyze || isAnalyzing}
@@ -168,7 +196,7 @@ export function ThreePhotoUpload({
             type="button"
           >
             {isAnalyzing ? <Loader2 className="animate-spin" size={17} /> : <Camera size={17} />}
-            {isAnalyzing ? "Scanning" : "Analyze photos"}
+            {isAnalyzing ? "Analyse en cours" : "Analyser mes photos"}
           </button>
         </div>
       </div>
@@ -192,9 +220,9 @@ export function ThreePhotoUpload({
             </div>
           </div>
           <canvas ref={canvasRef} className="hidden" />
-          <div className="mt-3 flex items-center justify-between gap-3 text-sm text-white/75">
-            <span>{completedCount}/3 photos captured</span>
-            <span>Capture starts automatically when light and framing look good.</span>
+          <div className="mt-3 flex flex-col gap-3 text-sm text-white/75 sm:flex-row sm:items-center sm:justify-between">
+            <ScanSteps slots={slots} activeRole={activeRole} />
+            <span>{completedCount}/3 photos capturees</span>
           </div>
         </div>
       ) : null}
@@ -203,11 +231,15 @@ export function ThreePhotoUpload({
         <p className="mt-4 rounded-xl bg-[#fff1f2] px-3 py-2 text-sm leading-5 text-[#9f1239]">{cameraError}</p>
       ) : null}
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-3">
-        {slots.map((slot) => (
-          <PhotoCard key={slot.role} onPhotoChange={onPhotoChange} slot={slot} />
-        ))}
-      </div>
+      {validationMessages.length ? (
+        <div className="mt-4 space-y-2">
+          {validationMessages.map((item) => (
+            <p key={`${item.role}-${item.message}`} className="rounded-xl bg-[#fff1f2] px-3 py-2 text-sm leading-5 text-[#9f1239]">
+              <span className="font-semibold">{item.role}:</span> {item.message}
+            </p>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -227,58 +259,28 @@ function GuideOverlay({ role }: { role: ImageRole }) {
   );
 }
 
-function PhotoCard({
-  slot,
-  onPhotoChange,
-}: {
-  slot: PhotoSlot;
-  onPhotoChange: (role: ImageRole, file: File) => void;
-}) {
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) onPhotoChange(slot.role, file);
-  }
-
+function ScanSteps({ slots, activeRole }: { slots: PhotoSlot[]; activeRole: ImageRole }) {
   return (
-    <article className="rounded-[1.25rem] border border-[#f2c8d7] bg-[#fff8fa] p-3">
-      <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-[1rem] bg-[#f9dbe5]">
-        {slot.previewUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img alt={`${slot.title} preview`} className="h-full w-full object-cover" src={slot.previewUrl} />
-        ) : (
-          <div className="flex flex-col items-center px-6 text-center text-sm leading-6 text-[#8f5f70]">
-            <Camera className="mb-3 text-[#b83263]" size={28} />
-            {slot.guidance}
-          </div>
-        )}
-        {slot.file ? (
-          <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#16803b] shadow-sm">
-            <CheckCircle2 size={18} />
+    <div className="flex flex-wrap gap-2">
+      {slots.map((slot) => {
+        const isActive = slot.role === activeRole && !slot.file;
+        return (
+          <span
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ${
+              slot.file
+                ? "bg-[#d9f99d] text-[#1f3d0b]"
+                : isActive
+                  ? "bg-white text-[#28171d]"
+                  : "bg-white/15 text-white/75"
+            }`}
+            key={slot.role}
+          >
+            {slot.file ? <CheckCircle2 size={14} /> : null}
+            {slot.title}
           </span>
-        ) : null}
-      </div>
-
-      <div className="mt-3 flex items-start justify-between gap-3">
-        <div>
-          <h3 className="font-semibold text-[#28171d]">{slot.title}</h3>
-          <p className="mt-1 text-sm leading-5 text-[#8f5f70]">{slot.guidance}</p>
-        </div>
-        <label className="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#e6aabd] bg-white text-[#b83263] transition hover:bg-[#fde8ef]">
-          <Upload size={17} />
-          <input accept="image/*" capture="user" className="sr-only" type="file" onChange={handleChange} />
-        </label>
-      </div>
-
-      {slot.messages.length ? (
-        <div className="mt-3 space-y-2">
-          {slot.messages.map((message) => (
-            <p key={message} className="rounded-xl bg-[#fff1f2] px-3 py-2 text-sm leading-5 text-[#9f1239]">
-              {message}
-            </p>
-          ))}
-        </div>
-      ) : null}
-    </article>
+        );
+      })}
+    </div>
   );
 }
 
