@@ -245,17 +245,69 @@ export function ThreePhotoUpload({
 }
 
 function GuideOverlay({ role }: { role: ImageRole }) {
-  const shape =
-    role === "closeup"
-      ? "h-[46%] w-[58%] rounded-[2rem]"
-      : role === "side"
-        ? "h-[68%] w-[38%] translate-x-[18%] rounded-[50%]"
-        : "h-[68%] w-[46%] rounded-[50%]";
-
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/15">
-      <div className={`${shape} border-2 border-white/90 shadow-[0_0_0_999px_rgba(0,0,0,0.22)]`} />
+    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),rgba(0,0,0,0.28))]">
+      {role === "closeup" ? <CloseupGuide /> : role === "side" ? <SideFaceGuide /> : <FrontFaceGuide />}
     </div>
+  );
+}
+
+function FrontFaceGuide() {
+  return (
+    <svg className="absolute inset-0 h-full w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 100 100">
+      <path
+        d="M50 16C36 16 27 27 27 44C27 65 37 84 50 87C63 84 73 65 73 44C73 27 64 16 50 16Z"
+        className="drop-shadow-[0_0_18px_rgba(255,255,255,0.35)]"
+        stroke="rgba(255,255,255,0.95)"
+        strokeLinecap="round"
+        strokeWidth="1.4"
+      />
+      <path d="M35 42C40 39 44 39 48 42" stroke="rgba(255,255,255,0.72)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M52 42C56 39 61 39 65 42" stroke="rgba(255,255,255,0.72)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M50 45C48 52 48 57 50 61" stroke="rgba(255,255,255,0.55)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M43 69C48 72 53 72 58 69" stroke="rgba(255,255,255,0.58)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M24 43C20 47 20 56 25 60" stroke="rgba(255,255,255,0.55)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M76 43C80 47 80 56 75 60" stroke="rgba(255,255,255,0.55)" strokeLinecap="round" strokeWidth="0.8" />
+    </svg>
+  );
+}
+
+function SideFaceGuide() {
+  return (
+    <svg className="absolute inset-0 h-full w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 100 100">
+      <path
+        d="M55 16C42 17 34 28 36 43C38 58 44 73 55 84C65 78 72 67 73 53C74 43 70 35 64 30C61 25 59 20 55 16Z"
+        className="drop-shadow-[0_0_18px_rgba(255,255,255,0.35)]"
+        stroke="rgba(255,255,255,0.95)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.4"
+      />
+      <path d="M59 38C63 37 66 39 68 42" stroke="rgba(255,255,255,0.7)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M67 43C73 48 73 54 66 57" stroke="rgba(255,255,255,0.6)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M57 69C62 71 66 70 70 67" stroke="rgba(255,255,255,0.58)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M35 44C31 49 32 57 38 61" stroke="rgba(255,255,255,0.55)" strokeLinecap="round" strokeWidth="0.8" />
+    </svg>
+  );
+}
+
+function CloseupGuide() {
+  return (
+    <svg className="absolute inset-0 h-full w-full" fill="none" preserveAspectRatio="none" viewBox="0 0 100 100">
+      <rect
+        className="drop-shadow-[0_0_18px_rgba(255,255,255,0.35)]"
+        height="46"
+        rx="14"
+        stroke="rgba(255,255,255,0.95)"
+        strokeWidth="1.4"
+        width="58"
+        x="21"
+        y="27"
+      />
+      <path d="M33 43C43 38 57 38 67 43" stroke="rgba(255,255,255,0.6)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M34 58C45 63 56 63 67 58" stroke="rgba(255,255,255,0.6)" strokeLinecap="round" strokeWidth="0.8" />
+      <path d="M50 31V69" stroke="rgba(255,255,255,0.32)" strokeDasharray="2 3" strokeLinecap="round" strokeWidth="0.6" />
+    </svg>
   );
 }
 
