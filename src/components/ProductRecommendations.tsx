@@ -3,56 +3,83 @@ import { ArrowUpRight } from "lucide-react";
 import type { Product } from "@/types/aster";
 
 export function ProductRecommendations({ products }: { products: Product[] }) {
-  return (
-    <section id="products" className="py-4">
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-        <div>
-          <h2 className="text-4xl font-semibold tracking-tight text-[#28171d]">Recommended products</h2>
-        </div>
-      </div>
-
-      {products.length ? (
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          {products.slice(0, 3).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      ) : (
-        <div className="mt-6 rounded-[1.5rem] border border-dashed border-[#f2c8d7] bg-white/75 p-8 text-center text-[#8f5f70]">
+  if (!products.length) {
+    return (
+      <div
+        className="rounded-xl p-12 text-center"
+        style={{ border: "1px dashed var(--border)" }}
+      >
+        <p className="font-medium" style={{ color: "var(--text-2)" }}>
           Ready after scan.
-        </div>
-      )}
-    </section>
+        </p>
+        <p className="mt-1 text-sm" style={{ color: "var(--text-3)" }}>
+          Complete the 3-photo analysis to see your matched products.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-5 md:grid-cols-3">
+      {products.slice(0, 3).map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
   );
 }
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="flex min-h-[330px] flex-col rounded-[1.5rem] border border-[#f2c8d7] bg-white/85 p-4">
-      <div className="mb-4 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[1.1rem] bg-[#fde8ef]">
+    <article
+      className="flex flex-col overflow-hidden rounded-xl"
+      style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
+    >
+      {/* Image */}
+      <div
+        className="flex h-44 items-center justify-center overflow-hidden"
+        style={{ background: "var(--bg-alt)" }}
+      >
         {product.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img alt={product.name} className="h-full w-full object-cover" src={product.imageUrl} />
         ) : (
-          <span className="px-4 text-center text-sm font-medium capitalize text-[#b83263]">{product.category}</span>
+          <span className="text-sm font-semibold capitalize" style={{ color: "var(--accent)" }}>
+            {product.category}
+          </span>
         )}
       </div>
-      <div className="flex items-center justify-between text-sm text-[#8f5f70]">
-        <span className="capitalize">{product.category}</span>
-        <span>{product.retailer}</span>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--text-3)" }}>
+            {product.category}
+          </span>
+          <span
+            className="rounded px-2 py-0.5 text-[10px] font-semibold"
+            style={{ background: "var(--bg-alt)", color: "var(--text-3)" }}
+          >
+            {product.retailer}
+          </span>
+        </div>
+
+        <h3 className="mt-2.5 text-base font-bold leading-snug" style={{ color: "var(--text)" }}>
+          {product.name}
+        </h3>
+        <p className="mt-0.5 text-sm" style={{ color: "var(--text-2)" }}>{product.brand}</p>
+        <p className="mt-3 flex-1 text-sm leading-6" style={{ color: "var(--text-2)" }}>{product.why}</p>
+
+        <a
+          className="mt-5 inline-flex h-10 items-center justify-center gap-1.5 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          href={product.url}
+          rel="noreferrer"
+          target="_blank"
+          style={{ background: "var(--accent)" }}
+        >
+          View product
+          <ArrowUpRight size={14} />
+        </a>
       </div>
-      <h3 className="mt-4 text-xl font-semibold leading-6 tracking-tight text-[#28171d]">{product.name}</h3>
-      <p className="mt-1 text-sm text-[#8f5f70]">{product.brand}</p>
-      <p className="mt-4 text-sm leading-6 text-[#8f5f70]">{product.why}</p>
-      <a
-        className="mt-auto inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#b83263] px-5 text-sm font-semibold text-white transition hover:bg-[#98294f]"
-        href={product.url}
-        rel="noreferrer"
-        target="_blank"
-      >
-        View product
-        <ArrowUpRight size={15} />
-      </a>
     </article>
   );
 }

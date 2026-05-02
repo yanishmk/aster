@@ -8,33 +8,50 @@ export function RoutinePreview({
   evening: Product[];
 }) {
   return (
-    <section id="routine" className="grid gap-4 lg:grid-cols-2">
+    <div className="grid gap-6 md:grid-cols-2">
       <RoutineColumn title="Morning" products={morning} />
       <RoutineColumn title="Evening" products={evening} />
-    </section>
+    </div>
   );
 }
 
 function RoutineColumn({ title, products }: { title: string; products: Product[] }) {
   return (
-    <div className="rounded-[1.5rem] border border-[#f2c8d7] bg-white/80 p-5">
-      <h3 className="text-xl font-semibold tracking-tight text-[#28171d]">{title}</h3>
+    <div
+      className="rounded-xl p-5"
+      style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
+    >
+      <div className="mb-4 flex items-center gap-3">
+        <span
+          className="h-2.5 w-2.5 rounded-full"
+          style={{ background: "var(--accent)" }}
+        />
+        <h3 className="font-bold text-lg">{title}</h3>
+      </div>
+
       {products.length ? (
-        <ol className="mt-5 space-y-4">
+        <ol className="space-y-3">
           {products.map((product, index) => (
-            <li key={`${title}-${product.id}`} className="flex gap-3 text-sm">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#b83263] text-xs font-semibold text-white">
+            <li key={`${title}-${product.id}`} className="flex items-start gap-3">
+              <span
+                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+                style={{ background: "var(--accent)" }}
+              >
                 {index + 1}
               </span>
-              <span>
-                <span className="block font-semibold capitalize text-[#28171d]">{product.category}</span>
-                <span className="text-[#8f5f70]">{product.name}</span>
-              </span>
+              <div className="text-sm">
+                <span className="block font-semibold capitalize" style={{ color: "var(--text)" }}>
+                  {product.category}
+                </span>
+                <span style={{ color: "var(--text-2)" }}>{product.name}</span>
+              </div>
             </li>
           ))}
         </ol>
       ) : (
-        <p className="mt-5 text-sm leading-6 text-[#8f5f70]">Your routine will appear after the 3-photo scan.</p>
+        <p className="text-sm" style={{ color: "var(--text-3)" }}>
+          Your routine will appear after the 3-photo scan.
+        </p>
       )}
     </div>
   );

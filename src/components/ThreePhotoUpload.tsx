@@ -152,49 +152,80 @@ export function ThreePhotoUpload({
   }, [activeRole]);
 
   return (
-    <section id="scan" className="rounded-[1.5rem] bg-white p-4 shadow-[0_24px_70px_rgba(114,42,69,0.1)] ring-1 ring-[#f0ceda] sm:p-5">
-      <div className="flex items-center justify-between gap-3">
-        <h2 className="text-2xl font-semibold tracking-tight text-[#201318]">Scan</h2>
-        <span className="rounded-full bg-[#fff1f5] px-3 py-2 text-xs font-semibold text-[#b83263]">
-          {completedCount}/3
+    <div className="bg-white p-5">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-bold" style={{ color: "var(--text)" }}>Skin scan</h2>
+        <span
+          className="rounded-full px-3 py-1 text-xs font-bold"
+          style={{ background: "var(--accent-light)", color: "var(--accent)" }}
+        >
+          {completedCount}/3 photos
         </span>
       </div>
 
       {!cameraOpen ? (
         <button
-          className="mt-4 flex min-h-[520px] w-full flex-col items-center justify-center rounded-[1.1rem] border border-dashed border-[#e7b6c7] bg-[#fffafb] px-6 text-center transition hover:border-[#b83263] hover:bg-[#fff3f7]"
+          className="flex min-h-[480px] w-full flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 text-center transition-colors"
+          style={{ borderColor: "var(--border)", background: "var(--bg-alt)" }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--accent)";
+            e.currentTarget.style.background = "var(--accent-light)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "var(--border)";
+            e.currentTarget.style.background = "var(--bg-alt)";
+          }}
           onClick={() => setCameraOpen(true)}
           type="button"
         >
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#b83263] text-white">
-            <Camera size={28} />
+          <span
+            className="flex h-14 w-14 items-center justify-center rounded-xl text-white"
+            style={{ background: "var(--accent)" }}
+          >
+            <Camera size={26} />
           </span>
-          <span className="mt-5 text-xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</span>
+          <span className="mt-4 text-lg font-bold" style={{ color: "var(--text)" }}>
+            Ouvrir votre camera
+          </span>
+          <span className="mt-1.5 text-sm" style={{ color: "var(--text-2)" }}>
+            Guided 3-photo scan with auto-capture
+          </span>
         </button>
       ) : null}
 
       {cameraOpen ? (
-        <div className="mt-5 rounded-[1.1rem] border border-[#f2c8d7] bg-[#160d11] p-2 text-white">
-          <div className="relative overflow-hidden rounded-[0.9rem] bg-black">
-            <video ref={videoRef} className="aspect-[4/5] w-full scale-x-[-1] object-cover md:aspect-video" muted playsInline />
+        <div className="mt-4 overflow-hidden rounded-xl bg-black">
+          <div className="relative">
+            <video
+              ref={videoRef}
+              className="aspect-[4/5] w-full scale-x-[-1] object-cover md:aspect-video"
+              muted
+              playsInline
+            />
             <GuideOverlay role={activeRole} />
             <div className="absolute left-3 right-3 top-3 flex items-start justify-between gap-3">
-              <div className="rounded-2xl bg-black/55 px-3 py-2 backdrop-blur">
-                <p className="text-xs text-white/70">Step {ROLE_ORDER.indexOf(activeRole) + 1} of 3</p>
-                <p className="text-sm font-semibold">{activeSlot.title}</p>
+              <div className="rounded-xl bg-black/60 px-3 py-2 backdrop-blur-sm">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-white/60">
+                  Step {ROLE_ORDER.indexOf(activeRole) + 1} of 3
+                </p>
+                <p className="text-sm font-bold text-white">{activeSlot.title}</p>
               </div>
-              <span className={`rounded-full px-3 py-2 text-xs font-semibold ${quality.ready ? "bg-[#d9f99d] text-[#1f3d0b]" : "bg-white/85 text-[#7f1d1d]"}`}>
+              <span
+                className={`rounded-full px-3 py-1.5 text-xs font-bold ${
+                  quality.ready ? "bg-lime-200 text-lime-900" : "bg-white/90 text-red-800"
+                }`}
+              >
                 {quality.ready ? "Hold still" : "Adjust"}
               </span>
             </div>
-            <div className="absolute bottom-3 left-3 right-3 rounded-2xl bg-black/55 px-4 py-3 text-center text-sm backdrop-blur">
+            <div className="absolute bottom-3 left-3 right-3 rounded-xl bg-black/60 px-4 py-2.5 text-center text-sm text-white backdrop-blur-sm">
               {quality.message}
             </div>
           </div>
           <canvas ref={canvasRef} className="hidden" />
-          <div className="mt-3 flex flex-col gap-3 text-sm text-white/75 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 bg-neutral-900 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
             <ScanSteps slots={slots} activeRole={activeRole} />
-            <span>{completedCount}/3 photos capturees</span>
+            <span className="text-white/50 text-xs">{completedCount}/3 captured</span>
           </div>
         </div>
       ) : null}
@@ -202,39 +233,50 @@ export function ThreePhotoUpload({
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
         {cameraOpen ? (
           <button
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#b83263] bg-white px-5 text-sm font-semibold text-[#b83263] transition hover:bg-[#fde8ef]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-semibold transition-colors"
+            style={{ borderColor: "var(--accent)", color: "var(--accent)", background: "white" }}
             onClick={() => setCameraOpen(false)}
             type="button"
           >
-            <X size={17} />
+            <X size={16} />
             Fermer
           </button>
         ) : null}
         <button
-          className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#b83263] px-5 text-sm font-semibold text-white transition hover:bg-[#98294f] disabled:cursor-not-allowed disabled:opacity-45"
+          className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-lg text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+          style={{ background: "var(--accent)" }}
           disabled={!canAnalyze || isAnalyzing}
           onClick={onAnalyze}
           type="button"
         >
-          {isAnalyzing ? <Loader2 className="animate-spin" size={17} /> : <Camera size={17} />}
-          {isAnalyzing ? "Analyse" : "Analyser"}
+          {isAnalyzing ? <Loader2 className="animate-spin" size={16} /> : <Camera size={16} />}
+          {isAnalyzing ? "Analyse en cours…" : "Analyser ma peau"}
         </button>
       </div>
 
       {cameraError ? (
-        <p className="mt-4 rounded-xl bg-[#fff1f2] px-3 py-2 text-sm leading-5 text-[#9f1239]">{cameraError}</p>
+        <p
+          className="mt-4 rounded-lg px-3 py-2.5 text-sm"
+          style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
+        >
+          {cameraError}
+        </p>
       ) : null}
 
       {validationMessages.length ? (
         <div className="mt-4 space-y-2">
           {validationMessages.map((item) => (
-            <p key={`${item.role}-${item.message}`} className="rounded-xl bg-[#fff1f2] px-3 py-2 text-sm leading-5 text-[#9f1239]">
-              <span className="font-semibold">{item.role}:</span> {item.message}
+            <p
+              key={`${item.role}-${item.message}`}
+              className="rounded-lg px-3 py-2.5 text-sm"
+              style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
+            >
+              <span className="font-bold">{item.role}:</span> {item.message}
             </p>
           ))}
         </div>
       ) : null}
-    </section>
+    </div>
   );
 }
 

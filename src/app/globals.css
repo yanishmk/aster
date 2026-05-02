@@ -1,25 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f4ef;
-  --foreground: #111827;
+  --bg: #ffffff;
+  --bg-alt: #f8f5f7;
+  --surface: #ffffff;
+  --border: #e9dfe4;
+  --text: #1a0e13;
+  --text-2: #6b5260;
+  --text-3: #9b8390;
+  --accent: #c53065;
+  --accent-hover: #a2264f;
+  --accent-light: #fdf0f4;
+  --accent-border: #f4c5d5;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: Arial, Helvetica, sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button,
 a,
 input {
-  outline-color: #2563eb;
+  outline-color: var(--accent);
 }

@@ -13,74 +13,126 @@ export function ResultReport({ analysis }: ResultReportProps) {
   const focus = analysis?.result.skin_profile.recommendation_focus ?? ["hydration"];
 
   return (
-    <section className="rounded-[1.75rem] bg-[#28171d] p-5 text-white sm:p-7">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-sm font-medium text-[#f6b8cd]">Your Results</p>
-        </div>
-        <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f6b8cd] text-[#28171d]">
-          <Sparkles size={20} />
+    <div
+      className="overflow-hidden rounded-xl"
+      style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
+    >
+      {/* Header */}
+      <div
+        className="flex items-center gap-3 px-6 py-4"
+        style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-alt)" }}
+      >
+        <span
+          className="flex h-9 w-9 items-center justify-center rounded-lg"
+          style={{ background: "var(--accent-light)", color: "var(--accent)" }}
+        >
+          <Sparkles size={18} />
         </span>
+        <div>
+          <p className="font-semibold">Skin analysis results</p>
+          <p className="text-sm" style={{ color: "var(--text-2)" }}>Based on your 3-photo scan</p>
+        </div>
       </div>
 
-      {analysis ? (
-        <div className="mt-7 grid gap-4 lg:grid-cols-[1fr_0.85fr]">
-          <div className="rounded-[1.25rem] bg-white/8 p-5">
-            <p className="text-sm text-[#f3d7e1]">Your skin shows signs of:</p>
-            {detected.length ? (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {detected.map((item) => (
-                  <span key={item} className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#28171d]">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-4 text-2xl font-semibold">No strong concern detected.</p>
-            )}
+      {/* Body */}
+      <div className="p-6">
+        {analysis ? (
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr]">
 
-            {possible.length ? (
-              <div className="mt-6">
-                <p className="text-sm text-[#f3d7e1]">Possible low-confidence signs:</p>
+            {/* Detected + possible */}
+            <div>
+              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>
+                Detected concerns
+              </p>
+              {detected.length ? (
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {possible.map((item) => (
-                    <span key={item} className="rounded-full border border-white/25 px-4 py-2 text-sm font-medium text-white">
+                  {detected.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full px-4 py-1.5 text-sm font-semibold capitalize"
+                      style={{
+                        background: "var(--accent-light)",
+                        border: "1px solid var(--accent-border)",
+                        color: "var(--accent)",
+                      }}
+                    >
                       {item}
                     </span>
                   ))}
                 </div>
-              </div>
-            ) : null}
+              ) : (
+                <p className="mt-3 text-xl font-bold" style={{ color: "var(--text)" }}>
+                  No strong concern detected.
+                </p>
+              )}
 
-            {clearCount ? (
-              <p className="mt-6 flex items-center gap-2 text-sm text-[#f3d7e1]">
-                <CheckCircle2 size={17} />
-                Your skin looks clear in other areas.
-              </p>
-            ) : null}
-          </div>
+              {possible.length ? (
+                <div className="mt-5">
+                  <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>
+                    Low-confidence signals
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {possible.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-full px-4 py-1.5 text-sm font-medium capitalize"
+                        style={{ border: "1px solid var(--border)", color: "var(--text-2)" }}
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
-          <div className="rounded-[1.25rem] bg-[#fff1f5] p-5 text-[#28171d]">
-            <p className="text-sm font-medium text-[#8f5f70]">Recommendation focus</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {focus.map((item) => (
-                <span key={item} className="rounded-full bg-white px-4 py-2 text-sm font-semibold capitalize text-[#b83263]">
-                  {item}
-                </span>
-              ))}
+              {clearCount ? (
+                <p className="mt-5 flex items-center gap-2 text-sm" style={{ color: "var(--text-2)" }}>
+                  <CheckCircle2 size={16} style={{ color: "var(--accent)" }} />
+                  Your skin looks clear in other areas.
+                </p>
+              ) : null}
             </div>
-            <a
-              className="mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#b83263] px-5 text-sm font-semibold text-white transition hover:bg-[#98294f]"
-              href="#products"
+
+            {/* Focus panel */}
+            <div
+              className="rounded-xl p-5"
+              style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}
             >
-              Get personalized product recommendations
-              <ArrowRight size={16} />
-            </a>
+              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>
+                Recommendation focus
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {focus.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full px-4 py-1.5 text-sm font-semibold capitalize"
+                    style={{
+                      background: "var(--accent-light)",
+                      border: "1px solid var(--accent-border)",
+                      color: "var(--accent)",
+                    }}
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <a
+                className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                href="#products"
+                style={{ background: "var(--accent)" }}
+              >
+                See matched products
+                <ArrowRight size={15} />
+              </a>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="mt-7 rounded-[1.25rem] bg-white/8 p-5 text-[#f3d7e1]">Ready after scan.</div>
-      )}
-    </section>
+        ) : (
+          <div className="py-12 text-center" style={{ color: "var(--text-3)" }}>
+            <Sparkles className="mx-auto mb-3 opacity-25" size={28} />
+            <p className="font-medium">Complete the 3-photo scan to see your results.</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
