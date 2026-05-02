@@ -155,11 +155,7 @@ export function ThreePhotoUpload({
     <section id="scan" className="rounded-[1.75rem] border border-[#f2c8d7] bg-white/80 p-4 shadow-[0_24px_70px_rgba(114,42,69,0.12)] sm:p-5">
       <div className="flex flex-col gap-4">
         <div>
-          <p className="text-sm font-medium text-[#8f5f70]">Guided scan</p>
           <h2 className="mt-1 text-3xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</h2>
-          <p className="mt-2 text-sm leading-6 text-[#8f5f70]">
-            Aster vous guide pour prendre automatiquement les 3 photos necessaires.
-          </p>
         </div>
 
         {!cameraOpen ? (
@@ -172,9 +168,6 @@ export function ThreePhotoUpload({
               <Camera size={28} />
             </span>
             <span className="mt-5 text-2xl font-semibold tracking-tight text-[#28171d]">Ouvrir votre camera</span>
-            <span className="mt-2 max-w-sm text-sm leading-6 text-[#8f5f70]">
-              Placez votre visage dans le schema. La photo se prend automatiquement quand le cadrage et la lumiere sont bons.
-            </span>
           </button>
         ) : null}
 

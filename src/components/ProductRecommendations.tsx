@@ -7,12 +7,8 @@ export function ProductRecommendations({ products }: { products: Product[] }) {
     <section id="products" className="py-4">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-medium text-[#8f5f70]">Product recommendations</p>
-          <h2 className="mt-2 text-4xl font-semibold tracking-tight text-[#28171d]">Your product shortlist</h2>
+          <h2 className="text-4xl font-semibold tracking-tight text-[#28171d]">Recommended products</h2>
         </div>
-        <p className="max-w-md text-sm leading-6 text-[#8f5f70]">
-          Aster keeps the routine simple: support the skin barrier first, then add targeted products.
-        </p>
       </div>
 
       {products.length ? (
@@ -23,7 +19,7 @@ export function ProductRecommendations({ products }: { products: Product[] }) {
         </div>
       ) : (
         <div className="mt-6 rounded-[1.5rem] border border-dashed border-[#f2c8d7] bg-white/75 p-8 text-center text-[#8f5f70]">
-          Product recommendations will appear after your scan.
+          Ready after scan.
         </div>
       )}
     </section>

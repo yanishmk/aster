@@ -17,7 +17,6 @@ export function ResultReport({ analysis }: ResultReportProps) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-[#f6b8cd]">Your Results</p>
-          <h2 className="mt-2 text-4xl font-semibold tracking-tight">A simple skin profile</h2>
         </div>
         <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#f6b8cd] text-[#28171d]">
           <Sparkles size={20} />
@@ -80,9 +79,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
           </div>
         </div>
       ) : (
-        <div className="mt-7 rounded-[1.25rem] bg-white/8 p-5 text-[#f3d7e1]">
-          Add the three guided photos to create a clearer Aster result.
-        </div>
+        <div className="mt-7 rounded-[1.25rem] bg-white/8 p-5 text-[#f3d7e1]">Ready after scan.</div>
       )}
     </section>
   );

@@ -122,11 +122,6 @@ export default function Home() {
             </span>
             <span className="text-lg font-semibold tracking-tight">Aster</span>
           </a>
-          <div className="hidden items-center gap-7 text-sm text-[#8f5f70] md:flex">
-            <a href="#scan">Scan</a>
-            <a href="#routine">Routine</a>
-            <a href="#products">Products</a>
-          </div>
           <a
             className="rounded-full border border-[#b83263] px-4 py-2 text-sm font-medium text-[#b83263] transition hover:bg-[#b83263] hover:text-white"
             href="#scan"
@@ -137,18 +132,11 @@ export default function Home() {
 
         <section className="grid items-center gap-8 py-4 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="max-w-2xl">
-            <p className="inline-flex rounded-full border border-[#f2c8d7] bg-white/80 px-4 py-2 text-sm font-medium text-[#8f5f70]">
-              Aster 2.0 guided skin scan
-            </p>
             <h1 className="mt-6 text-[clamp(3rem,7vw,6.6rem)] font-semibold leading-[0.9] tracking-tight">
               Skin insight,
               <br />
               product match.
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-[#8f5f70]">
-              Aster now checks a front portrait, a close-up, and a side angle before creating a skincare profile
-              and product routine. Better context, simpler recommendations.
-            </p>
           </div>
 
           <ThreePhotoUpload
@@ -172,7 +160,7 @@ export default function Home() {
 
         <ProductRecommendations products={analysis?.routine.products ?? []} />
 
-        <footer className="border-t border-[#f2c8d7] py-6 text-sm text-[#8f5f70]">
+        <footer className="border-t border-[#f2c8d7] py-6 text-xs text-[#8f5f70]">
           {analysis?.disclaimer ??
             "Aster gives cosmetic skincare suggestions based on image analysis. It is not medical diagnosis or treatment advice."}
         </footer>
