@@ -114,11 +114,16 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#fff7fa] text-[#201318]">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-10 sm:px-6 lg:px-8">
-        <nav className="mt-4 flex items-center justify-between rounded-full border border-[#f1d1dc] bg-white/85 px-4 py-3 shadow-[0_14px_40px_rgba(114,42,69,0.06)] backdrop-blur">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 pb-10 sm:px-6 lg:px-8">
+        <nav className="mt-4 flex items-center justify-between rounded-full border border-[#f1d1dc] bg-white px-4 py-3 shadow-[0_14px_40px_rgba(114,42,69,0.06)]">
           <a href="#">
             <AsterLogo />
           </a>
+          <div className="hidden items-center gap-8 text-sm font-medium text-[#73515d] md:flex">
+            <a href="#scan">Scan</a>
+            <a href="#routine">Routine</a>
+            <a href="#products">Products</a>
+          </div>
           <a
             className="rounded-full bg-[#b83263] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#98294f]"
             href="#scan"
@@ -127,23 +132,42 @@ export default function Home() {
           </a>
         </nav>
 
-        <section className="mx-auto max-w-4xl pb-2 pt-10 text-center">
-          <div className="mx-auto flex w-fit items-center gap-2 rounded-full border border-[#efb5ca] bg-white px-4 py-2 text-sm font-medium text-[#8f244d]">
-            <span className="h-2 w-2 rounded-full bg-[#b83263]" />
-            3-photo skin scan
-          </div>
-          <h1 className="mt-6 text-[clamp(3.2rem,8vw,6.8rem)] font-semibold leading-[0.88] tracking-tight text-[#201318]">
-            Skin insight,
-            <br />
-            product match.
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#7c5966]">
-            A guided skin scan that turns visible concerns into a simple product routine.
-          </p>
-        </section>
-
-        <section className="mx-auto grid w-full max-w-6xl items-start gap-6 lg:grid-cols-[1.4fr_0.6fr]">
+        <section className="grid min-h-[calc(100vh-112px)] items-center gap-10 py-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
+            <div className="flex w-fit items-center gap-2 rounded-full border border-[#efb5ca] bg-white px-4 py-2 text-sm font-medium text-[#8f244d]">
+              <span className="h-2 w-2 rounded-full bg-[#b83263]" />
+              AI skincare assistant
+            </div>
+            <h1 className="mt-7 text-[clamp(3.4rem,7.5vw,7rem)] font-semibold leading-[0.87] tracking-tight text-[#201318]">
+              Skin insight,
+              <br />
+              product match.
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-[#73515d]">
+              Scan your skin, understand visible concerns, and get a routine built around products you can buy.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                className="inline-flex h-12 items-center justify-center rounded-full bg-[#b83263] px-7 text-sm font-semibold text-white transition hover:bg-[#98294f]"
+                href="#scan"
+              >
+                Start free scan
+              </a>
+              <a
+                className="inline-flex h-12 items-center justify-center rounded-full border border-[#efb5ca] bg-white px-7 text-sm font-semibold text-[#8f244d] transition hover:bg-[#fff1f5]"
+                href="#products"
+              >
+                View products
+              </a>
+            </div>
+            <div className="mt-10 grid max-w-xl grid-cols-3 gap-3">
+              <Metric value="3" label="photos" />
+              <Metric value="6" label="signals" />
+              <Metric value="36" label="products" />
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-[#f1d1dc] bg-white/70 p-3 shadow-[0_30px_90px_rgba(114,42,69,0.12)]">
             <ThreePhotoUpload
               canAnalyze={canAnalyze}
               isAnalyzing={isAnalyzing}
@@ -152,17 +176,6 @@ export default function Home() {
               slots={slots}
             />
           </div>
-
-          <aside className="grid gap-3">
-            <div className="rounded-[1.25rem] border border-[#f1d1dc] bg-white p-5 shadow-[0_14px_40px_rgba(114,42,69,0.06)]">
-              <p className="text-sm font-semibold text-[#b83263]">Aster scan</p>
-              <h2 className="mt-3 text-2xl font-semibold tracking-tight">Front, close-up, side.</h2>
-            </div>
-            <div className="rounded-[1.25rem] border border-[#f1d1dc] bg-white p-5 shadow-[0_14px_40px_rgba(114,42,69,0.06)]">
-              <p className="text-sm font-semibold text-[#b83263]">Output</p>
-              <h2 className="mt-3 text-2xl font-semibold tracking-tight">Results, routine, products.</h2>
-            </div>
-          </aside>
         </section>
 
         {errorMessage ? (
@@ -183,6 +196,15 @@ export default function Home() {
         </footer>
       </div>
     </main>
+  );
+}
+
+function Metric({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-[1rem] border border-[#f1d1dc] bg-white p-4">
+      <p className="text-2xl font-semibold tracking-tight text-[#201318]">{value}</p>
+      <p className="mt-1 text-sm font-medium text-[#73515d]">{label}</p>
+    </div>
   );
 }
 
