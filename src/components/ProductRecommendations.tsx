@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ShoppingBag, Sparkles } from "lucide-react";
 
 import type { Product } from "@/types/aster";
 
@@ -18,8 +18,8 @@ export function ProductRecommendations({ products }: { products: Product[] }) {
   }
 
   return (
-    <div className="grid gap-5 md:grid-cols-3">
-      {products.slice(0, 3).map((product) => (
+    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {products.slice(0, 6).map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
@@ -27,57 +27,121 @@ export function ProductRecommendations({ products }: { products: Product[] }) {
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const hasRealImage = product.imageUrl && !product.imageUrl.includes("placehold.co");
+  const price = formatPrice(product);
+
   return (
     <article
-      className="card-lift flex flex-col overflow-hidden rounded-2xl"
+      className="card-lift flex min-h-full flex-col overflow-hidden rounded-2xl"
       style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
-      {/* Image */}
       <div
-        className="flex h-44 items-center justify-center overflow-hidden"
-        style={{ background: "var(--bg-alt)" }}
+        className="relative flex h-52 items-center justify-center overflow-hidden"
+        style={{ background: "linear-gradient(145deg, #fff7fb 0%, #f8edf4 100%)" }}
       >
-        {product.imageUrl ? (
+        <span
+          className="absolute left-4 top-4 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase"
+          style={{ background: "rgba(255,255,255,0.82)", color: "var(--accent)" }}
+        >
+          {product.retailer}
+        </span>
+
+        {hasRealImage ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img alt={product.name} className="h-full w-full object-cover" src={product.imageUrl} />
+          <img alt={product.name} className="h-full w-full object-contain p-5" src={product.imageUrl} />
         ) : (
-          <span className="grad-text text-sm font-bold capitalize">{product.category}</span>
+          <ProductMockup product={product} />
         )}
       </div>
 
-      {/* Content */}
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between gap-3">
           <span
             className="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider"
             style={{ background: "var(--accent-light)", color: "var(--accent)" }}
           >
             {product.category}
           </span>
-          <span
-            className="rounded-lg px-2 py-0.5 text-[10px] font-semibold"
-            style={{ background: "var(--bg-alt)", color: "var(--text-3)" }}
-          >
-            {product.retailer}
-          </span>
+          <p className="text-right text-lg font-black leading-none" style={{ color: "var(--text)" }}>
+            {price}
+          </p>
         </div>
 
         <h3 className="mt-3 text-base font-bold leading-snug" style={{ color: "var(--text)" }}>
           {product.name}
         </h3>
         <p className="mt-0.5 text-sm" style={{ color: "var(--text-2)" }}>{product.brand}</p>
-        <p className="mt-3 flex-1 text-sm leading-6" style={{ color: "var(--text-2)" }}>{product.why}</p>
+        <p className="mt-3 line-clamp-3 flex-1 text-sm leading-6" style={{ color: "var(--text-2)" }}>{product.why}</p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {product.match
+            .split(";")
+            .map((item) => item.trim())
+            .filter(Boolean)
+            .slice(0, 2)
+            .map((item) => (
+              <span
+                className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold capitalize"
+                key={item}
+                style={{ background: "var(--bg-alt)", color: "var(--text-2)" }}
+              >
+                <Sparkles size={11} />
+                {item}
+              </span>
+            ))}
+        </div>
 
         <a
-          className="btn-grad mt-5 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl text-sm font-bold text-white"
+          className="btn-grad mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-white"
           href={product.url}
           rel="noreferrer"
           target="_blank"
         >
-          View product
+          <ShoppingBag size={15} />
+          Buy product
           <ArrowUpRight size={14} />
         </a>
       </div>
     </article>
   );
+}
+
+function ProductMockup({ product }: { product: Product }) {
+  const initials = product.brand
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+
+  return (
+    <div className="relative flex h-36 w-28 items-center justify-center rounded-2xl shadow-lg">
+      <div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          background: "linear-gradient(160deg, #ffffff 0%, #fff0f7 52%, #ffd4e8 100%)",
+          border: "1px solid rgba(240,39,123,0.22)",
+        }}
+      />
+      <div
+        className="absolute left-1/2 top-5 h-10 w-10 -translate-x-1/2 rounded-full"
+        style={{ background: "var(--grad-soft)", border: "1px solid var(--accent-border)" }}
+      />
+      <div className="relative px-3 text-center">
+        <p className="text-2xl font-black" style={{ color: "var(--accent)" }}>{initials}</p>
+        <p className="mt-2 text-[10px] font-bold uppercase leading-tight" style={{ color: "var(--text-2)" }}>
+          {product.category}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function formatPrice(product: Product) {
+  if (!product.price) return product.priceTier || "View";
+  const amount = Number(product.price);
+  if (Number.isNaN(amount)) return product.price;
+  const symbol = product.currency === "USD" ? "$" : product.currency ? `${product.currency} ` : "";
+  return `${symbol}${amount.toFixed(amount % 1 === 0 ? 0 : 2)}`;
 }
