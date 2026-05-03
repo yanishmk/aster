@@ -83,7 +83,8 @@ def score_products(products: pd.DataFrame, predictions: list[dict]) -> pd.DataFr
 
 def resolve_product_url(product) -> str:
     product_url = str(getattr(product, "product_url", ""))
-    affiliate_url = str(getattr(product, "affiliate_url", ""))
+    raw_affiliate_url = getattr(product, "affiliate_url", "")
+    affiliate_url = "" if pd.isna(raw_affiliate_url) else str(raw_affiliate_url).strip()
     retailer = str(getattr(product, "retailer", "")).lower()
 
     if affiliate_url and not affiliate_url.startswith("REPLACE_WITH"):
