@@ -37,6 +37,21 @@ FIELDS = [
     "why",
 ]
 
+DIRECT_PRODUCT_URLS = {
+    # Keep direct links only when the product detail page is known.
+    # Products without a verified URL fall back to a retailer search page.
+    "amazon_cerave_hydrating_cleanser": "https://www.amazon.com/dp/B01MSSDEPK",
+    "amazon_cerave_foaming_cleanser": "https://www.amazon.com/dp/B01N1LL62W",
+    "amazon_lrp_toleriane_double_repair": "https://www.amazon.com/dp/B01N9SPQHQ",
+    "amazon_neutrogena_hydro_boost": "https://www.amazon.com/dp/B00NR1YQHM",
+    "amazon_elta_md_uv_clear": "https://www.amazon.com/dp/B002MSN3QQ",
+    "amazon_cerave_resurfacing_retinol": "https://www.amazon.com/dp/B09NM9TFF2",
+    "amazon_differin_gel": "https://www.amazon.com/dp/B07L1PHSY9",
+    "amazon_mighty_patch_original": "https://www.amazon.com/dp/B074PVTPBW",
+    "amazon_cosrx_snail_mucin": "https://www.amazon.com/dp/B00PBX3L7K",
+    "amazon_vanicream_daily": "https://www.amazon.com/dp/B08BW46XXK",
+}
+
 PRODUCTS = [
     ("amazon_cerave_hydrating_cleanser", "CeraVe Hydrating Facial Cleanser", "CeraVe", "cleanser", "gentle_cleanser", "Amazon", "15.99", "$", "barrier;redness", "ceramides;hyaluronic acid", "normal;dry;sensitive", "", "morning/evening", "daily", 82, "Gentle cleanser for maintaining the skin barrier."),
     ("amazon_cerave_foaming_cleanser", "CeraVe Foaming Facial Cleanser", "CeraVe", "cleanser", "foaming_cleanser", "Amazon", "16.99", "$", "acne;pores;blackheads;barrier", "ceramides;niacinamide", "normal;oily;combination", "very_dry", "morning/evening", "daily", 80, "Simple cleanser for oily or combination skin when pores or blemishes are present."),
@@ -90,7 +105,11 @@ def placeholder(category: str, brand: str) -> str:
     return f"https://placehold.co/640x760/fdf2f8/b83263?text={label}"
 
 
-def product_url(retailer: str, name: str) -> str:
+def product_url(product_id: str, retailer: str, name: str) -> str:
+    direct_url = DIRECT_PRODUCT_URLS.get(product_id)
+    if direct_url:
+        return direct_url
+
     if retailer == "Amazon":
         return amazon_search(name)
     return sephora_search(name)
@@ -145,7 +164,7 @@ def row_from_product(item: tuple) -> dict:
         "in_stock": "unknown",
         "country": "US",
         "image_url": placeholder(category, brand),
-        "product_url": product_url(retailer, name),
+        "product_url": product_url(product_id, retailer, name),
         "affiliate_url": "",
         "why": why,
     }
