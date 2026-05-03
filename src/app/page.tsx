@@ -201,8 +201,19 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: decorative product preview */}
-            <HeroVisual />
+            {/* Right: scan demo */}
+            <div
+              className="card-lift overflow-hidden rounded-2xl"
+              style={{ border: "1px solid var(--border)", boxShadow: "0 8px 40px rgba(240,39,123,0.1)" }}
+            >
+              <ThreePhotoUpload
+                canAnalyze={canAnalyze}
+                isAnalyzing={isAnalyzing}
+                onAnalyze={runAnalysis}
+                onPhotoChange={handlePhotoChange}
+                slots={slots}
+              />
+            </div>
           </div>
         </section>
 
@@ -333,6 +344,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ── Products ── */}
         {/* ── CTA banner ── */}
         <section className="relative overflow-hidden py-24" style={{ background: "var(--grad)" }}>
           <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -398,102 +410,6 @@ function FeatureCard({ icon, step, title, desc }: { icon: ReactNode; step: strin
       </div>
       <h3 className="text-lg font-bold">{title}</h3>
       <p className="mt-2 text-sm leading-6" style={{ color: "var(--text-2)" }}>{desc}</p>
-    </div>
-  );
-}
-
-function HeroVisual() {
-  const slots = [
-    { label: "Front",    done: true  },
-    { label: "Close-up", done: true  },
-    { label: "Side",     done: false },
-  ];
-  const conditions = ["Acne", "Pores", "Redness"];
-  const steps = ["Cleanser", "Niacinamide serum", "SPF moisturiser"];
-
-  return (
-    <div
-      className="card-lift overflow-hidden rounded-2xl"
-      style={{ border: "1px solid var(--border)", background: "var(--surface)", boxShadow: "0 8px 40px rgba(240,39,123,0.1)" }}
-    >
-      {/* Window chrome */}
-      <div
-        className="flex items-center justify-between px-4 py-3"
-        style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-alt)" }}
-      >
-        <div className="flex gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-        </div>
-        <span className="text-[11px] font-semibold" style={{ color: "var(--text-3)" }}>Aster — Skin Scan</span>
-        <div className="w-14" />
-      </div>
-
-      {/* 3 photo slots */}
-      <div className="grid grid-cols-3 gap-2 p-4">
-        {slots.map((slot) => (
-          <div
-            key={slot.label}
-            className="flex aspect-[3/4] flex-col items-center justify-center rounded-xl"
-            style={{
-              background: slot.done ? "var(--accent-light)" : "var(--bg-alt)",
-              border: `1.5px solid ${slot.done ? "var(--accent-border)" : "var(--border)"}`,
-            }}
-          >
-            {slot.done
-              ? <CheckCircle size={20} style={{ color: "var(--accent)" }} />
-              : <Camera size={20} style={{ color: "var(--text-3)" }} />}
-            <span
-              className="mt-1.5 text-[10px] font-bold"
-              style={{ color: slot.done ? "var(--accent)" : "var(--text-3)" }}
-            >
-              {slot.label}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* Results preview */}
-      <div className="px-4 pb-5" style={{ borderTop: "1px solid var(--border)" }}>
-        <p className="mt-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-3)" }}>
-          Detected concerns
-        </p>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {conditions.map((c) => (
-            <span
-              key={c}
-              className="rounded-full px-3 py-1 text-[11px] font-bold"
-              style={{ background: "var(--accent-light)", border: "1px solid var(--accent-border)", color: "var(--accent)" }}
-            >
-              {c}
-            </span>
-          ))}
-        </div>
-
-        <p className="mt-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--text-3)" }}>
-          Morning routine
-        </p>
-        <div className="mt-2 space-y-2">
-          {steps.map((step, i) => (
-            <div key={step} className="flex items-center gap-2">
-              <span
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-black text-white"
-                style={{ background: "var(--grad)" }}
-              >
-                {i + 1}
-              </span>
-              <span className="text-[12px] font-medium" style={{ color: "var(--text-2)" }}>{step}</span>
-            </div>
-          ))}
-        </div>
-
-        <div
-          className="btn-grad mt-4 flex h-9 items-center justify-center rounded-xl text-[12px] font-bold text-white"
-        >
-          View matched products →
-        </div>
-      </div>
     </div>
   );
 }
