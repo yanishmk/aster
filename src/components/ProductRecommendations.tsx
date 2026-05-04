@@ -1,4 +1,5 @@
 import { ArrowUpRight, ShoppingBag, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 import type { Product } from "@/types/aster";
 
@@ -27,7 +28,9 @@ export function ProductRecommendations({ products }: { products: Product[] }) {
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const hasRealImage = product.imageUrl && !product.imageUrl.includes("placehold.co");
+  const [imageFailed, setImageFailed] = useState(false);
+  const imageSrc = normalizeProductImage(product.imageUrl);
+  const hasRealImage = imageSrc && !imageSrc.includes("placehold.co") && !imageFailed;
   const price = formatPrice(product);
 
   return (
@@ -48,7 +51,12 @@ function ProductCard({ product }: { product: Product }) {
 
         {hasRealImage ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img alt={product.name} className="h-full w-full object-contain p-5" src={product.imageUrl} />
+          <img
+            alt={product.name}
+            className="h-full w-full object-contain p-5"
+            onError={() => setImageFailed(true)}
+            src={imageSrc}
+          />
         ) : (
           <ProductMockup product={product} />
         )}
@@ -144,4 +152,10 @@ function formatPrice(product: Product) {
   if (Number.isNaN(amount)) return product.price;
   const symbol = product.currency === "USD" ? "$" : product.currency ? `${product.currency} ` : "";
   return `${symbol}${amount.toFixed(amount % 1 === 0 ? 0 : 2)}`;
+}
+
+function normalizeProductImage(imageUrl: string) {
+  if (!imageUrl) return "";
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) return imageUrl;
+  return imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
 }
