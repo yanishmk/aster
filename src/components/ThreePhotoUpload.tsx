@@ -16,6 +16,8 @@ type ThreePhotoUploadProps = {
 type CameraQuality = {
   ready: boolean;
   message: string;
+  detail?: string;
+  progress?: number;
 };
 
 const ROLE_ORDER: ImageRole[] = ["front", "closeup", "side"];
@@ -39,7 +41,9 @@ export function ThreePhotoUpload({
   const [quality, setQuality] = useState<CameraQuality>({
     ready: false,
     message: "Open the camera to start the guided scan.",
+    progress: 0,
   });
+  const [holdProgress, setHoldProgress] = useState(0);
   const [cameraZoomApplied, setCameraZoomApplied] = useState(false);
 
   const firstMissingSlot = useMemo(() => slots.find((slot) => !slot.file) ?? null, [slots]);
@@ -158,11 +162,13 @@ export function ThreePhotoUpload({
       if (!currentQuality.ready) {
         readySinceRef.current = null;
         capturedRoleRef.current = null;
+        setHoldProgress(0);
         return;
       }
 
       readySinceRef.current ??= Date.now();
       const stableFor = Date.now() - readySinceRef.current;
+      setHoldProgress(Math.min(stableFor / AUTO_CAPTURE_MS, 1));
       if (stableFor < AUTO_CAPTURE_MS || capturedRoleRef.current === activeRole) return;
 
       capturedRoleRef.current = activeRole;
@@ -235,6 +241,7 @@ export function ThreePhotoUpload({
               }}
             />
             <GuideOverlay role={activeRole} />
+            <CaptureProgress progress={holdProgress} ready={quality.ready} />
             <div className="absolute left-3 right-3 top-3 flex items-start justify-between gap-3">
               <div className="rounded-xl bg-black/60 px-3 py-2 backdrop-blur-sm">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-white/60">
@@ -251,7 +258,8 @@ export function ThreePhotoUpload({
               </span>
             </div>
             <div className="absolute bottom-3 left-3 right-3 rounded-xl bg-black/60 px-4 py-2.5 text-center text-sm text-white backdrop-blur-sm">
-              {quality.message}
+              <p className="font-semibold">{quality.message}</p>
+              {quality.detail ? <p className="mt-1 text-xs text-white/65">{quality.detail}</p> : null}
             </div>
           </div>
           <canvas ref={canvasRef} className="hidden" />
@@ -315,6 +323,22 @@ function GuideOverlay({ role }: { role: ImageRole }) {
   return (
     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),rgba(0,0,0,0.28))]">
       {role === "closeup" ? <CloseupGuide /> : role === "side" ? <SideFaceGuide /> : <FrontFaceGuide />}
+    </div>
+  );
+}
+
+function CaptureProgress({ progress, ready }: { progress: number; ready: boolean }) {
+  const clamped = Math.min(Math.max(progress, 0), 1);
+
+  return (
+    <div className="pointer-events-none absolute right-4 top-1/2 h-28 w-1.5 -translate-y-1/2 overflow-hidden rounded-full bg-white/20">
+      <div
+        className="absolute bottom-0 left-0 w-full rounded-full transition-all duration-200"
+        style={{
+          height: `${clamped * 100}%`,
+          background: ready ? "linear-gradient(180deg, #f9a8d4 0%, #f0277b 100%)" : "rgba(255,255,255,0.35)",
+        }}
+      />
     </div>
   );
 }
@@ -439,21 +463,67 @@ function checkCameraQuality(
   const data = context.getImageData(0, 0, width, height).data;
   const metrics = getFrameMetrics(data, width, height);
 
-  if (metrics.brightness < 52) return { ready: false, message: "Lighting is too low. Move closer to soft light." };
-  if (metrics.brightness > 235) return { ready: false, message: "Lighting is too bright. Reduce direct light." };
-  if (metrics.contrast < 13) return { ready: false, message: "Image looks flat. Face a window or softer light." };
-  if (metrics.skinRatio < (role === "closeup" ? 0.02 : 0.012)) {
-    return { ready: false, message: "Place your face or skin inside the guide." };
+  if (metrics.brightness < 52) {
+    return {
+      ready: false,
+      message: "Lighting is too low.",
+      detail: "Move closer to a window or soft light.",
+      progress: 0,
+    };
   }
-  if (metrics.blurScore < 10) return { ready: false, message: "Image is blurry. Hold the camera steady." };
+  if (metrics.brightness > 235) {
+    return {
+      ready: false,
+      message: "Lighting is too bright.",
+      detail: "Turn slightly away from direct light.",
+      progress: 0,
+    };
+  }
+  if (metrics.contrast < 13) {
+    return {
+      ready: false,
+      message: "Lighting looks flat.",
+      detail: "Face a window or use softer light.",
+      progress: 0,
+    };
+  }
+  if (metrics.skinRatio < (role === "closeup" ? 0.055 : 0.012)) {
+    return {
+      ready: false,
+      message: role === "closeup" ? "Move closer to your skin." : "Place your face inside the guide.",
+      detail: role === "closeup" ? "Fill the pink frame with one cheek or forehead area." : "Keep your face centered.",
+      progress: 0,
+    };
+  }
+  if (role === "closeup" && metrics.skinRatio > 0.72) {
+    return {
+      ready: false,
+      message: "Move back slightly.",
+      detail: "Aster needs texture and a little surrounding skin.",
+      progress: 0,
+    };
+  }
+  if (metrics.blurScore < 10) {
+    return {
+      ready: false,
+      message: "Image is blurry.",
+      detail: "Hold the camera steady for one second.",
+      progress: 0,
+    };
+  }
 
   const roleMessage = {
     front: "Great. Keep your face centered, photo will capture automatically.",
     closeup: "Great. Hold the camera close to one cheek, photo will capture automatically.",
     side: "Great. Hold this side angle, photo will capture automatically.",
   };
+  const roleDetail = {
+    front: "Look straight ahead and keep still.",
+    closeup: "Keep the skin area inside the pink frame.",
+    side: "Turn slightly and keep your cheek visible.",
+  };
 
-  return { ready: true, message: roleMessage[role] };
+  return { ready: true, message: roleMessage[role], detail: roleDetail[role], progress: 1 };
 }
 
 function validateCapturedFrame(canvas: HTMLCanvasElement, role: ImageRole): CameraQuality {
@@ -474,8 +544,11 @@ function validateCapturedFrame(canvas: HTMLCanvasElement, role: ImageRole): Came
   if (metrics.contrast < 13) {
     return { ready: false, message: "Lighting is too flat. Please retake this photo." };
   }
-  if (metrics.skinRatio < (role === "closeup" ? 0.02 : 0.012)) {
+  if (metrics.skinRatio < (role === "closeup" ? 0.055 : 0.012)) {
     return { ready: false, message: "Face or skin is not visible. Please try again." };
+  }
+  if (role === "closeup" && metrics.skinRatio > 0.72) {
+    return { ready: false, message: "Image is too close. Please move back slightly." };
   }
   if (metrics.blurScore < 12) {
     return { ready: false, message: "Image is blurry. Please hold the camera steady." };
