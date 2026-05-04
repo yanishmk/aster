@@ -4,6 +4,7 @@ from urllib.parse import quote_plus
 
 
 ROOT = Path(__file__).resolve().parents[1]
+IMAGE_OUTPUT_DIR = ROOT / "public" / "product-images"
 OUTPUTS = [
     ROOT / "backend" / "data" / "products.csv",
     ROOT.parent / "product_recommender" / "products.csv",
@@ -50,6 +51,17 @@ DIRECT_PRODUCT_URLS = {
     "amazon_mighty_patch_original": "https://www.amazon.com/dp/B074PVTPBW",
     "amazon_cosrx_snail_mucin": "https://www.amazon.com/dp/B00PBX3L7K",
     "amazon_vanicream_daily": "https://www.amazon.com/dp/B08BW46XXK",
+}
+
+CATEGORY_COLORS = {
+    "balm": ("#fbe7ef", "#c43f72"),
+    "cleanser": ("#e7f4ff", "#2772a8"),
+    "exfoliant": ("#fff2cf", "#b46b00"),
+    "moisturizer": ("#eef6df", "#5d8a28"),
+    "retinoid": ("#efe8ff", "#7b3fc9"),
+    "serum": ("#ffe8f3", "#c02568"),
+    "sunscreen": ("#fff4df", "#c5761c"),
+    "treatment": ("#f5e9ff", "#9b3eb5"),
 }
 
 PRODUCTS = [
@@ -103,6 +115,64 @@ def sephora_search(product_name: str) -> str:
 def placeholder(category: str, brand: str) -> str:
     label = quote_plus(f"{brand} {category}")
     return f"https://placehold.co/640x760/fdf2f8/b83263?text={label}"
+
+
+def product_image_path(product_id: str) -> Path:
+    return IMAGE_OUTPUT_DIR / f"{product_id}.svg"
+
+
+def product_image_url(product_id: str) -> str:
+    return f"/product-images/{product_id}.svg"
+
+
+def escape_svg(value: str) -> str:
+    return (
+        value.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def write_product_image(product_id: str, name: str, brand: str, category: str) -> None:
+    bg, accent = CATEGORY_COLORS.get(category, ("#fff0f7", "#f0277b"))
+    brand_text = escape_svg(brand)
+    name_text = escape_svg(name[:42])
+    category_text = escape_svg(category.upper())
+    initials = "".join(word[0] for word in brand.split()[:2]).upper()
+
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="640" height="760" viewBox="0 0 640 760" role="img" aria-label="{brand_text} {name_text}">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="52%" stop-color="{bg}"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="pack" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="{bg}"/>
+    </linearGradient>
+    <filter id="shadow" color-interpolation-filters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#7c2d4a" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="640" height="760" rx="48" fill="url(#bg)"/>
+  <circle cx="520" cy="118" r="92" fill="{accent}" opacity="0.09"/>
+  <circle cx="118" cy="622" r="120" fill="{accent}" opacity="0.07"/>
+  <g filter="url(#shadow)">
+    <rect x="190" y="130" width="260" height="500" rx="34" fill="url(#pack)" stroke="{accent}" stroke-opacity="0.24" stroke-width="3"/>
+    <rect x="230" y="96" width="180" height="70" rx="26" fill="#ffffff" stroke="{accent}" stroke-opacity="0.22" stroke-width="3"/>
+    <circle cx="320" cy="250" r="76" fill="{accent}" opacity="0.13"/>
+    <text x="320" y="272" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" fill="{accent}">{escape_svg(initials)}</text>
+    <rect x="230" y="345" width="180" height="3" rx="2" fill="{accent}" opacity="0.28"/>
+    <text x="320" y="395" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800" fill="#15080e">{brand_text}</text>
+    <text x="320" y="434" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="600" fill="#6b4558">{name_text}</text>
+    <rect x="242" y="505" width="156" height="42" rx="21" fill="{accent}" opacity="0.12"/>
+    <text x="320" y="532" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800" fill="{accent}">{category_text}</text>
+  </g>
+</svg>
+"""
+    product_image_path(product_id).write_text(svg, encoding="utf-8")
 
 
 def product_url(product_id: str, retailer: str, name: str) -> str:
@@ -163,12 +233,17 @@ def row_from_product(item: tuple) -> dict:
         "priority": str(priority),
         "in_stock": "unknown",
         "country": "US",
-        "image_url": placeholder(category, brand),
+        "image_url": product_image_url(product_id),
         "product_url": product_url(product_id, retailer, name),
         "affiliate_url": "",
         "why": why,
     }
 
+
+IMAGE_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+for product in PRODUCTS:
+    write_product_image(product[0], product[1], product[2], product[3])
 
 rows = [row_from_product(product) for product in PRODUCTS]
 
