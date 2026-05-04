@@ -20,6 +20,7 @@ type CameraQuality = {
 
 const ROLE_ORDER: ImageRole[] = ["front", "closeup", "side"];
 const AUTO_CAPTURE_MS = 1400;
+const CLOSEUP_ZOOM = 1.55;
 
 export function ThreePhotoUpload({
   slots,
@@ -39,6 +40,7 @@ export function ThreePhotoUpload({
     ready: false,
     message: "Open the camera to start the guided scan.",
   });
+  const [cameraZoomApplied, setCameraZoomApplied] = useState(false);
 
   const firstMissingSlot = useMemo(() => slots.find((slot) => !slot.file) ?? null, [slots]);
   const activeRole = firstMissingSlot?.role ?? "side";
@@ -65,12 +67,13 @@ export function ThreePhotoUpload({
     const canvas = canvasRef.current;
     if (!video || !canvas || !video.videoWidth || !video.videoHeight) return;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    const zoom = role === "closeup" && !cameraZoomApplied ? CLOSEUP_ZOOM : 1;
+    canvas.width = Math.round(video.videoWidth / zoom);
+    canvas.height = Math.round(video.videoHeight / zoom);
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    drawVideoFrame(context, video, canvas.width, canvas.height, zoom);
     const finalQuality = validateCapturedFrame(canvas, role);
     if (!finalQuality.ready) {
       readySinceRef.current = null;
@@ -84,7 +87,7 @@ export function ThreePhotoUpload({
       const file = new File([blob], `aster-${role}-${Date.now()}.jpg`, { type: "image/jpeg" });
       onPhotoChange(role, file);
     }, "image/jpeg", 0.92);
-  }, [onPhotoChange]);
+  }, [cameraZoomApplied, onPhotoChange]);
 
   useEffect(() => {
     if (!cameraOpen) {
@@ -116,6 +119,8 @@ export function ThreePhotoUpload({
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
+        const zoomApplied = await applyCameraZoom(stream, activeRole);
+        setCameraZoomApplied(zoomApplied);
       } catch {
         setCameraOpen(false);
         setCameraError("Camera access is blocked. Please allow camera access or upload photos manually.");
@@ -128,7 +133,20 @@ export function ThreePhotoUpload({
       cancelled = true;
       stopCamera();
     };
-  }, [cameraOpen, stopCamera]);
+  }, [activeRole, cameraOpen, stopCamera]);
+
+  useEffect(() => {
+    if (!cameraOpen || !streamRef.current) return;
+
+    let cancelled = false;
+    applyCameraZoom(streamRef.current, activeRole).then((zoomApplied) => {
+      if (!cancelled) setCameraZoomApplied(zoomApplied);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeRole, cameraOpen]);
 
   useEffect(() => {
     if (!cameraOpen) return;
@@ -206,9 +224,15 @@ export function ThreePhotoUpload({
           <div className="relative">
             <video
               ref={videoRef}
-              className="aspect-[4/5] w-full scale-x-[-1] object-cover md:aspect-video"
+              className="aspect-[4/5] w-full object-cover transition-transform duration-500 md:aspect-video"
               muted
               playsInline
+              style={{
+                transform:
+                  activeRole === "closeup" && !cameraZoomApplied
+                    ? `scaleX(-1) scale(${CLOSEUP_ZOOM})`
+                    : "scaleX(-1)",
+              }}
             />
             <GuideOverlay role={activeRole} />
             <div className="absolute left-3 right-3 top-3 flex items-start justify-between gap-3">
@@ -405,12 +429,13 @@ function checkCameraQuality(
 
   const width = 120;
   const height = Math.max(90, Math.round((video.videoHeight / video.videoWidth) * width));
+  const zoom = role === "closeup" ? CLOSEUP_ZOOM : 1;
   canvas.width = width;
   canvas.height = height;
   const context = canvas.getContext("2d", { willReadFrequently: true });
   if (!context) return { ready: false, message: "Camera is starting..." };
 
-  context.drawImage(video, 0, 0, width, height);
+  drawVideoFrame(context, video, width, height, zoom);
   const data = context.getImageData(0, 0, width, height).data;
   const metrics = getFrameMetrics(data, width, height);
 
@@ -424,7 +449,7 @@ function checkCameraQuality(
 
   const roleMessage = {
     front: "Great. Keep your face centered, photo will capture automatically.",
-    closeup: "Great. Hold the close-up steady, photo will capture automatically.",
+    closeup: "Great. Hold the camera close to one cheek, photo will capture automatically.",
     side: "Great. Hold this side angle, photo will capture automatically.",
   };
 
@@ -457,6 +482,56 @@ function validateCapturedFrame(canvas: HTMLCanvasElement, role: ImageRole): Came
   }
 
   return { ready: true, message: "Photo captured." };
+}
+
+function drawVideoFrame(
+  context: CanvasRenderingContext2D,
+  video: HTMLVideoElement,
+  targetWidth: number,
+  targetHeight: number,
+  zoom = 1,
+) {
+  const sourceWidth = video.videoWidth / zoom;
+  const sourceHeight = video.videoHeight / zoom;
+  const sourceX = (video.videoWidth - sourceWidth) / 2;
+  const sourceY = (video.videoHeight - sourceHeight) / 2;
+
+  context.drawImage(
+    video,
+    sourceX,
+    sourceY,
+    sourceWidth,
+    sourceHeight,
+    0,
+    0,
+    targetWidth,
+    targetHeight,
+  );
+}
+
+async function applyCameraZoom(stream: MediaStream, role: ImageRole) {
+  const videoTrack = stream.getVideoTracks()[0];
+  if (!videoTrack) return false;
+
+  const capabilities = videoTrack.getCapabilities() as MediaTrackCapabilities & {
+    zoom?: { min?: number; max?: number; step?: number };
+  };
+
+  if (!capabilities.zoom) return false;
+
+  const minZoom = capabilities.zoom.min ?? 1;
+  const maxZoom = capabilities.zoom.max ?? 1;
+  const requestedZoom = role === "closeup" ? CLOSEUP_ZOOM : minZoom;
+  const zoom = Math.min(Math.max(requestedZoom, minZoom), maxZoom);
+
+  try {
+    await videoTrack.applyConstraints({
+      advanced: [{ zoom } as MediaTrackConstraintSet],
+    });
+    return role === "closeup" && zoom > minZoom;
+  } catch {
+    return false;
+  }
 }
 
 function getFrameMetrics(data: Uint8ClampedArray, width: number, height: number) {
