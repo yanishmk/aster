@@ -141,14 +141,14 @@ input {
   aspect-ratio: 1;
   margin-inline: auto;
   border-radius: 9999px;
-  filter: drop-shadow(0 34px 54px rgba(126, 42, 78, 0.24));
+  filter: none;
   animation: aster-heartbeat 4.2s ease-in-out infinite;
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
 .aster-scan-logo:hover {
   transform: translateY(-4px) scale(1.015);
-  filter: drop-shadow(0 42px 70px rgba(126, 42, 78, 0.3));
+  filter: none;
 }
 
 .aster-scan-logo.is-analyzing {
@@ -227,8 +227,8 @@ input {
 }
 
 @keyframes aster-processing-breathe {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 32px 60px rgba(126, 42, 78, 0.18)); }
-  50% { transform: scale(1.035); filter: drop-shadow(0 42px 78px rgba(219, 42, 116, 0.28)); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
 }
 
 @keyframes aster-soft-pulse {
