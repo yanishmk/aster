@@ -161,7 +161,7 @@ export default function Home() {
             </div>
 
             <div className="reveal-up delay-1">
-              <HeroAsterScanButton capturedCount={capturedCount} isAnalyzing={isAnalyzing} />
+              <HeroAsterScanButton isAnalyzing={isAnalyzing} />
             </div>
           </div>
         </section>
@@ -265,10 +265,8 @@ export default function Home() {
 }
 
 function HeroAsterScanButton({
-  capturedCount,
   isAnalyzing,
 }: {
-  capturedCount: number;
   isAnalyzing: boolean;
 }) {
   return (
@@ -303,7 +301,7 @@ function HeroAsterScanButton({
       <span className="aster-camera-center">
         <Camera size={34} />
       </span>
-      <span className="aster-scan-count">{isAnalyzing ? "Analyzing" : `${capturedCount}/3`}</span>
+      {isAnalyzing ? <span className="aster-scan-count">Analyzing</span> : null}
     </a>
   );
 }
