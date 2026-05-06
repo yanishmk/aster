@@ -14,7 +14,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
   return (
     <div
-      className="card-lift overflow-hidden rounded-3xl"
+      className="card-lift overflow-hidden rounded-2xl"
       style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
       {/* Header */}
@@ -29,8 +29,8 @@ export function ResultReport({ analysis }: ResultReportProps) {
           <Sparkles size={17} />
         </span>
         <div>
-          <p className="font-black tracking-tight">Skin analysis results</p>
-          <p className="text-xs" style={{ color: "var(--text-3)" }}>Based on your 3-photo scan</p>
+          <p className="font-bold">Skin analysis results</p>
+          <p className="text-sm" style={{ color: "var(--text-2)" }}>Based on your 3-photo scan</p>
         </div>
       </div>
 

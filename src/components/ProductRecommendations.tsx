@@ -7,7 +7,7 @@ export function ProductRecommendations({ products }: { products: Product[] }) {
   if (!products.length) {
     return (
       <div
-        className="rounded-3xl p-14 text-center"
+        className="rounded-2xl p-14 text-center"
         style={{ border: "2px dashed var(--border)" }}
       >
         <p className="font-bold" style={{ color: "var(--text-2)" }}>No recommendations yet</p>
@@ -35,12 +35,12 @@ function ProductCard({ product }: { product: Product }) {
 
   return (
     <article
-      className="card-lift flex min-h-full flex-col overflow-hidden rounded-3xl"
+      className="card-lift flex min-h-full flex-col overflow-hidden rounded-2xl"
       style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
       <div
         className="relative flex h-52 items-center justify-center overflow-hidden"
-        style={{ background: "linear-gradient(145deg, #fffbf9 0%, #fff0f5 60%, #fce8f2 100%)" }}
+        style={{ background: "linear-gradient(145deg, #fff7fb 0%, #f8edf4 100%)" }}
       >
         <span
           className="absolute left-4 top-4 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase"
