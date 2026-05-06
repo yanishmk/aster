@@ -184,7 +184,7 @@ export function ThreePhotoUpload({
   }, [activeRole]);
 
   return (
-    <div className="bg-white p-5">
+    <div className="bg-white p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold" style={{ color: "var(--text)" }}>Skin scan</h2>
         <span
@@ -197,7 +197,7 @@ export function ThreePhotoUpload({
 
       {!cameraOpen ? (
         <button
-          className="flex min-h-[480px] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 text-center transition-all"
+          className="flex min-h-[260px] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 text-center transition-all sm:min-h-[320px]"
           style={{ borderColor: "var(--border)", background: "var(--bg-alt)" }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = "var(--accent)";
@@ -218,9 +218,6 @@ export function ThreePhotoUpload({
           </span>
           <span className="mt-4 text-lg font-bold" style={{ color: "var(--text)" }}>
             Ouvrir votre camera
-          </span>
-          <span className="mt-1.5 text-sm" style={{ color: "var(--text-2)" }}>
-            Guided 3-photo scan with auto-capture
           </span>
         </button>
       ) : null}

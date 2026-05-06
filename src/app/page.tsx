@@ -136,7 +136,7 @@ export default function Home() {
 
       <main>
         <section className="relative overflow-hidden">
-          <div className="mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl items-center gap-12 px-4 py-10 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:py-16">
+          <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:py-18">
             <div className="reveal-up">
               <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: "var(--accent)" }}>
                 AI skincare consultation
@@ -145,9 +145,6 @@ export default function Home() {
                 Find the right products for
                 <span className="block grad-text">your skin today.</span>
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-7 sm:text-lg" style={{ color: "var(--text-2)" }}>
-                Aster uses a guided 3-photo scan to read visible skin concerns, explain the results simply, and build a product routine you can shop.
-              </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <a className="btn-grad rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-xl" href="#scan">
                   Start the scan
@@ -156,7 +153,7 @@ export default function Home() {
                   See how it works
                 </a>
               </div>
-              <div className="mt-9 grid max-w-xl gap-3 sm:grid-cols-3">
+              <div className="mt-7 grid max-w-xl gap-3 sm:grid-cols-3">
                 <HeroPoint icon={<Camera size={17} />} label="3 guided photos" />
                 <HeroPoint icon={<Sparkles size={17} />} label="Simple results" />
                 <HeroPoint icon={<ShoppingBag size={17} />} label="Products to buy" />
@@ -167,9 +164,6 @@ export default function Home() {
               <div className="semrush-style-visual">
                 <div className="visual-toolbar">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: "var(--accent)" }}>
-                      Live consultation
-                    </p>
                     <h2 className="text-xl font-black">Scan workspace</h2>
                   </div>
                   <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
@@ -196,7 +190,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how-it-works" className="px-4 pb-12 sm:px-6">
+        <section id="how-it-works" className="px-4 pb-8 sm:px-6">
           <div className="mx-auto max-w-7xl">
             <div className="grid overflow-hidden rounded-[2rem] border bg-white/76 shadow-sm md:grid-cols-4" style={{ borderColor: "var(--border)" }}>
               <BenefitItem icon={<Camera size={20} />} title="Guided capture" text="Front, close-up, and side angle." />
@@ -212,8 +206,7 @@ export default function Home() {
           icon={<Sparkles size={18} />}
           id="results"
           refProp={resultsRef}
-          title="Understand what your skin is showing"
-          text="Aster keeps the result human: detected, possible, or clear. No overwhelming tables. No medical wording. Just what matters for your routine."
+          title="Your results"
           visual={<ResultReport analysis={analysis} />}
         />
 
@@ -222,8 +215,7 @@ export default function Home() {
           flipped
           icon={<ShoppingBag size={18} />}
           id="products"
-          title="Shop a focused selection instead of guessing"
-          text="The product shelf surfaces cleansers, treatments, SPF, moisturizers, and serums that match your visible concerns and routine needs."
+          title="Products to buy"
           visual={<ProductRecommendations products={analysis?.routine.products ?? []} />}
         />
 
@@ -231,8 +223,7 @@ export default function Home() {
           eyebrow="Routine builder"
           icon={<ClipboardList size={18} />}
           id="routine"
-          title="Turn recommendations into a simple ritual"
-          text="Aster organizes your matches into a morning and evening routine so the recommendation feels practical, not random."
+          title="Your routine"
           visual={(
             <RoutinePreview
               evening={analysis?.routine.evening ?? []}
@@ -247,9 +238,6 @@ export default function Home() {
             <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
               Start with your skin. Leave with a routine.
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-white/76 sm:text-base">
-              Capture three photos, review the result, then choose the products that fit your skin today.
-            </p>
             <a className="mt-7 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-black shadow-xl transition-transform hover:-translate-y-1" href="#scan" style={{ color: "var(--accent)" }}>
               Begin scan
             </a>
@@ -299,7 +287,6 @@ function FeatureSection({
   icon,
   id,
   refProp,
-  text,
   title,
   visual,
 }: {
@@ -308,7 +295,6 @@ function FeatureSection({
   icon: ReactNode;
   id: string;
   refProp?: React.RefObject<HTMLElement | null>;
-  text: string;
   title: string;
   visual: ReactNode;
 }) {
@@ -321,9 +307,6 @@ function FeatureSection({
             {eyebrow}
           </div>
           <h2 className="max-w-xl text-3xl font-black tracking-tight sm:text-5xl">{title}</h2>
-          <p className="mt-5 max-w-xl text-base leading-7" style={{ color: "var(--text-2)" }}>
-            {text}
-          </p>
           <ul className="mt-7 space-y-3 text-sm font-semibold" style={{ color: "var(--text)" }}>
             <FeatureCheck>Simple language for skincare decisions</FeatureCheck>
             <FeatureCheck>Built around products and routine</FeatureCheck>
