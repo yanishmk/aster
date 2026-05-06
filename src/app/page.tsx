@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, ClipboardList, LayoutDashboard, ShoppingBag, Sparkles } from "lucide-react";
+import { Camera, CheckCircle2, ClipboardList, ShoppingBag, Sparkles } from "lucide-react";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import { AsterLogo } from "@/components/AsterLogo";
@@ -118,65 +118,64 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "var(--bg-alt)", color: "var(--text)" }}>
-      <div className="flex min-h-screen">
-        <aside className="hidden w-64 shrink-0 border-r bg-white lg:block" style={{ borderColor: "var(--border)" }}>
-          <div className="flex h-16 items-center px-5" style={{ borderBottom: "1px solid var(--border)" }}>
-            <AsterLogo />
-          </div>
-          <nav className="space-y-1 px-3 py-4">
-            <SidebarLink active href="#overview" icon={<LayoutDashboard size={17} />} label="Overview" />
-            <SidebarLink href="#scan" icon={<Camera size={17} />} label="Skin scan" />
-            <SidebarLink href="#results" icon={<Sparkles size={17} />} label="Results" />
-            <SidebarLink href="#products" icon={<ShoppingBag size={17} />} label="Products" />
-            <SidebarLink href="#routine" icon={<ClipboardList size={17} />} label="Routine" />
+    <div className="min-h-screen beauty-shell" style={{ color: "var(--text)" }}>
+      <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-2xl" style={{ borderColor: "rgba(240,213,230,0.75)" }}>
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+          <a href="#"><AsterLogo /></a>
+          <nav className="hidden items-center gap-8 text-sm font-semibold md:flex" style={{ color: "var(--text-2)" }}>
+            <a className="transition-colors hover:text-[#15080e]" href="#scan">Scan</a>
+            <a className="transition-colors hover:text-[#15080e]" href="#results">Results</a>
+            <a className="transition-colors hover:text-[#15080e]" href="#products">Products</a>
+            <a className="transition-colors hover:text-[#15080e]" href="#routine">Routine</a>
           </nav>
-          <div className="mx-4 mt-4 rounded-2xl p-4" style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}>
-            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--accent)" }}>Session</p>
-            <p className="mt-2 text-sm font-semibold">3-photo guided scan</p>
-            <p className="mt-1 text-xs leading-5" style={{ color: "var(--text-2)" }}>
-              Capture photos, review results, then shop matched products.
-            </p>
-          </div>
-        </aside>
+          <a className="btn-grad rounded-full px-5 py-2.5 text-sm font-bold text-white" href="#scan">
+            Start scan
+          </a>
+        </div>
+      </header>
 
-        <div className="min-w-0 flex-1">
-          <header className="sticky top-0 z-40 border-b bg-white/90 backdrop-blur-xl" style={{ borderColor: "var(--border)" }}>
-            <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center gap-3 lg:hidden">
-                <AsterLogo compact />
-                <span className="text-sm font-black">Aster</span>
-              </div>
-              <div className="hidden lg:block">
-                <p className="text-sm font-bold">Skin analysis workspace</p>
-                <p className="text-xs" style={{ color: "var(--text-2)" }}>Scan, results, products, and routine in one flow.</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <StatusPill label="Photos" value={`${capturedCount}/3`} />
-                <StatusPill label="Analysis" value={analysis ? "Ready" : "Waiting"} />
-                <a className="btn-grad rounded-xl px-4 py-2.5 text-sm font-bold text-white" href="#scan">
-                  New scan
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="mx-auto grid min-h-[calc(100vh-64px)] max-w-7xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:py-16">
+            <div className="reveal-up">
+              <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: "var(--accent)" }}>
+                Aster AI beauty consultation
+              </p>
+              <h1 className="mt-5 max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
+                Skin insight,
+                <span className="block grad-text">product ritual.</span>
+              </h1>
+              <p className="mt-6 max-w-xl text-base leading-7 sm:text-lg" style={{ color: "var(--text-2)" }}>
+                A calm 3-photo scan that turns visible skin concerns into simple results, curated products, and a routine you can actually follow.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <a className="btn-grad rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-xl" href="#scan">
+                  Begin consultation
+                </a>
+                <a className="rounded-full border px-7 py-3.5 text-sm font-bold transition-colors hover:bg-white" href="#products" style={{ borderColor: "var(--border)", color: "var(--text)" }}>
+                  View product shelf
                 </a>
               </div>
+              <div className="mt-8 grid max-w-lg grid-cols-3 gap-3">
+                <MiniStat label="Guided photos" value={`${capturedCount}/3`} />
+                <MiniStat label="Conditions" value="6" />
+                <MiniStat label="Routine" value={analysis ? "Ready" : "AM/PM"} />
+              </div>
             </div>
-          </header>
 
-          <main id="overview" className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <section className="mb-6 grid gap-4 md:grid-cols-4">
-              <MetricCard active={capturedCount < 3} label="Photo capture" value={`${capturedCount}/3`} />
-              <MetricCard active={capturedCount === 3 && !analysis} label="Results" value={analysis ? "Ready" : "Pending"} />
-              <MetricCard label="Products" value={analysis ? `${analysis.routine.products.length}` : "Locked"} />
-              <MetricCard label="Routine" value={analysis ? "Built" : "Locked"} />
-            </section>
-
-            <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(380px,0.85fr)]">
-              <Panel
-                action={<span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>Guided</span>}
-                eyebrow="Step 1"
-                icon={<Camera size={18} />}
-                id="scan"
-                title="Skin scan"
-              >
+            <div className="reveal-up delay-1">
+              <div className="beauty-frame">
+                <div className="beauty-frame-header">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: "var(--accent)" }}>
+                      Live scan
+                    </p>
+                    <h2 className="text-xl font-black">3-photo skin capture</h2>
+                  </div>
+                  <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
+                    {capturedCount}/3
+                  </span>
+                </div>
                 <ThreePhotoUpload
                   canAnalyze={canAnalyze}
                   isAnalyzing={isAnalyzing}
@@ -186,143 +185,133 @@ export default function Home() {
                 />
                 {errorMessage ? (
                   <p
-                    className="mx-5 mb-5 rounded-xl px-4 py-3 text-sm font-medium"
+                    className="mx-5 mb-5 rounded-2xl px-4 py-3 text-sm font-medium"
                     style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
                   >
                     {errorMessage}
                   </p>
                 ) : null}
-              </Panel>
+              </div>
+            </div>
+          </div>
+        </section>
 
-              <Panel eyebrow="Step 2" icon={<Sparkles size={18} />} id="results" refProp={resultsRef} title="Results">
-                <ResultReport analysis={analysis} />
-              </Panel>
-            </section>
+        <BeautySection
+          eyebrow="Step 01"
+          icon={<Camera size={18} />}
+          id="scan"
+          intro="Aster guides each angle with soft framing, lighting checks, and auto-capture."
+          title="Capture your skin with care"
+        >
+          <div className="grid gap-4 md:grid-cols-3">
+            <ProcessCard text="Front portrait" tone="Balanced light, centered face." />
+            <ProcessCard text="Close-up texture" tone="Zoomed skin area for detail." />
+            <ProcessCard text="Side angle" tone="A second view to reduce guesswork." />
+          </div>
+        </BeautySection>
 
-            <section className="mt-6">
-              <Panel
-                description="Matched to the detected concerns and arranged for quick purchase."
-                eyebrow="Step 3"
-                icon={<ShoppingBag size={18} />}
-                id="products"
-                title="Products to buy"
-              >
-                <ProductRecommendations products={analysis?.routine.products ?? []} />
-              </Panel>
-            </section>
+        <BeautySection
+          eyebrow="Step 02"
+          icon={<Sparkles size={18} />}
+          id="results"
+          intro="No technical scores everywhere. Just a clear reading of what Aster found."
+          refProp={resultsRef}
+          title="Your results, softly explained"
+        >
+          <ResultReport analysis={analysis} />
+        </BeautySection>
 
-            <section className="mt-6">
-              <Panel
-                description="A practical AM/PM plan built from the products above."
-                eyebrow="Step 4"
-                icon={<ClipboardList size={18} />}
-                id="routine"
-                title="Routine"
-              >
-                <RoutinePreview
-                  evening={analysis?.routine.evening ?? []}
-                  morning={analysis?.routine.morning ?? []}
-                />
-              </Panel>
-            </section>
-          </main>
+        <BeautySection
+          eyebrow="Step 03"
+          icon={<ShoppingBag size={18} />}
+          id="products"
+          intro="A curated shelf of products matched to your scan, with price and direct purchase links."
+          title="A product shelf built for your skin"
+        >
+          <ProductRecommendations products={analysis?.routine.products ?? []} />
+        </BeautySection>
+
+        <BeautySection
+          eyebrow="Step 04"
+          icon={<ClipboardList size={18} />}
+          id="routine"
+          intro="A routine should feel like a ritual, not a technical checklist."
+          title="Your morning and evening ritual"
+        >
+          <RoutinePreview
+            evening={analysis?.routine.evening ?? []}
+            morning={analysis?.routine.morning ?? []}
+          />
+        </BeautySection>
+      </main>
+
+      <footer className="px-4 py-10 sm:px-6">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-between" style={{ borderColor: "var(--border)" }}>
+          <AsterLogo compact />
+          <p className="max-w-xl text-xs leading-5" style={{ color: "var(--text-3)" }}>
+            {analysis?.disclaimer ??
+              "Aster provides cosmetic skincare suggestions based on image analysis. Not a substitute for professional medical advice."}
+          </p>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }
 
-function SidebarLink({
-  active,
-  href,
-  icon,
-  label,
-}: {
-  active?: boolean;
-  href: string;
-  icon: ReactNode;
-  label: string;
-}) {
-  return (
-    <a
-      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors"
-      href={href}
-      style={{
-        background: active ? "var(--accent-light)" : "transparent",
-        color: active ? "var(--accent)" : "var(--text-2)",
-      }}
-    >
-      {icon}
-      {label}
-    </a>
-  );
-}
-
-function StatusPill({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="hidden rounded-xl px-3 py-2 sm:block" style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}>
-      <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "var(--text-3)" }}>{label}</p>
-      <p className="text-xs font-black">{value}</p>
-    </div>
-  );
-}
-
-function MetricCard({ active, label, value }: { active?: boolean; label: string; value: string }) {
-  return (
-    <div
-      className="rounded-2xl bg-white p-4 shadow-sm"
-      style={{
-        border: `1px solid ${active ? "var(--accent-border)" : "var(--border)"}`,
-        boxShadow: active ? "0 12px 32px rgba(240,39,123,0.08)" : undefined,
-      }}
-    >
-      <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--text-3)" }}>{label}</p>
-      <p className="mt-2 text-2xl font-black" style={{ color: active ? "var(--accent)" : "var(--text)" }}>{value}</p>
-    </div>
-  );
-}
-
-function Panel({
-  action,
+function BeautySection({
   children,
-  description,
   eyebrow,
   icon,
   id,
+  intro,
   refProp,
   title,
 }: {
-  action?: ReactNode;
   children: ReactNode;
-  description?: string;
   eyebrow: string;
   icon: ReactNode;
   id: string;
+  intro: string;
   refProp?: React.RefObject<HTMLElement | null>;
   title: string;
 }) {
   return (
-    <section
-      className="scroll-mt-24 overflow-hidden rounded-2xl bg-white shadow-sm"
-      id={id}
-      ref={refProp}
-      style={{ border: "1px solid var(--border)" }}
-    >
-      <div className="flex items-start justify-between gap-4 px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl text-white" style={{ background: "var(--grad)" }}>
-            {icon}
-          </span>
+    <section className="reveal-up scroll-mt-24 px-4 py-14 sm:px-6 lg:py-20" id={id} ref={refProp}>
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--accent)" }}>{eyebrow}</p>
-            <h2 className="text-xl font-black tracking-tight">{title}</h2>
-            {description ? <p className="mt-1 text-sm leading-5" style={{ color: "var(--text-2)" }}>{description}</p> : null}
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.22em]" style={{ borderColor: "var(--border)", color: "var(--accent)" }}>
+              {icon}
+              {eyebrow}
+            </div>
+            <h2 className="max-w-2xl text-3xl font-black tracking-tight sm:text-4xl">{title}</h2>
           </div>
+          <p className="max-w-xl text-sm leading-6 sm:text-base" style={{ color: "var(--text-2)" }}>
+            {intro}
+          </p>
         </div>
-        {action}
+        {children}
       </div>
-      <div className="p-0">{children}</div>
     </section>
+  );
+}
+
+function MiniStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-3xl border bg-white/70 p-4 shadow-sm" style={{ borderColor: "var(--border)" }}>
+      <p className="text-2xl font-black">{value}</p>
+      <p className="mt-1 text-xs font-semibold" style={{ color: "var(--text-2)" }}>{label}</p>
+    </div>
+  );
+}
+
+function ProcessCard({ text, tone }: { text: string; tone: string }) {
+  return (
+    <div className="rounded-[2rem] border bg-white/75 p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1" style={{ borderColor: "var(--border)" }}>
+      <CheckCircle2 size={22} style={{ color: "var(--accent)" }} />
+      <h3 className="mt-5 text-xl font-black">{text}</h3>
+      <p className="mt-2 text-sm leading-6" style={{ color: "var(--text-2)" }}>{tone}</p>
+    </div>
   );
 }
 

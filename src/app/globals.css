@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #ffffff;
-  --bg-alt: #fdf5f9;
+  --bg: #fffafb;
+  --bg-alt: #fff3f8;
   --surface: #ffffff;
-  --border: #f0d5e6;
+  --border: #f2d7e4;
   --text: #15080e;
   --text-2: #6b4558;
   --text-3: #b088a0;
-  --accent: #f0277b;
-  --accent-hover: #c8185f;
+  --accent: #db2a74;
+  --accent-hover: #b91b5c;
   --accent-light: #fff0f7;
-  --accent-border: #ffc0de;
-  --grad: linear-gradient(135deg, #f0277b 0%, #9b1fae 100%);
-  --grad-soft: linear-gradient(135deg, rgba(240,39,123,0.12) 0%, rgba(155,31,174,0.08) 100%);
+  --accent-border: #f8bdd5;
+  --grad: linear-gradient(135deg, #e22c78 0%, #9b1f5f 100%);
+  --grad-soft: linear-gradient(135deg, rgba(226,44,120,0.12) 0%, rgba(155,31,95,0.08) 100%);
 }
 
 @theme inline {
@@ -23,7 +23,10 @@
 }
 
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 215, 232, 0.62) 0, transparent 28rem),
+    radial-gradient(circle at 80% 0%, rgba(255, 239, 215, 0.62) 0, transparent 24rem),
+    var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -74,4 +77,60 @@ input {
   opacity: 0.88;
   transform: translateY(-1px);
   box-shadow: 0 8px 28px rgba(240, 39, 123, 0.38);
+}
+
+.beauty-shell {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(255,250,252,0.88) 38%, rgba(255,243,248,0.7) 100%),
+    radial-gradient(circle at 12% 18%, rgba(248,189,213,0.46), transparent 24rem),
+    radial-gradient(circle at 88% 8%, rgba(255,226,199,0.54), transparent 22rem);
+}
+
+.beauty-frame {
+  overflow: hidden;
+  border: 1px solid rgba(242, 215, 228, 0.92);
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 24px 80px rgba(126, 42, 78, 0.13);
+  backdrop-filter: blur(20px);
+}
+
+.beauty-frame-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-bottom: 1px solid rgba(242, 215, 228, 0.85);
+  background: rgba(255, 255, 255, 0.58);
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-up {
+  animation: reveal-up 0.75s ease both;
+}
+
+.delay-1 {
+  animation-delay: 0.12s;
+}
+
+@supports (animation-timeline: view()) {
+  .reveal-up {
+    animation-timeline: view();
+    animation-range: entry 0% cover 26%;
+  }
+
+  .delay-1 {
+    animation-delay: 0s;
+  }
 }
