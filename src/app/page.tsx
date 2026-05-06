@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, CheckCircle2, ClipboardList, ShoppingBag, Sparkles } from "lucide-react";
+import { Camera, CheckCircle2, ClipboardList, ShoppingBag, Sparkles, Star } from "lucide-react";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import { AsterLogo } from "@/components/AsterLogo";
@@ -101,72 +101,116 @@ export default function Home() {
       current.map((slot) => {
         const validation = validations.find((item) => item.role === slot.role);
         if (!validation) return slot;
-
-        if (validation.ok) {
-          return { ...slot, messages: [] };
-        }
-
+        if (validation.ok) return { ...slot, messages: [] };
         if (slot.previewUrl) URL.revokeObjectURL(slot.previewUrl);
-        return {
-          ...slot,
-          file: null,
-          previewUrl: null,
-          messages: validation.messages,
-        };
+        return { ...slot, file: null, previewUrl: null, messages: validation.messages };
       }),
     );
   }
 
   return (
     <div className="min-h-screen beauty-shell" style={{ color: "var(--text)" }}>
-      <header className="sticky top-0 z-50 border-b bg-white/82 backdrop-blur-2xl" style={{ borderColor: "rgba(240,213,230,0.75)" }}>
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+
+      {/* ── Header ── */}
+      <header
+        className="sticky top-0 z-50 border-b"
+        style={{
+          background: "rgba(255,252,249,0.88)",
+          borderColor: "var(--border)",
+          backdropFilter: "blur(24px)",
+        }}
+      >
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
           <a href="#"><AsterLogo /></a>
           <nav className="hidden items-center gap-8 text-sm font-semibold md:flex" style={{ color: "var(--text-2)" }}>
-            <a className="transition-colors hover:text-[#15080e]" href="#scan">Scan</a>
-            <a className="transition-colors hover:text-[#15080e]" href="#results">Results</a>
-            <a className="transition-colors hover:text-[#15080e]" href="#products">Products</a>
-            <a className="transition-colors hover:text-[#15080e]" href="#routine">Routine</a>
+            <a className="transition-colors hover:text-[var(--accent)]" href="#scan">Scan</a>
+            <a className="transition-colors hover:text-[var(--accent)]" href="#results">Results</a>
+            <a className="transition-colors hover:text-[var(--accent)]" href="#products">Products</a>
+            <a className="transition-colors hover:text-[var(--accent)]" href="#routine">Routine</a>
           </nav>
-          <a className="btn-grad rounded-full px-5 py-2.5 text-sm font-bold text-white" href="#scan">
-            Start scan
+          <a
+            className="btn-grad rounded-full px-5 py-2.5 text-sm font-bold text-white shadow-sm"
+            href="#scan"
+          >
+            Begin scan
           </a>
         </div>
       </header>
 
       <main>
+        {/* ── Hero ── */}
         <section className="relative overflow-hidden">
-          <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:py-18">
+          {/* Decorative blobs */}
+          <div
+            className="blob-a pointer-events-none absolute -left-24 -top-24 h-[480px] w-[480px] rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(212,84,126,0.22) 0%, rgba(212,84,126,0) 70%)",
+              filter: "blur(24px)",
+            }}
+          />
+          <div
+            className="blob-b pointer-events-none absolute -right-16 top-10 h-[400px] w-[400px] rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(255,210,180,0.28) 0%, rgba(255,210,180,0) 70%)",
+              filter: "blur(24px)",
+            }}
+          />
+
+          <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:py-20">
+            {/* Left: copy */}
             <div className="reveal-up">
-              <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: "var(--accent)" }}>
+              <span className="sect-eyebrow">
+                <Sparkles size={13} />
                 AI skincare consultation
-              </p>
-              <h1 className="mt-5 max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
-                Find the right products for
-                <span className="block grad-text">your skin today.</span>
+              </span>
+
+              <h1
+                className="mt-5 max-w-xl text-[3.25rem] font-black leading-[0.96] tracking-tight sm:text-[4.25rem] lg:text-[5rem]"
+                style={{ color: "var(--text)" }}
+              >
+                Know your skin.
+                <span className="block grad-text">Glow with confidence.</span>
               </h1>
+
+              <p className="mt-6 max-w-lg text-base leading-7 sm:text-lg" style={{ color: "var(--text-2)" }}>
+                Three guided photos. One personalized routine. Dermatologist-grade skin concerns detected in under a minute.
+              </p>
+
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <a className="btn-grad rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-xl" href="#scan">
+                <a
+                  className="btn-grad rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-lg"
+                  href="#scan"
+                >
                   Start the scan
                 </a>
-                <a className="rounded-full border bg-white/70 px-7 py-3.5 text-sm font-bold transition-colors hover:bg-white" href="#how-it-works" style={{ borderColor: "var(--border)", color: "var(--text)" }}>
-                  See how it works
+                <a
+                  className="rounded-full border bg-white/70 px-7 py-3.5 text-sm font-semibold transition-colors hover:bg-white"
+                  href="#how-it-works"
+                  style={{ borderColor: "var(--border)", color: "var(--text-2)" }}
+                >
+                  How it works
                 </a>
               </div>
-              <div className="mt-7 grid max-w-xl gap-3 sm:grid-cols-3">
-                <HeroPoint icon={<Camera size={17} />} label="3 guided photos" />
-                <HeroPoint icon={<Sparkles size={17} />} label="Simple results" />
-                <HeroPoint icon={<ShoppingBag size={17} />} label="Products to buy" />
+
+              <div className="mt-8 flex flex-wrap gap-2.5">
+                <TrustChip icon={<Camera size={13} />} label="3 guided photos" />
+                <TrustChip icon={<Sparkles size={13} />} label="Personalized results" />
+                <TrustChip icon={<ShoppingBag size={13} />} label="Curated product shelf" />
               </div>
             </div>
 
+            {/* Right: decorative app card */}
             <div className="reveal-up delay-1" id="scan">
               <div className="semrush-style-visual">
                 <div className="visual-toolbar">
                   <div>
-                    <h2 className="text-xl font-black">Scan workspace</h2>
+                    <p className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: "var(--text-3)" }}>Scan workspace</p>
+                    <h2 className="mt-0.5 text-lg font-black" style={{ color: "var(--text)" }}>Your skin analysis</h2>
                   </div>
-                  <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
+                  <span
+                    className="rounded-full px-3 py-1 text-xs font-bold"
+                    style={{ background: "var(--accent-light)", color: "var(--accent)" }}
+                  >
                     {capturedCount}/3 photos
                   </span>
                 </div>
@@ -190,40 +234,128 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how-it-works" className="px-4 pb-8 sm:px-6">
+        {/* ── Stats strip ── */}
+        <section className="px-5 pb-10 sm:px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="grid overflow-hidden rounded-[2rem] border bg-white/76 shadow-sm md:grid-cols-4" style={{ borderColor: "var(--border)" }}>
-              <BenefitItem icon={<Camera size={20} />} title="Guided capture" text="Front, close-up, and side angle." />
-              <BenefitItem icon={<Sparkles size={20} />} title="Cleaner signal" text="Results combined across 3 photos." />
-              <BenefitItem icon={<ShoppingBag size={20} />} title="Product match" text="A curated shelf based on concerns." />
-              <BenefitItem icon={<ClipboardList size={20} />} title="Daily ritual" text="Morning and evening steps." />
+            <div
+              className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl md:grid-cols-4"
+              style={{ background: "var(--border)" }}
+            >
+              {[
+                { value: "3", label: "Guided photos" },
+                { value: "60s", label: "Average analysis" },
+                { value: "6+", label: "Skin concerns" },
+                { value: "30+", label: "Matched products" },
+              ].map(({ value, label }) => (
+                <div
+                  key={label}
+                  className="flex flex-col items-center gap-1 px-6 py-8"
+                  style={{ background: "var(--surface)" }}
+                >
+                  <span className="text-4xl font-black leading-none grad-text">{value}</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--text-3)" }}>{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
+        {/* ── How it works ── */}
+        <section id="how-it-works" className="px-5 py-14 sm:px-8 lg:py-20">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-12 text-center reveal-up">
+              <span className="sect-eyebrow">
+                <ClipboardList size={13} />
+                Simple process
+              </span>
+              <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
+                Three steps to your routine
+              </h2>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-3">
+              {[
+                {
+                  step: "01",
+                  icon: <Camera size={22} />,
+                  title: "Capture three photos",
+                  text: "Front portrait, close-up, and side angle. Aster guides you for the best light and position.",
+                },
+                {
+                  step: "02",
+                  icon: <Sparkles size={22} />,
+                  title: "AI reads your skin",
+                  text: "EfficientNet-based model cross-references all three images to detect concerns with higher confidence.",
+                },
+                {
+                  step: "03",
+                  icon: <ShoppingBag size={22} />,
+                  title: "Get your routine",
+                  text: "A curated product shelf and a personalised morning + evening routine, ready to follow immediately.",
+                },
+              ].map(({ step, icon, title, text }) => (
+                <div
+                  key={step}
+                  className="card-lift reveal-up rounded-3xl p-8"
+                  style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+                >
+                  <div className="mb-5 flex items-center gap-4">
+                    <span
+                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white"
+                      style={{ background: "var(--grad)" }}
+                    >
+                      {icon}
+                    </span>
+                    <span
+                      className="text-5xl font-black leading-none"
+                      style={{
+                        background: "var(--grad)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                        opacity: 0.18,
+                      }}
+                    >
+                      {step}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-black">{title}</h3>
+                  <p className="mt-2.5 text-sm leading-6" style={{ color: "var(--text-2)" }}>{text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Results ── */}
         <FeatureSection
           eyebrow="Skin reading"
-          icon={<Sparkles size={18} />}
+          icon={<Sparkles size={14} />}
           id="results"
           refProp={resultsRef}
-          title="Your results"
+          subtext="Instantly understand what your skin needs — without medical jargon or guesswork."
+          title="Your results, clearly explained"
           visual={<ResultReport analysis={analysis} />}
         />
 
+        {/* ── Products ── */}
         <FeatureSection
           eyebrow="Product shelf"
           flipped
-          icon={<ShoppingBag size={18} />}
+          icon={<ShoppingBag size={14} />}
           id="products"
-          title="Products to buy"
+          subtext="Every recommended product is matched to the exact concerns Aster detected in your scan."
+          title="Products chosen for your skin"
           visual={<ProductRecommendations products={analysis?.routine.products ?? []} />}
         />
 
+        {/* ── Routine ── */}
         <FeatureSection
           eyebrow="Routine builder"
-          icon={<ClipboardList size={18} />}
+          icon={<ClipboardList size={14} />}
           id="routine"
-          title="Your routine"
+          subtext="A simple morning and evening ritual — just the steps your skin actually needs."
+          title="Your personalised routine"
           visual={(
             <RoutinePreview
               evening={analysis?.routine.evening ?? []}
@@ -232,23 +364,52 @@ export default function Home() {
           )}
         />
 
-        <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-7xl rounded-[2.5rem] px-6 py-12 text-center sm:px-10" style={{ background: "var(--grad)" }}>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">Aster consultation</p>
-            <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
-              Start with your skin. Leave with a routine.
-            </h2>
-            <a className="mt-7 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-black shadow-xl transition-transform hover:-translate-y-1" href="#scan" style={{ color: "var(--accent)" }}>
-              Begin scan
-            </a>
+        {/* ── CTA Banner ── */}
+        <section className="px-5 py-16 sm:px-8 lg:py-24">
+          <div
+            className="relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] px-8 py-16 text-center sm:px-12"
+            style={{ background: "var(--grad)" }}
+          >
+            {/* Decorative circles */}
+            <div
+              className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full"
+              style={{ background: "rgba(255,255,255,0.07)" }}
+            />
+            <div
+              className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full"
+              style={{ background: "rgba(255,255,255,0.06)" }}
+            />
+
+            <div className="relative">
+              <div className="mx-auto mb-5 flex w-fit items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-white/80">
+                <Star size={11} />
+                Aster consultation
+              </div>
+              <h2 className="mx-auto max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
+                Start with your skin.<br className="hidden sm:block" /> Leave with a routine.
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-base text-white/70">
+                No account. No subscription. Just three photos and a skincare plan built around you.
+              </p>
+              <a
+                className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-black shadow-xl transition-transform hover:-translate-y-1"
+                href="#scan"
+                style={{ color: "var(--accent)" }}
+              >
+                <Camera size={16} />
+                Begin scan
+              </a>
+            </div>
           </div>
         </section>
       </main>
 
-      <footer className="px-4 py-10 sm:px-6">
-        <div className="mx-auto flex max-w-7xl flex-col items-start gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-between" style={{ borderColor: "var(--border)" }}>
+      {/* ── Footer ── */}
+      <footer className="px-5 pb-10 pt-4 sm:px-8">
+        <div className="grad-divider mb-8" />
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <AsterLogo compact />
-          <p className="max-w-xl text-xs leading-5" style={{ color: "var(--text-3)" }}>
+          <p className="max-w-lg text-xs leading-5" style={{ color: "var(--text-3)" }}>
             {analysis?.disclaimer ??
               "Aster provides cosmetic skincare suggestions based on image analysis. Not a substitute for professional medical advice."}
           </p>
@@ -258,25 +419,14 @@ export default function Home() {
   );
 }
 
-function HeroPoint({ icon, label }: { icon: ReactNode; label: string }) {
+function TrustChip({ icon, label }: { icon: ReactNode; label: string }) {
   return (
-    <div className="flex items-center gap-2 rounded-2xl border bg-white/70 px-4 py-3 text-sm font-bold shadow-sm" style={{ borderColor: "var(--border)" }}>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
-        {icon}
-      </span>
+    <div
+      className="flex items-center gap-2 rounded-full border bg-white/70 px-3.5 py-2 text-xs font-semibold shadow-sm"
+      style={{ borderColor: "var(--border)", color: "var(--text-2)" }}
+    >
+      <span style={{ color: "var(--accent)" }}>{icon}</span>
       {label}
-    </div>
-  );
-}
-
-function BenefitItem({ icon, text, title }: { icon: ReactNode; text: string; title: string }) {
-  return (
-    <div className="border-b p-6 md:border-b-0 md:border-r last:border-b-0 md:last:border-r-0" style={{ borderColor: "var(--border)" }}>
-      <span className="flex h-11 w-11 items-center justify-center rounded-2xl text-white" style={{ background: "var(--grad)" }}>
-        {icon}
-      </span>
-      <h3 className="mt-5 text-lg font-black">{title}</h3>
-      <p className="mt-2 text-sm leading-6" style={{ color: "var(--text-2)" }}>{text}</p>
     </div>
   );
 }
@@ -287,6 +437,7 @@ function FeatureSection({
   icon,
   id,
   refProp,
+  subtext,
   title,
   visual,
 }: {
@@ -295,19 +446,33 @@ function FeatureSection({
   icon: ReactNode;
   id: string;
   refProp?: React.RefObject<HTMLElement | null>;
+  subtext?: string;
   title: string;
   visual: ReactNode;
 }) {
   return (
-    <section className="reveal-up scroll-mt-24 px-4 py-14 sm:px-6 lg:py-20" id={id} ref={refProp}>
-      <div className={`mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.74fr_1.26fr] ${flipped ? "lg:grid-cols-[1.26fr_0.74fr]" : ""}`}>
+    <section
+      className="reveal-up scroll-mt-24 px-5 py-14 sm:px-8 lg:py-20"
+      id={id}
+      ref={refProp}
+    >
+      <div
+        className={`mx-auto grid max-w-7xl items-center gap-12 ${
+          flipped
+            ? "lg:grid-cols-[1.26fr_0.74fr]"
+            : "lg:grid-cols-[0.74fr_1.26fr]"
+        }`}
+      >
         <div className={flipped ? "lg:order-2" : ""}>
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.22em]" style={{ borderColor: "var(--border)", color: "var(--accent)" }}>
+          <span className="sect-eyebrow">
             {icon}
             {eyebrow}
-          </div>
-          <h2 className="max-w-xl text-3xl font-black tracking-tight sm:text-5xl">{title}</h2>
-          <ul className="mt-7 space-y-3 text-sm font-semibold" style={{ color: "var(--text)" }}>
+          </span>
+          <h2 className="mt-4 max-w-md text-3xl font-black tracking-tight sm:text-4xl">{title}</h2>
+          {subtext ? (
+            <p className="mt-3 max-w-sm text-sm leading-6" style={{ color: "var(--text-2)" }}>{subtext}</p>
+          ) : null}
+          <ul className="mt-6 space-y-3 text-sm font-semibold" style={{ color: "var(--text-2)" }}>
             <FeatureCheck>Simple language for skincare decisions</FeatureCheck>
             <FeatureCheck>Built around products and routine</FeatureCheck>
             <FeatureCheck>Designed to reduce random product buying</FeatureCheck>
@@ -323,8 +488,8 @@ function FeatureSection({
 
 function FeatureCheck({ children }: { children: ReactNode }) {
   return (
-    <li className="flex items-center gap-2">
-      <CheckCircle2 size={17} style={{ color: "var(--accent)" }} />
+    <li className="flex items-center gap-2.5">
+      <CheckCircle2 size={16} style={{ color: "var(--accent)", flexShrink: 0 }} />
       {children}
     </li>
   );

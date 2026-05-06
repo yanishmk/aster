@@ -15,7 +15,7 @@ export function AsterLogo({ compact = false }: { compact?: boolean }) {
           <circle cx="32" cy="32" fill="#8f244d" r="2.5" />
         </svg>
       </span>
-      {!compact ? <span className="text-lg font-semibold tracking-tight">Aster</span> : null}
+      {!compact ? <span className="text-lg font-black tracking-[-0.03em]" style={{ color: "var(--text)" }}>Aster</span> : null}
     </span>
   );
 }
