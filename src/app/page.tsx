@@ -136,16 +136,13 @@ export default function Home() {
 
       <main>
         <section className="relative overflow-hidden">
-          <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:py-18">
+          <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:py-10">
             <div className="reveal-up">
-              <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: "var(--accent)" }}>
-                AI skincare consultation
-              </p>
-              <h1 className="mt-5 max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
+              <h1 className="max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
                 Find the right products for
                 <span className="block grad-text">your skin today.</span>
               </h1>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-7 flex flex-wrap items-center gap-3">
                 <a className="btn-grad rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-xl" href="#scan">
                   Start the scan
                 </a>
@@ -153,8 +150,8 @@ export default function Home() {
                   See how it works
                 </a>
               </div>
-              <div className="mt-7 grid max-w-xl gap-3 sm:grid-cols-3">
-                <HeroPoint icon={<Camera size={17} />} label="3 guided photos" />
+              <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
+                <HeroPoint icon={<Camera size={17} />} label="Guided scan" />
                 <HeroPoint icon={<Sparkles size={17} />} label="Simple results" />
                 <HeroPoint icon={<ShoppingBag size={17} />} label="Products to buy" />
               </div>
@@ -166,7 +163,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="scan" className="scroll-mt-24 px-4 py-10 sm:px-6 lg:py-14">
+        <section id="scan" className="scroll-mt-24 px-4 py-8 sm:px-6 lg:py-10">
           <div className="mx-auto max-w-4xl">
             <div className="semrush-style-visual">
               <div className="visual-toolbar">
@@ -174,7 +171,7 @@ export default function Home() {
                   <h2 className="text-xl font-black">Skin scan</h2>
                 </div>
                 <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
-                  {capturedCount}/3 photos
+                  {capturedCount ? `${capturedCount} ready` : "Ready"}
                 </span>
               </div>
               <ThreePhotoUpload
@@ -196,11 +193,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how-it-works" className="px-4 pb-8 sm:px-6">
+        <section id="how-it-works" className="px-4 pb-6 sm:px-6">
           <div className="mx-auto max-w-7xl">
             <div className="grid overflow-hidden rounded-[2rem] border bg-white/76 shadow-sm md:grid-cols-4" style={{ borderColor: "var(--border)" }}>
-              <BenefitItem icon={<Camera size={20} />} title="Guided capture" text="Front, close-up, and side angle." />
-              <BenefitItem icon={<Sparkles size={20} />} title="Cleaner signal" text="Results combined across 3 photos." />
+              <BenefitItem icon={<Camera size={20} />} title="Guided capture" text="Clean camera guidance." />
+              <BenefitItem icon={<Sparkles size={20} />} title="Cleaner signal" text="Balanced visual reading." />
               <BenefitItem icon={<ShoppingBag size={20} />} title="Product match" text="A curated shelf based on concerns." />
               <BenefitItem icon={<ClipboardList size={20} />} title="Daily ritual" text="Morning and evening steps." />
             </div>

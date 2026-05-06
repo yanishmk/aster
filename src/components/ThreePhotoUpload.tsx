@@ -191,7 +191,7 @@ export function ThreePhotoUpload({
           className="rounded-full px-3 py-1 text-xs font-bold"
           style={{ background: "var(--accent-light)", color: "var(--accent)" }}
         >
-          {completedCount} / 3 photos
+          {completedCount ? `${completedCount} ready` : "Ready"}
         </span>
       </div>
 
@@ -242,7 +242,7 @@ export function ThreePhotoUpload({
             <div className="absolute left-3 right-3 top-3 flex items-start justify-between gap-3">
               <div className="rounded-xl bg-black/60 px-3 py-2 backdrop-blur-sm">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-white/60">
-                  Step {ROLE_ORDER.indexOf(activeRole) + 1} of 3
+                  Step {ROLE_ORDER.indexOf(activeRole) + 1}
                 </p>
                 <p className="text-sm font-bold text-white">{activeSlot.title}</p>
               </div>
@@ -262,7 +262,7 @@ export function ThreePhotoUpload({
           <canvas ref={canvasRef} className="hidden" />
           <div className="flex flex-col gap-3 bg-neutral-900 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
             <ScanSteps slots={slots} activeRole={activeRole} />
-            <span className="text-white/50 text-xs">{completedCount}/3 captured</span>
+            <span className="text-white/50 text-xs">{completedCount ? `${completedCount} captured` : "Start"}</span>
           </div>
         </div>
       ) : null}
