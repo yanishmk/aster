@@ -160,32 +160,38 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="reveal-up delay-1" id="scan">
-              <div className="semrush-style-visual">
-                <div className="visual-toolbar">
-                  <div>
-                    <h2 className="text-xl font-black">Scan workspace</h2>
-                  </div>
-                  <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
-                    {capturedCount}/3 photos
-                  </span>
+            <div className="reveal-up delay-1">
+              <HeroAsterScanButton capturedCount={capturedCount} />
+            </div>
+          </div>
+        </section>
+
+        <section id="scan" className="scroll-mt-24 px-4 py-10 sm:px-6 lg:py-14">
+          <div className="mx-auto max-w-4xl">
+            <div className="semrush-style-visual">
+              <div className="visual-toolbar">
+                <div>
+                  <h2 className="text-xl font-black">Skin scan</h2>
                 </div>
-                <ThreePhotoUpload
-                  canAnalyze={canAnalyze}
-                  isAnalyzing={isAnalyzing}
-                  onAnalyze={runAnalysis}
-                  onPhotoChange={handlePhotoChange}
-                  slots={slots}
-                />
-                {errorMessage ? (
-                  <p
-                    className="mx-5 mb-5 rounded-2xl px-4 py-3 text-sm font-medium"
-                    style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
-                  >
-                    {errorMessage}
-                  </p>
-                ) : null}
+                <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
+                  {capturedCount}/3 photos
+                </span>
               </div>
+              <ThreePhotoUpload
+                canAnalyze={canAnalyze}
+                isAnalyzing={isAnalyzing}
+                onAnalyze={runAnalysis}
+                onPhotoChange={handlePhotoChange}
+                slots={slots}
+              />
+              {errorMessage ? (
+                <p
+                  className="mx-5 mb-5 rounded-2xl px-4 py-3 text-sm font-medium"
+                  style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
+                >
+                  {errorMessage}
+                </p>
+              ) : null}
             </div>
           </div>
         </section>
@@ -255,6 +261,29 @@ export default function Home() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function HeroAsterScanButton({ capturedCount }: { capturedCount: number }) {
+  return (
+    <a aria-label="Start Aster scan" className="aster-scan-logo group" href="#scan">
+      <span className="aster-scan-orbit" />
+      <svg aria-hidden="true" className="h-full w-full" fill="none" viewBox="0 0 420 420">
+        <path d="M210 196C176 142 176 81 210 54C244 81 244 142 210 196Z" fill="#d9467c" />
+        <path d="M224 204C278 170 339 170 366 210C339 244 278 244 224 216Z" fill="#c62f68" />
+        <path d="M210 224C244 278 244 339 210 366C176 339 176 278 210 224Z" fill="#a82456" />
+        <path d="M196 216C142 250 81 250 54 210C81 176 142 176 196 204Z" fill="#e78bae" />
+        <path d="M224 190C244 129 285 95 332 102C332 156 285 190 224 204Z" fill="#dc6f99" />
+        <path d="M230 230C291 244 325 285 318 332C264 332 230 291 216 230Z" fill="#b83263" />
+        <path d="M190 230C176 291 135 325 88 318C88 264 135 230 204 216Z" fill="#efb5ca" />
+        <path d="M190 190C129 176 95 135 102 88C156 88 190 135 204 196Z" fill="#f4c7d8" />
+        <circle cx="210" cy="210" fill="#fff8fa" r="54" />
+      </svg>
+      <span className="aster-camera-center">
+        <Camera size={34} />
+      </span>
+      <span className="aster-scan-count">{capturedCount}/3</span>
+    </a>
   );
 }
 
