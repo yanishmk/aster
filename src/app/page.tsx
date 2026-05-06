@@ -277,17 +277,27 @@ function HeroAsterScanButton({
       className={`aster-scan-logo group ${isAnalyzing ? "is-analyzing" : ""}`}
       href="#scan"
     >
-      <span className="aster-scan-orbit" />
       <span className="aster-scan-pulse" />
       <svg aria-hidden="true" className="aster-scan-flower h-full w-full" fill="none" viewBox="0 0 420 420">
-        <path d="M210 196C176 142 176 81 210 54C244 81 244 142 210 196Z" fill="#d9467c" />
-        <path d="M224 204C278 170 339 170 366 210C339 244 278 244 224 216Z" fill="#c62f68" />
-        <path d="M210 224C244 278 244 339 210 366C176 339 176 278 210 224Z" fill="#a82456" />
-        <path d="M196 216C142 250 81 250 54 210C81 176 142 176 196 204Z" fill="#e78bae" />
-        <path d="M224 190C244 129 285 95 332 102C332 156 285 190 224 204Z" fill="#dc6f99" />
+        <defs>
+          <linearGradient id="asterPetalMain" x1="72" x2="348" y1="64" y2="356">
+            <stop offset="0%" stopColor="#f59abc" />
+            <stop offset="48%" stopColor="#dc3c7d" />
+            <stop offset="100%" stopColor="#8f244d" />
+          </linearGradient>
+          <linearGradient id="asterPetalSoft" x1="90" x2="330" y1="84" y2="340">
+            <stop offset="0%" stopColor="#ffd5e3" />
+            <stop offset="100%" stopColor="#d84b86" />
+          </linearGradient>
+        </defs>
+        <path d="M210 196C176 142 176 81 210 54C244 81 244 142 210 196Z" fill="url(#asterPetalMain)" />
+        <path d="M224 204C278 170 339 170 366 210C339 244 278 244 224 216Z" fill="url(#asterPetalMain)" />
+        <path d="M210 224C244 278 244 339 210 366C176 339 176 278 210 224Z" fill="url(#asterPetalMain)" />
+        <path d="M196 216C142 250 81 250 54 210C81 176 142 176 196 204Z" fill="url(#asterPetalSoft)" />
+        <path d="M224 190C244 129 285 95 332 102C332 156 285 190 224 204Z" fill="#df6b9a" />
         <path d="M230 230C291 244 325 285 318 332C264 332 230 291 216 230Z" fill="#b83263" />
-        <path d="M190 230C176 291 135 325 88 318C88 264 135 230 204 216Z" fill="#efb5ca" />
-        <path d="M190 190C129 176 95 135 102 88C156 88 190 135 204 196Z" fill="#f4c7d8" />
+        <path d="M190 230C176 291 135 325 88 318C88 264 135 230 204 216Z" fill="#f1a9c4" />
+        <path d="M190 190C129 176 95 135 102 88C156 88 190 135 204 196Z" fill="#f7cade" />
         <circle cx="210" cy="210" fill="#fff8fa" r="54" />
       </svg>
       <span className="aster-camera-center">
