@@ -161,7 +161,7 @@ export default function Home() {
             </div>
 
             <div className="reveal-up delay-1">
-              <HeroAsterScanButton capturedCount={capturedCount} />
+              <HeroAsterScanButton capturedCount={capturedCount} isAnalyzing={isAnalyzing} />
             </div>
           </div>
         </section>
@@ -264,11 +264,22 @@ export default function Home() {
   );
 }
 
-function HeroAsterScanButton({ capturedCount }: { capturedCount: number }) {
+function HeroAsterScanButton({
+  capturedCount,
+  isAnalyzing,
+}: {
+  capturedCount: number;
+  isAnalyzing: boolean;
+}) {
   return (
-    <a aria-label="Start Aster scan" className="aster-scan-logo group" href="#scan">
+    <a
+      aria-label="Start Aster scan"
+      className={`aster-scan-logo group ${isAnalyzing ? "is-analyzing" : ""}`}
+      href="#scan"
+    >
       <span className="aster-scan-orbit" />
-      <svg aria-hidden="true" className="h-full w-full" fill="none" viewBox="0 0 420 420">
+      <span className="aster-scan-pulse" />
+      <svg aria-hidden="true" className="aster-scan-flower h-full w-full" fill="none" viewBox="0 0 420 420">
         <path d="M210 196C176 142 176 81 210 54C244 81 244 142 210 196Z" fill="#d9467c" />
         <path d="M224 204C278 170 339 170 366 210C339 244 278 244 224 216Z" fill="#c62f68" />
         <path d="M210 224C244 278 244 339 210 366C176 339 176 278 210 224Z" fill="#a82456" />
@@ -282,7 +293,7 @@ function HeroAsterScanButton({ capturedCount }: { capturedCount: number }) {
       <span className="aster-camera-center">
         <Camera size={34} />
       </span>
-      <span className="aster-scan-count">{capturedCount}/3</span>
+      <span className="aster-scan-count">{isAnalyzing ? "Analyzing" : `${capturedCount}/3`}</span>
     </a>
   );
 }
