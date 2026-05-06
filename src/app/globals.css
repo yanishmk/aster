@@ -105,6 +105,35 @@ input {
   background: rgba(255, 255, 255, 0.58);
 }
 
+.semrush-style-visual {
+  overflow: hidden;
+  border: 1px solid rgba(242, 215, 228, 0.92);
+  border-radius: 2.25rem;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 28px 90px rgba(126, 42, 78, 0.16);
+  backdrop-filter: blur(22px);
+}
+
+.visual-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-bottom: 1px solid rgba(242, 215, 228, 0.85);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.88), rgba(255,240,247,0.72));
+}
+
+.feature-visual {
+  overflow: hidden;
+  border: 1px solid rgba(242, 215, 228, 0.92);
+  border-radius: 2.25rem;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 24px 70px rgba(126, 42, 78, 0.1);
+  padding: 1.25rem;
+}
+
 @keyframes reveal-up {
   from {
     opacity: 0;
