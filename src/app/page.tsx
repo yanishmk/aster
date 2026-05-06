@@ -135,7 +135,7 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="relative overflow-hidden">
+        <section className="section-home relative overflow-hidden">
           <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:py-10">
             <div className="reveal-up">
               <h1 className="max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
@@ -163,7 +163,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="scan" className="scroll-mt-24 px-4 py-8 sm:px-6 lg:py-10">
+        <section id="scan" className="section-scan scroll-mt-24 px-4 py-8 sm:px-6 lg:py-12">
           <div className="mx-auto max-w-4xl">
             <div className="semrush-style-visual">
               <div className="visual-toolbar">
@@ -193,7 +193,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how-it-works" className="px-4 pb-6 sm:px-6">
+        <section id="how-it-works" className="section-process px-4 py-10 sm:px-6 lg:py-12">
           <div className="mx-auto max-w-7xl">
             <div className="grid overflow-hidden rounded-[2rem] border bg-white/76 shadow-sm md:grid-cols-4" style={{ borderColor: "var(--border)" }}>
               <BenefitItem icon={<Camera size={20} />} title="Guided capture" text="Clean camera guidance." />
@@ -344,7 +344,7 @@ function FeatureSection({
   visual: ReactNode;
 }) {
   return (
-    <section className="reveal-up scroll-mt-24 px-4 py-14 sm:px-6 lg:py-20" id={id} ref={refProp}>
+    <section className={`reveal-up scroll-mt-24 px-4 py-14 sm:px-6 lg:py-20 section-${id}`} id={id} ref={refProp}>
       <div className={`mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.74fr_1.26fr] ${flipped ? "lg:grid-cols-[1.26fr_0.74fr]" : ""}`}>
         <div className={flipped ? "lg:order-2" : ""}>
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.22em]" style={{ borderColor: "var(--border)", color: "var(--accent)" }}>
