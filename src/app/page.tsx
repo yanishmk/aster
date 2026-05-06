@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, ClipboardList, ShoppingBag, Sparkles } from "lucide-react";
+import { Camera, ClipboardList, LayoutDashboard, ShoppingBag, Sparkles } from "lucide-react";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import { AsterLogo } from "@/components/AsterLogo";
@@ -118,186 +118,211 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--text)" }}>
-      <header
-        className="sticky top-0 z-50 bg-white/90"
-        style={{ borderBottom: "1px solid var(--border)", backdropFilter: "blur(16px)" }}
-      >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <a href="#"><AsterLogo /></a>
-
-          <nav className="hidden items-center gap-7 text-sm font-medium md:flex" style={{ color: "var(--text-2)" }}>
-            <a href="#scan" className="transition-colors hover:text-[#15080e]">Scan</a>
-            <a href="#results" className="transition-colors hover:text-[#15080e]">Results</a>
-            <a href="#products" className="transition-colors hover:text-[#15080e]">Products</a>
-            <a href="#routine" className="transition-colors hover:text-[#15080e]">Routine</a>
+    <div className="min-h-screen" style={{ background: "var(--bg-alt)", color: "var(--text)" }}>
+      <div className="flex min-h-screen">
+        <aside className="hidden w-64 shrink-0 border-r bg-white lg:block" style={{ borderColor: "var(--border)" }}>
+          <div className="flex h-16 items-center px-5" style={{ borderBottom: "1px solid var(--border)" }}>
+            <AsterLogo />
+          </div>
+          <nav className="space-y-1 px-3 py-4">
+            <SidebarLink active href="#overview" icon={<LayoutDashboard size={17} />} label="Overview" />
+            <SidebarLink href="#scan" icon={<Camera size={17} />} label="Skin scan" />
+            <SidebarLink href="#results" icon={<Sparkles size={17} />} label="Results" />
+            <SidebarLink href="#products" icon={<ShoppingBag size={17} />} label="Products" />
+            <SidebarLink href="#routine" icon={<ClipboardList size={17} />} label="Routine" />
           </nav>
-
-          <a href="#scan" className="btn-grad rounded-xl px-4 py-2.5 text-sm font-bold text-white">
-            Start scan
-          </a>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:py-8">
-        <section className="mb-6">
-          <p className="text-sm font-bold uppercase tracking-wider" style={{ color: "var(--accent)" }}>
-            AI skincare workspace
-          </p>
-          <div className="mt-2 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
-                Scan, results, products, routine.
-              </h1>
-              <p className="mt-2 max-w-2xl text-sm leading-6 sm:text-base" style={{ color: "var(--text-2)" }}>
-                Aster turns 3 guided photos into a simple skin profile, matched products, and a practical AM/PM routine.
-              </p>
-            </div>
-            <WorkflowCard analysisReady={Boolean(analysis)} capturedCount={capturedCount} />
+          <div className="mx-4 mt-4 rounded-2xl p-4" style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}>
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--accent)" }}>Session</p>
+            <p className="mt-2 text-sm font-semibold">3-photo guided scan</p>
+            <p className="mt-1 text-xs leading-5" style={{ color: "var(--text-2)" }}>
+              Capture photos, review results, then shop matched products.
+            </p>
           </div>
-        </section>
+        </aside>
 
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)]">
-          <div id="scan" className="overflow-hidden rounded-2xl bg-white shadow-sm" style={{ border: "1px solid var(--border)" }}>
-            <div className="flex items-center justify-between gap-4 px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
-              <SectionTitle eyebrow="Step 1" icon={<Camera size={18} />} title="Take your 3 skin photos" />
-              <span className="hidden rounded-full px-3 py-1 text-xs font-bold sm:inline-flex" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
-                Guided scan
-              </span>
+        <div className="min-w-0 flex-1">
+          <header className="sticky top-0 z-40 border-b bg-white/90 backdrop-blur-xl" style={{ borderColor: "var(--border)" }}>
+            <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center gap-3 lg:hidden">
+                <AsterLogo compact />
+                <span className="text-sm font-black">Aster</span>
+              </div>
+              <div className="hidden lg:block">
+                <p className="text-sm font-bold">Skin analysis workspace</p>
+                <p className="text-xs" style={{ color: "var(--text-2)" }}>Scan, results, products, and routine in one flow.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <StatusPill label="Photos" value={`${capturedCount}/3`} />
+                <StatusPill label="Analysis" value={analysis ? "Ready" : "Waiting"} />
+                <a className="btn-grad rounded-xl px-4 py-2.5 text-sm font-bold text-white" href="#scan">
+                  New scan
+                </a>
+              </div>
             </div>
-            <ThreePhotoUpload
-              canAnalyze={canAnalyze}
-              isAnalyzing={isAnalyzing}
-              onAnalyze={runAnalysis}
-              onPhotoChange={handlePhotoChange}
-              slots={slots}
-            />
-            {errorMessage ? (
-              <p
-                className="mx-5 mb-5 rounded-xl px-4 py-3 text-sm font-medium"
-                style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
+          </header>
+
+          <main id="overview" className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <section className="mb-6 grid gap-4 md:grid-cols-4">
+              <MetricCard active={capturedCount < 3} label="Photo capture" value={`${capturedCount}/3`} />
+              <MetricCard active={capturedCount === 3 && !analysis} label="Results" value={analysis ? "Ready" : "Pending"} />
+              <MetricCard label="Products" value={analysis ? `${analysis.routine.products.length}` : "Locked"} />
+              <MetricCard label="Routine" value={analysis ? "Built" : "Locked"} />
+            </section>
+
+            <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(380px,0.85fr)]">
+              <Panel
+                action={<span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>Guided</span>}
+                eyebrow="Step 1"
+                icon={<Camera size={18} />}
+                id="scan"
+                title="Skin scan"
               >
-                {errorMessage}
-              </p>
-            ) : null}
-          </div>
+                <ThreePhotoUpload
+                  canAnalyze={canAnalyze}
+                  isAnalyzing={isAnalyzing}
+                  onAnalyze={runAnalysis}
+                  onPhotoChange={handlePhotoChange}
+                  slots={slots}
+                />
+                {errorMessage ? (
+                  <p
+                    className="mx-5 mb-5 rounded-xl px-4 py-3 text-sm font-medium"
+                    style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
+                  >
+                    {errorMessage}
+                  </p>
+                ) : null}
+              </Panel>
 
-          <section id="results" ref={resultsRef} className="scroll-mt-24">
-            <SectionHeader eyebrow="Step 2" icon={<Sparkles size={18} />} title="Results" />
-            <div className="mt-3">
-              <ResultReport analysis={analysis} />
-            </div>
-          </section>
-        </section>
+              <Panel eyebrow="Step 2" icon={<Sparkles size={18} />} id="results" refProp={resultsRef} title="Results">
+                <ResultReport analysis={analysis} />
+              </Panel>
+            </section>
 
-        <section id="products" className="mt-8 scroll-mt-24">
-          <SectionHeader
-            description="Matched to your scan and ready to add to your skincare routine."
-            eyebrow="Step 3"
-            icon={<ShoppingBag size={18} />}
-            title="Products to buy"
-          />
-          <div className="mt-4">
-            <ProductRecommendations products={analysis?.routine.products ?? []} />
-          </div>
-        </section>
+            <section className="mt-6">
+              <Panel
+                description="Matched to the detected concerns and arranged for quick purchase."
+                eyebrow="Step 3"
+                icon={<ShoppingBag size={18} />}
+                id="products"
+                title="Products to buy"
+              >
+                <ProductRecommendations products={analysis?.routine.products ?? []} />
+              </Panel>
+            </section>
 
-        <section id="routine" className="mt-10 scroll-mt-24">
-          <SectionHeader
-            description="A simple morning and evening plan built from the recommended products."
-            eyebrow="Step 4"
-            icon={<ClipboardList size={18} />}
-            title="Your routine"
-          />
-          <div className="mt-4">
-            <RoutinePreview
-              evening={analysis?.routine.evening ?? []}
-              morning={analysis?.routine.morning ?? []}
-            />
-          </div>
-        </section>
-      </main>
-
-      <footer className="mt-8 py-6" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="mx-auto flex max-w-7xl flex-col items-start gap-3 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <AsterLogo compact />
-          <p className="max-w-lg text-xs leading-5" style={{ color: "var(--text-3)" }}>
-            {analysis?.disclaimer ??
-              "Aster provides cosmetic skincare suggestions based on image analysis. Not a substitute for professional medical advice."}
-          </p>
+            <section className="mt-6">
+              <Panel
+                description="A practical AM/PM plan built from the products above."
+                eyebrow="Step 4"
+                icon={<ClipboardList size={18} />}
+                id="routine"
+                title="Routine"
+              >
+                <RoutinePreview
+                  evening={analysis?.routine.evening ?? []}
+                  morning={analysis?.routine.morning ?? []}
+                />
+              </Panel>
+            </section>
+          </main>
         </div>
-      </footer>
-    </div>
-  );
-}
-
-function SectionTitle({ eyebrow, icon, title }: { eyebrow: string; icon: ReactNode; title: string }) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="flex h-10 w-10 items-center justify-center rounded-xl text-white" style={{ background: "var(--grad)" }}>
-        {icon}
-      </span>
-      <div>
-        <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--accent)" }}>{eyebrow}</p>
-        <h2 className="text-lg font-black tracking-tight">{title}</h2>
       </div>
     </div>
   );
 }
 
-function SectionHeader({
+function SidebarLink({
+  active,
+  href,
+  icon,
+  label,
+}: {
+  active?: boolean;
+  href: string;
+  icon: ReactNode;
+  label: string;
+}) {
+  return (
+    <a
+      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors"
+      href={href}
+      style={{
+        background: active ? "var(--accent-light)" : "transparent",
+        color: active ? "var(--accent)" : "var(--text-2)",
+      }}
+    >
+      {icon}
+      {label}
+    </a>
+  );
+}
+
+function StatusPill({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="hidden rounded-xl px-3 py-2 sm:block" style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}>
+      <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "var(--text-3)" }}>{label}</p>
+      <p className="text-xs font-black">{value}</p>
+    </div>
+  );
+}
+
+function MetricCard({ active, label, value }: { active?: boolean; label: string; value: string }) {
+  return (
+    <div
+      className="rounded-2xl bg-white p-4 shadow-sm"
+      style={{
+        border: `1px solid ${active ? "var(--accent-border)" : "var(--border)"}`,
+        boxShadow: active ? "0 12px 32px rgba(240,39,123,0.08)" : undefined,
+      }}
+    >
+      <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--text-3)" }}>{label}</p>
+      <p className="mt-2 text-2xl font-black" style={{ color: active ? "var(--accent)" : "var(--text)" }}>{value}</p>
+    </div>
+  );
+}
+
+function Panel({
+  action,
+  children,
   description,
   eyebrow,
   icon,
+  id,
+  refProp,
   title,
 }: {
+  action?: ReactNode;
+  children: ReactNode;
   description?: string;
   eyebrow: string;
   icon: ReactNode;
+  id: string;
+  refProp?: React.RefObject<HTMLElement | null>;
   title: string;
 }) {
   return (
-    <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-      <div className="flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl text-white" style={{ background: "var(--grad)" }}>
-          {icon}
-        </span>
-        <div>
-          <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--accent)" }}>{eyebrow}</p>
-          <h2 className="text-2xl font-black tracking-tight">{title}</h2>
-        </div>
-      </div>
-      {description ? <p className="max-w-xl text-sm leading-6" style={{ color: "var(--text-2)" }}>{description}</p> : null}
-    </div>
-  );
-}
-
-function WorkflowCard({ capturedCount, analysisReady }: { capturedCount: number; analysisReady: boolean }) {
-  const items = [
-    { label: "Photos", value: `${capturedCount}/3`, active: capturedCount < 3 },
-    { label: "Results", value: analysisReady ? "Ready" : "Waiting", active: capturedCount === 3 && !analysisReady },
-    { label: "Products", value: analysisReady ? "Matched" : "Locked", active: false },
-    { label: "Routine", value: analysisReady ? "Built" : "Locked", active: false },
-  ];
-
-  return (
-    <div className="w-full rounded-2xl bg-white p-4 shadow-sm md:max-w-[430px]" style={{ border: "1px solid var(--border)" }}>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-2">
-        {items.map((item) => (
-          <div
-            className="rounded-xl p-3"
-            key={item.label}
-            style={{
-              background: item.active ? "var(--accent-light)" : "var(--bg-alt)",
-              border: `1px solid ${item.active ? "var(--accent-border)" : "var(--border)"}`,
-            }}
-          >
-            <p className="text-xs font-semibold" style={{ color: "var(--text-2)" }}>{item.label}</p>
-            <p className="mt-1 text-base font-black" style={{ color: item.active ? "var(--accent)" : "var(--text)" }}>{item.value}</p>
+    <section
+      className="scroll-mt-24 overflow-hidden rounded-2xl bg-white shadow-sm"
+      id={id}
+      ref={refProp}
+      style={{ border: "1px solid var(--border)" }}
+    >
+      <div className="flex items-start justify-between gap-4 px-5 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl text-white" style={{ background: "var(--grad)" }}>
+            {icon}
+          </span>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--accent)" }}>{eyebrow}</p>
+            <h2 className="text-xl font-black tracking-tight">{title}</h2>
+            {description ? <p className="mt-1 text-sm leading-5" style={{ color: "var(--text-2)" }}>{description}</p> : null}
           </div>
-        ))}
+        </div>
+        {action}
       </div>
-    </div>
+      <div className="p-0">{children}</div>
+    </section>
   );
 }
 
