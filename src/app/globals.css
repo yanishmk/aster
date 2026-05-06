@@ -8,12 +8,12 @@
   --text: #15080e;
   --text-2: #6b4558;
   --text-3: #b088a0;
-  --accent: #db2a74;
-  --accent-hover: #b91b5c;
+  --accent: #df287b;
+  --accent-hover: #af1b68;
   --accent-light: #fff0f7;
-  --accent-border: #f8bdd5;
-  --grad: linear-gradient(135deg, #e22c78 0%, #9b1f5f 100%);
-  --grad-soft: linear-gradient(135deg, rgba(226,44,120,0.12) 0%, rgba(155,31,95,0.08) 100%);
+  --accent-border: #f6b5d0;
+  --grad: linear-gradient(135deg, #e42982 0%, #af1b68 100%);
+  --grad-soft: linear-gradient(135deg, rgba(228,41,130,0.14) 0%, rgba(175,27,104,0.08) 100%);
 }
 
 @theme inline {
@@ -88,15 +88,15 @@ input {
 
 .section-home {
   background:
-    radial-gradient(circle at 10% 12%, rgba(248,189,213,0.42), transparent 26rem),
-    radial-gradient(circle at 88% 22%, rgba(255,226,199,0.46), transparent 24rem),
+    radial-gradient(circle at 10% 12%, rgba(228,41,130,0.18), transparent 26rem),
+    radial-gradient(circle at 88% 22%, rgba(175,27,104,0.14), transparent 24rem),
     linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,250,252,0.7));
 }
 
 .section-scan {
   background:
     linear-gradient(180deg, rgba(255,246,250,0.9), rgba(255,255,255,0.82)),
-    radial-gradient(circle at 50% 0%, rgba(219,42,116,0.12), transparent 22rem);
+    radial-gradient(circle at 50% 0%, rgba(228,41,130,0.14), transparent 22rem);
 }
 
 .section-process {
@@ -106,19 +106,19 @@ input {
 
 .section-results {
   background:
-    radial-gradient(circle at 16% 20%, rgba(255,226,199,0.42), transparent 22rem),
+    radial-gradient(circle at 16% 20%, rgba(255,221,235,0.48), transparent 22rem),
     linear-gradient(180deg, rgba(255,247,242,0.84), rgba(255,255,255,0.88));
 }
 
 .section-products {
   background:
-    radial-gradient(circle at 88% 18%, rgba(248,189,213,0.38), transparent 24rem),
+    radial-gradient(circle at 88% 18%, rgba(228,41,130,0.16), transparent 24rem),
     linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,244,249,0.86));
 }
 
 .section-routine {
   background:
-    radial-gradient(circle at 12% 30%, rgba(230,212,255,0.2), transparent 22rem),
+    radial-gradient(circle at 12% 30%, rgba(175,27,104,0.13), transparent 22rem),
     linear-gradient(180deg, rgba(255,244,249,0.86), rgba(255,252,249,0.92));
 }
 
@@ -201,7 +201,7 @@ input {
   inset: 14%;
   border-radius: inherit;
   background:
-    radial-gradient(circle, rgba(219, 42, 116, 0.17) 0%, rgba(219, 42, 116, 0.08) 42%, transparent 68%);
+    radial-gradient(circle, rgba(228, 41, 130, 0.18) 0%, rgba(175, 27, 104, 0.09) 42%, transparent 68%);
   filter: blur(3px);
   animation: aster-soft-pulse 2.8s ease-in-out infinite;
 }
