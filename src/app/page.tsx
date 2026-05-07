@@ -200,6 +200,7 @@ export default function Home() {
           eyebrow="Skin reading"
           icon={<Sparkles size={18} />}
           id="results"
+          compact={hasAnalysis}
           refProp={resultsRef}
           showDetails={!hasAnalysis}
           title="Your results"
@@ -209,6 +210,7 @@ export default function Home() {
         <FeatureSection
           eyebrow="Product shelf"
           flipped
+          compact={hasAnalysis}
           icon={<ShoppingBag size={18} />}
           id="products"
           showDetails={!hasAnalysis}
@@ -218,6 +220,7 @@ export default function Home() {
 
         <FeatureSection
           eyebrow="Routine builder"
+          compact={hasAnalysis}
           icon={<ClipboardList size={18} />}
           id="routine"
           showDetails={!hasAnalysis}
@@ -282,6 +285,7 @@ function BenefitItem({ icon, text, title }: { icon: ReactNode; text: string; tit
 }
 
 function FeatureSection({
+  compact = false,
   eyebrow,
   flipped,
   icon,
@@ -291,6 +295,7 @@ function FeatureSection({
   title,
   visual,
 }: {
+  compact?: boolean;
   eyebrow: string;
   flipped?: boolean;
   icon: ReactNode;
@@ -300,6 +305,27 @@ function FeatureSection({
   title: string;
   visual: ReactNode;
 }) {
+  if (compact) {
+    return (
+      <section className={`reveal-up scroll-mt-24 px-4 py-10 sm:px-6 lg:py-14 section-${id}`} id={id} ref={refProp}>
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.22em]" style={{ borderColor: "var(--border)", color: "var(--accent)" }}>
+                {icon}
+                {eyebrow}
+              </div>
+              <h2 className="text-3xl font-black tracking-tight sm:text-5xl">{title}</h2>
+            </div>
+          </div>
+          <div className="feature-visual feature-visual-compact">
+            {visual}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className={`reveal-up scroll-mt-24 px-4 py-14 sm:px-6 lg:py-20 section-${id}`} id={id} ref={refProp}>
       <div className={`mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.74fr_1.26fr] ${flipped ? "lg:grid-cols-[1.26fr_0.74fr]" : ""}`}>

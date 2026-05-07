@@ -170,6 +170,12 @@ input {
   padding: 1.25rem;
 }
 
+.feature-visual-compact {
+  padding: 0.75rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 18px 54px rgba(126, 42, 78, 0.1);
+}
+
 .hero-scan-panel {
   width: 100%;
   max-width: 620px;

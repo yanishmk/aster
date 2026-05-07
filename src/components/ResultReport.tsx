@@ -14,34 +14,42 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
   return (
     <div
-      className="card-lift overflow-hidden rounded-2xl"
+      className="overflow-hidden rounded-2xl"
       style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
-      {/* Header */}
       <div
-        className="flex items-center gap-3 px-6 py-4"
+        className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6"
         style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-alt)" }}
       >
-        <span
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
-          style={{ background: "var(--grad)" }}
-        >
-          <Sparkles size={17} />
-        </span>
-        <div>
-          <p className="font-bold">Skin analysis results</p>
-          <p className="text-sm" style={{ color: "var(--text-2)" }}>Based on your 3-photo scan</p>
+        <div className="flex items-center gap-3">
+          <span
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-white"
+            style={{ background: "var(--grad)" }}
+          >
+            <Sparkles size={18} />
+          </span>
+          <div>
+            <p className="font-black">Skin analysis results</p>
+            <p className="text-sm" style={{ color: "var(--text-2)" }}>Based on your 3-photo scan</p>
+          </div>
         </div>
+        {analysis ? (
+          <div className="flex flex-wrap gap-2 text-xs font-bold" style={{ color: "var(--text-2)" }}>
+            <span className="rounded-full bg-white px-3 py-1.5" style={{ border: "1px solid var(--border)" }}>
+              {detected.length || "No"} detected
+            </span>
+            <span className="rounded-full bg-white px-3 py-1.5" style={{ border: "1px solid var(--border)" }}>
+              {clearCount} clear areas
+            </span>
+          </div>
+        ) : null}
       </div>
 
-      {/* Body */}
-      <div className="p-6">
+      <div className="p-5 sm:p-6">
         {analysis ? (
           <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr]">
-
-            {/* Detected + possible */}
             <div>
-              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>Detected concerns</p>
+              <p className="text-sm font-black uppercase tracking-[0.16em]" style={{ color: "var(--text-2)" }}>Detected concerns</p>
               {detected.length ? (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {detected.map((item) => (
@@ -92,7 +100,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
               className="rounded-2xl p-5"
               style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}
             >
-              <p className="text-sm font-semibold" style={{ color: "var(--text-2)" }}>Recommendation focus</p>
+              <p className="text-sm font-black uppercase tracking-[0.16em]" style={{ color: "var(--text-2)" }}>Recommendation focus</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {focus.map((item) => (
                   <span
