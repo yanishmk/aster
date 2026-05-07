@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, CheckCircle2, Loader2, X } from "lucide-react";
+import { Camera, CheckCircle2, Sparkles, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { ImageRole, PhotoSlot } from "@/types/aster";
@@ -11,6 +11,7 @@ type ThreePhotoUploadProps = {
   canAnalyze: boolean;
   onPhotoChange: (role: ImageRole, file: File) => void;
   onAnalyze: () => void;
+  onCaptureComplete: () => void;
 };
 
 type CameraQuality = {
@@ -30,12 +31,14 @@ export function ThreePhotoUpload({
   canAnalyze,
   onPhotoChange,
   onAnalyze,
+  onCaptureComplete,
 }: ThreePhotoUploadProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const readySinceRef = useRef<number | null>(null);
   const capturedRoleRef = useRef<ImageRole | null>(null);
+  const completionNotifiedRef = useRef(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [quality, setQuality] = useState<CameraQuality>({
@@ -53,6 +56,7 @@ export function ThreePhotoUpload({
     [activeRole, slots],
   );
   const completedCount = slots.filter((slot) => slot.file).length;
+  const scanComplete = completedCount === ROLE_ORDER.length;
   const validationMessages = slots.flatMap((slot) =>
     slot.messages.map((message) => ({
       role: slot.title,
@@ -183,6 +187,33 @@ export function ThreePhotoUpload({
     capturedRoleRef.current = null;
   }, [activeRole]);
 
+  useEffect(() => {
+    if (!isAnalyzing) return;
+    stopCamera();
+    window.setTimeout(() => setCameraOpen(false), 0);
+  }, [isAnalyzing, stopCamera]);
+
+  useEffect(() => {
+    if (!scanComplete) {
+      completionNotifiedRef.current = false;
+      return;
+    }
+
+    if (completionNotifiedRef.current) return;
+    completionNotifiedRef.current = true;
+    stopCamera();
+    window.setTimeout(() => setCameraOpen(false), 0);
+    onCaptureComplete();
+  }, [onCaptureComplete, scanComplete, stopCamera]);
+
+  if (isAnalyzing) {
+    return (
+      <div className="bg-white p-4 sm:p-5">
+        <AnalyzingLogo />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between">
@@ -285,7 +316,7 @@ export function ThreePhotoUpload({
           onClick={onAnalyze}
           type="button"
         >
-          {isAnalyzing ? <Loader2 className="animate-spin" size={16} /> : <Camera size={16} />}
+          {isAnalyzing ? <Sparkles size={16} /> : <Camera size={16} />}
           {isAnalyzing ? "Analyse en cours..." : "Analyser ma peau"}
         </button>
       </div>
@@ -312,6 +343,44 @@ export function ThreePhotoUpload({
           ))}
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function AnalyzingLogo() {
+  return (
+    <div className="aster-analyzing-panel">
+      <div className="aster-analyzing-logo" aria-hidden="true">
+        <span className="aster-analyzing-pulse" />
+        <svg className="aster-analyzing-flower" fill="none" viewBox="0 0 420 420">
+          <defs>
+            <linearGradient id="asterAnalyzeMain" x1="72" x2="348" y1="64" y2="356">
+              <stop offset="0%" stopColor="#f59abc" />
+              <stop offset="48%" stopColor="#dc3c7d" />
+              <stop offset="100%" stopColor="#8f244d" />
+            </linearGradient>
+            <linearGradient id="asterAnalyzeSoft" x1="90" x2="330" y1="84" y2="340">
+              <stop offset="0%" stopColor="#ffd5e3" />
+              <stop offset="100%" stopColor="#d84b86" />
+            </linearGradient>
+          </defs>
+          <path d="M210 196C176 142 176 81 210 54C244 81 244 142 210 196Z" fill="url(#asterAnalyzeMain)" />
+          <path d="M224 204C278 170 339 170 366 210C339 244 278 244 224 216Z" fill="url(#asterAnalyzeMain)" />
+          <path d="M210 224C244 278 244 339 210 366C176 339 176 278 210 224Z" fill="url(#asterAnalyzeMain)" />
+          <path d="M196 216C142 250 81 250 54 210C81 176 142 176 196 204Z" fill="url(#asterAnalyzeSoft)" />
+          <path d="M224 190C244 129 285 95 332 102C332 156 285 190 224 204Z" fill="#df6b9a" />
+          <path d="M230 230C291 244 325 285 318 332C264 332 230 291 216 230Z" fill="#b83263" />
+          <path d="M190 230C176 291 135 325 88 318C88 264 135 230 204 216Z" fill="#f1a9c4" />
+          <path d="M190 190C129 176 95 135 102 88C156 88 190 135 204 196Z" fill="#f7cade" />
+          <circle cx="210" cy="210" fill="#fff8fa" r="54" />
+        </svg>
+        <span className="aster-analyzing-center">
+          <Sparkles size={28} />
+        </span>
+      </div>
+      <p className="mt-5 text-sm font-black uppercase tracking-[0.22em]" style={{ color: "var(--accent)" }}>
+        Analyzing
+      </p>
     </div>
   );
 }

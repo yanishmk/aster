@@ -166,18 +166,21 @@ export default function Home() {
         <section id="scan" className="section-scan scroll-mt-24 px-4 py-8 sm:px-6 lg:py-12">
           <div className="mx-auto max-w-4xl">
             <div className="semrush-style-visual">
-              <div className="visual-toolbar">
-                <div>
-                  <h2 className="text-xl font-black">Skin scan</h2>
+              {!isAnalyzing ? (
+                <div className="visual-toolbar">
+                  <div>
+                    <h2 className="text-xl font-black">Skin scan</h2>
+                  </div>
+                  <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
+                    {capturedCount ? `${capturedCount} ready` : "Ready"}
+                  </span>
                 </div>
-                <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
-                  {capturedCount ? `${capturedCount} ready` : "Ready"}
-                </span>
-              </div>
+              ) : null}
               <ThreePhotoUpload
                 canAnalyze={canAnalyze}
                 isAnalyzing={isAnalyzing}
                 onAnalyze={runAnalysis}
+                onCaptureComplete={runAnalysis}
                 onPhotoChange={handlePhotoChange}
                 slots={slots}
               />
