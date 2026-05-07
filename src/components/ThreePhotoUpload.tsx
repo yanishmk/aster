@@ -422,12 +422,9 @@ function AnalyzingLogo() {
           <circle cx="210" cy="210" fill="#fff8fa" r="54" />
         </svg>
         <span className="aster-analyzing-center">
-          <Sparkles size={28} />
+          Analyzing
         </span>
       </div>
-      <p className="mt-5 text-sm font-black uppercase tracking-[0.22em]" style={{ color: "var(--accent)" }}>
-        Analyzing
-      </p>
     </div>
   );
 }
