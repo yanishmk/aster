@@ -23,8 +23,14 @@ type CameraQuality = {
 };
 
 const ROLE_ORDER: ImageRole[] = ["front", "closeup", "side"];
-const AUTO_CAPTURE_MS = 1400;
+const AUTO_CAPTURE_MS = 2100;
 const CLOSEUP_ZOOM = 1.55;
+const MIN_LIGHT = 58;
+const MAX_LIGHT = 226;
+const MIN_CONTRAST = 16;
+const MIN_BLUR_SCORE = 18;
+const MAX_HIGHLIGHT_RATIO = 0.07;
+const MAX_SHADOW_RATIO = 0.18;
 
 export function ThreePhotoUpload({
   slots,
@@ -114,8 +120,9 @@ export function ThreePhotoUpload({
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: "user",
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+            frameRate: { ideal: 30 },
           },
           audio: false,
         });
@@ -431,7 +438,8 @@ function AnalyzingLogo() {
 
 function GuideOverlay({ role }: { role: ImageRole }) {
   return (
-    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),rgba(0,0,0,0.28))]">
+    <div className="pointer-events-none absolute inset-0 bg-black/[0.03]">
+      <div className="absolute inset-0 border-[10px] border-black/10 md:border-[14px]" />
       {role === "closeup" ? <CloseupGuide /> : role === "side" ? <SideFaceGuide /> : <FrontFaceGuide />}
     </div>
   );
@@ -446,7 +454,7 @@ function CaptureProgress({ progress, ready }: { progress: number; ready: boolean
         className="absolute bottom-0 left-0 w-full rounded-full transition-all duration-200"
         style={{
           height: `${clamped * 100}%`,
-          background: ready ? "linear-gradient(180deg, #f9a8d4 0%, #f0277b 100%)" : "rgba(255,255,255,0.35)",
+          background: ready ? "linear-gradient(180deg, #bbf7d0 0%, #16a34a 100%)" : "rgba(255,255,255,0.35)",
         }}
       />
     </div>
@@ -464,15 +472,15 @@ function FrontFaceGuide() {
       <path
         d="M50 12C31 12 19 29 19 57C19 93 34 126 50 131C66 126 81 93 81 57C81 29 69 12 50 12Z"
         className="drop-shadow-[0_0_18px_rgba(244,114,182,0.55)]"
-        stroke="rgba(244,114,182,0.95)"
+        stroke="rgba(255,255,255,0.95)"
         strokeDasharray="5 4"
         strokeLinecap="round"
         strokeWidth="2"
       />
-      <path d="M30 62C38 58 44 58 49 62" stroke="rgba(251,207,232,0.82)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M51 62C57 58 64 58 72 62" stroke="rgba(251,207,232,0.82)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M50 67C47 78 47 86 50 94" stroke="rgba(251,207,232,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M39 109C46 113 55 113 62 109" stroke="rgba(251,207,232,0.72)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M30 62C38 58 44 58 49 62" stroke="rgba(255,255,255,0.78)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M51 62C57 58 64 58 72 62" stroke="rgba(255,255,255,0.78)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M50 67C47 78 47 86 50 94" stroke="rgba(255,255,255,0.62)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M39 109C46 113 55 113 62 109" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
     </svg>
   );
 }
@@ -488,15 +496,15 @@ function SideFaceGuide() {
       <path
         d="M52 12C33 15 22 31 24 57C27 86 38 113 55 130C70 120 80 100 82 75C84 56 77 43 66 35C62 25 58 17 52 12Z"
         className="drop-shadow-[0_0_18px_rgba(244,114,182,0.55)]"
-        stroke="rgba(244,114,182,0.95)"
+        stroke="rgba(255,255,255,0.95)"
         strokeDasharray="5 4"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
       />
-      <path d="M59 56C65 55 70 58 73 63" stroke="rgba(251,207,232,0.82)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M71 66C82 74 82 84 70 90" stroke="rgba(251,207,232,0.72)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M56 111C64 115 71 113 76 108" stroke="rgba(251,207,232,0.7)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M59 56C65 55 70 58 73 63" stroke="rgba(255,255,255,0.78)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M71 66C82 74 82 84 70 90" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M56 111C64 115 71 113 76 108" stroke="rgba(255,255,255,0.66)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
     </svg>
   );
 }
@@ -513,16 +521,16 @@ function CloseupGuide() {
         className="drop-shadow-[0_0_18px_rgba(244,114,182,0.55)]"
         height="62"
         rx="20"
-        stroke="rgba(244,114,182,0.95)"
+        stroke="rgba(255,255,255,0.95)"
         strokeDasharray="5 4"
         strokeWidth="2"
         width="98"
         x="21"
         y="19"
       />
-      <path d="M42 42C58 34 82 34 98 42" stroke="rgba(251,207,232,0.72)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M42 60C59 68 82 68 99 60" stroke="rgba(251,207,232,0.72)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M70 26V74" stroke="rgba(251,207,232,0.48)" strokeDasharray="3 4" strokeLinecap="round" strokeWidth="1" />
+      <path d="M42 42C58 34 82 34 98 42" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M42 60C59 68 82 68 99 60" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M70 26V74" stroke="rgba(255,255,255,0.48)" strokeDasharray="3 4" strokeLinecap="round" strokeWidth="1" />
     </svg>
   );
 }
@@ -573,27 +581,35 @@ function checkCameraQuality(
   const data = context.getImageData(0, 0, width, height).data;
   const metrics = getFrameMetrics(data, width, height);
 
-  if (metrics.brightness < 52) {
+  if (metrics.brightness < MIN_LIGHT) {
     return {
       ready: false,
       message: "Lighting is too low.",
-      detail: "Move closer to a window or soft light.",
+      detail: "Face a window or use a bright neutral lamp.",
       progress: 0,
     };
   }
-  if (metrics.brightness > 235) {
+  if (metrics.brightness > MAX_LIGHT || metrics.highlightRatio > MAX_HIGHLIGHT_RATIO) {
     return {
       ready: false,
-      message: "Lighting is too bright.",
-      detail: "Turn slightly away from direct light.",
+      message: "Lighting is overexposed.",
+      detail: "Avoid direct sun or bright reflections on skin.",
       progress: 0,
     };
   }
-  if (metrics.contrast < 13) {
+  if (metrics.shadowRatio > MAX_SHADOW_RATIO) {
+    return {
+      ready: false,
+      message: "There are heavy shadows.",
+      detail: "Turn toward even light and avoid side shadows.",
+      progress: 0,
+    };
+  }
+  if (metrics.contrast < MIN_CONTRAST) {
     return {
       ready: false,
       message: "Lighting looks flat.",
-      detail: "Face a window or use softer light.",
+      detail: "Use more even light without filters.",
       progress: 0,
     };
   }
@@ -605,7 +621,23 @@ function checkCameraQuality(
       progress: 0,
     };
   }
-  if (role === "closeup" && metrics.skinRatio > 0.72) {
+  if (role === "front" && metrics.centerSkinRatio < 0.01) {
+    return {
+      ready: false,
+      message: "Center your face.",
+      detail: "Keep your face in the middle of the outline.",
+      progress: 0,
+    };
+  }
+  if (role === "side" && metrics.centerSkinRatio < 0.008) {
+    return {
+      ready: false,
+      message: "Keep your cheek in frame.",
+      detail: "Turn slightly, but keep skin centered.",
+      progress: 0,
+    };
+  }
+  if (role === "closeup" && metrics.skinRatio > 0.62) {
     return {
       ready: false,
       message: "Move back slightly.",
@@ -613,24 +645,24 @@ function checkCameraQuality(
       progress: 0,
     };
   }
-  if (metrics.blurScore < 10) {
+  if (metrics.blurScore < MIN_BLUR_SCORE) {
     return {
       ready: false,
       message: "Image is blurry.",
-      detail: "Hold the camera steady for one second.",
+      detail: "Hold the camera steady until the green bar fills.",
       progress: 0,
     };
   }
 
   const roleMessage = {
-    front: "Great. Keep your face centered, photo will capture automatically.",
-    closeup: "Great. Hold the camera close to one cheek, photo will capture automatically.",
-    side: "Great. Hold this side angle, photo will capture automatically.",
+    front: "Quality looks good. Hold still for capture.",
+    closeup: "Texture looks readable. Hold still for capture.",
+    side: "Side angle looks good. Hold still for capture.",
   };
   const roleDetail = {
-    front: "Look straight ahead and keep still.",
-    closeup: "Keep the skin area inside the pink frame.",
-    side: "Turn slightly and keep your cheek visible.",
+    front: "No filter, neutral light, face centered.",
+    closeup: "Keep one cheek or forehead area inside the frame.",
+    side: "Keep the cheek and jaw area visible.",
   };
 
   return { ready: true, message: roleMessage[role], detail: roleDetail[role], progress: 1 };
@@ -645,22 +677,28 @@ function validateCapturedFrame(canvas: HTMLCanvasElement, role: ImageRole): Came
   const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
   const metrics = getFrameMetrics(data, canvas.width, canvas.height);
 
-  if (metrics.brightness < 52) {
+  if (metrics.brightness < MIN_LIGHT) {
     return { ready: false, message: "Lighting is too low. Please retake this photo." };
   }
-  if (metrics.brightness > 235) {
-    return { ready: false, message: "Lighting is too bright. Please retake this photo." };
+  if (metrics.brightness > MAX_LIGHT || metrics.highlightRatio > MAX_HIGHLIGHT_RATIO) {
+    return { ready: false, message: "Lighting is overexposed. Please retake this photo." };
   }
-  if (metrics.contrast < 13) {
+  if (metrics.shadowRatio > MAX_SHADOW_RATIO) {
+    return { ready: false, message: "There are heavy shadows. Please retake this photo." };
+  }
+  if (metrics.contrast < MIN_CONTRAST) {
     return { ready: false, message: "Lighting is too flat. Please retake this photo." };
   }
   if (metrics.skinRatio < (role === "closeup" ? 0.055 : 0.012)) {
     return { ready: false, message: "Face or skin is not visible. Please try again." };
   }
-  if (role === "closeup" && metrics.skinRatio > 0.72) {
+  if ((role === "front" && metrics.centerSkinRatio < 0.01) || (role === "side" && metrics.centerSkinRatio < 0.008)) {
+    return { ready: false, message: "Face is not centered. Please try again." };
+  }
+  if (role === "closeup" && metrics.skinRatio > 0.62) {
     return { ready: false, message: "Image is too close. Please move back slightly." };
   }
-  if (metrics.blurScore < 12) {
+  if (metrics.blurScore < MIN_BLUR_SCORE) {
     return { ready: false, message: "Image is blurry. Please hold the camera steady." };
   }
 
@@ -697,21 +735,39 @@ async function applyCameraZoom(stream: MediaStream, role: ImageRole) {
   if (!videoTrack) return false;
 
   const capabilities = videoTrack.getCapabilities() as MediaTrackCapabilities & {
+    exposureMode?: string[];
+    focusMode?: string[];
+    whiteBalanceMode?: string[];
     zoom?: { min?: number; max?: number; step?: number };
   };
 
-  if (!capabilities.zoom) return false;
+  const advanced: MediaTrackConstraintSet[] = [];
 
-  const minZoom = capabilities.zoom.min ?? 1;
-  const maxZoom = capabilities.zoom.max ?? 1;
-  const requestedZoom = role === "closeup" ? CLOSEUP_ZOOM : minZoom;
-  const zoom = Math.min(Math.max(requestedZoom, minZoom), maxZoom);
+  if (capabilities.focusMode?.includes("continuous")) {
+    advanced.push({ focusMode: "continuous" } as MediaTrackConstraintSet);
+  }
+  if (capabilities.exposureMode?.includes("continuous")) {
+    advanced.push({ exposureMode: "continuous" } as MediaTrackConstraintSet);
+  }
+  if (capabilities.whiteBalanceMode?.includes("continuous")) {
+    advanced.push({ whiteBalanceMode: "continuous" } as MediaTrackConstraintSet);
+  }
+
+  let zoomApplied = false;
+  if (capabilities.zoom) {
+    const minZoom = capabilities.zoom.min ?? 1;
+    const maxZoom = capabilities.zoom.max ?? 1;
+    const requestedZoom = role === "closeup" ? CLOSEUP_ZOOM : minZoom;
+    const zoom = Math.min(Math.max(requestedZoom, minZoom), maxZoom);
+    advanced.push({ zoom } as MediaTrackConstraintSet);
+    zoomApplied = role === "closeup" && zoom > minZoom;
+  }
+
+  if (!advanced.length) return false;
 
   try {
-    await videoTrack.applyConstraints({
-      advanced: [{ zoom } as MediaTrackConstraintSet],
-    });
-    return role === "closeup" && zoom > minZoom;
+    await videoTrack.applyConstraints({ advanced });
+    return zoomApplied;
   } catch {
     return false;
   }
@@ -722,9 +778,19 @@ function getFrameMetrics(data: Uint8ClampedArray, width: number, height: number)
   let brightness = 0;
   let contrastSeed = 0;
   let skinPixels = 0;
+  let centerSkinPixels = 0;
+  let centerPixels = 0;
+  let highlightPixels = 0;
+  let shadowPixels = 0;
   const pixels = width * height;
+  const centerLeft = Math.round(width * 0.22);
+  const centerRight = Math.round(width * 0.78);
+  const centerTop = Math.round(height * 0.18);
+  const centerBottom = Math.round(height * 0.82);
 
   for (let pixel = 0, dataIndex = 0; pixel < pixels; pixel += 1, dataIndex += 4) {
+    const x = pixel % width;
+    const y = Math.floor(pixel / width);
     const red = data[dataIndex];
     const green = data[dataIndex + 1];
     const blue = data[dataIndex + 2];
@@ -733,8 +799,16 @@ function getFrameMetrics(data: Uint8ClampedArray, width: number, height: number)
     brightness += light;
     contrastSeed += light * light;
 
-    if (red > 55 && green > 35 && blue > 25 && red > green && green > blue && red - blue > 15) {
+    if (light > 245) highlightPixels += 1;
+    if (light < 35) shadowPixels += 1;
+
+    const isSkin = red > 55 && green > 35 && blue > 25 && red > green && green > blue && red - blue > 15;
+    if (isSkin) {
       skinPixels += 1;
+    }
+    if (x >= centerLeft && x <= centerRight && y >= centerTop && y <= centerBottom) {
+      centerPixels += 1;
+      if (isSkin) centerSkinPixels += 1;
     }
   }
 
@@ -745,6 +819,9 @@ function getFrameMetrics(data: Uint8ClampedArray, width: number, height: number)
     brightness,
     contrast,
     skinRatio: skinPixels / pixels,
+    centerSkinRatio: centerPixels ? centerSkinPixels / centerPixels : 0,
+    highlightRatio: highlightPixels / pixels,
+    shadowRatio: shadowPixels / pixels,
     blurScore: getBlurScore(gray, width, height),
   };
 }
