@@ -1,9 +1,19 @@
-import { ArrowUpRight, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowUpRight, Plus, ShoppingBag, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 import type { Product } from "@/types/aster";
 
-export function ProductRecommendations({ products }: { products: Product[] }) {
+type ProductRecommendationsProps = {
+  products: Product[];
+  cartProductIds?: Set<string>;
+  onAddToCart?: (product: Product) => void;
+};
+
+export function ProductRecommendations({
+  cartProductIds = new Set<string>(),
+  onAddToCart,
+  products,
+}: ProductRecommendationsProps) {
   if (!products.length) {
     return (
       <div
@@ -21,13 +31,26 @@ export function ProductRecommendations({ products }: { products: Product[] }) {
   return (
     <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {products.slice(0, 6).map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard
+          inCart={cartProductIds.has(product.id)}
+          key={product.id}
+          onAddToCart={onAddToCart}
+          product={product}
+        />
       ))}
     </div>
   );
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  inCart,
+  onAddToCart,
+  product,
+}: {
+  inCart: boolean;
+  onAddToCart?: (product: Product) => void;
+  product: Product;
+}) {
   const [imageFailed, setImageFailed] = useState(false);
   const imageSrc = normalizeProductImage(product.imageUrl);
   const hasRealImage = imageSrc && !imageSrc.includes("placehold.co") && !imageFailed;
@@ -99,16 +122,29 @@ function ProductCard({ product }: { product: Product }) {
             ))}
         </div>
 
-        <a
-          className="btn-grad mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-white"
-          href={product.url}
-          rel="noreferrer"
-          target="_blank"
-        >
-          <ShoppingBag size={15} />
-          Buy product
-          <ArrowUpRight size={14} />
-        </a>
+        <div className="mt-5 grid gap-2">
+          {onAddToCart ? (
+            <button
+              className="btn-grad inline-flex h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-white disabled:cursor-default disabled:opacity-70"
+              disabled={inCart}
+              onClick={() => onAddToCart(product)}
+              type="button"
+            >
+              {inCart ? <ShoppingBag size={15} /> : <Plus size={15} />}
+              {inCart ? "In cart" : "Add to cart"}
+            </button>
+          ) : null}
+          <a
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border text-sm font-bold"
+            href={product.url}
+            rel="noreferrer"
+            style={{ borderColor: "var(--border)", color: "var(--text)" }}
+            target="_blank"
+          >
+            View product
+            <ArrowUpRight size={14} />
+          </a>
+        </div>
       </div>
     </article>
   );

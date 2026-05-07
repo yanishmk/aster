@@ -4,11 +4,12 @@ import { Camera, CheckCircle2, ClipboardList, ShoppingBag, Sparkles } from "luci
 import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import { AsterLogo } from "@/components/AsterLogo";
+import { ProductCart, type CartItem } from "@/components/ProductCart";
 import { ProductRecommendations } from "@/components/ProductRecommendations";
 import { ResultReport } from "@/components/ResultReport";
 import { RoutinePreview } from "@/components/RoutinePreview";
 import { ThreePhotoUpload } from "@/components/ThreePhotoUpload";
-import type { AnalyzeSessionResponse, ImageRole, ImageValidation, PhotoSlot } from "@/types/aster";
+import type { AnalyzeSessionResponse, ImageRole, ImageValidation, PhotoSlot, Product } from "@/types/aster";
 
 const API_URL = normalizeApiUrl(process.env.NEXT_PUBLIC_SKIN_API_URL ?? "http://localhost:8000");
 
@@ -42,11 +43,15 @@ const INITIAL_SLOTS: PhotoSlot[] = [
 export default function Home() {
   const [slots, setSlots] = useState<PhotoSlot[]>(INITIAL_SLOTS);
   const [analysis, setAnalysis] = useState<AnalyzeSessionResponse | null>(null);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const resultsRef = useRef<HTMLElement | null>(null);
 
   const canAnalyze = useMemo(() => slots.every((slot) => slot.file), [slots]);
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartProductIds = useMemo(() => new Set(cartItems.map((item) => item.product.id)), [cartItems]);
   const hasAnalysis = analysis !== null;
 
   function handlePhotoChange(role: ImageRole, file: File) {
@@ -117,6 +122,37 @@ export default function Home() {
     );
   }
 
+  function addToCart(product: Product) {
+    setCartItems((current) => {
+      const existing = current.find((item) => item.product.id === product.id);
+      if (existing) {
+        return current.map((item) =>
+          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
+        );
+      }
+      return [...current, { product, quantity: 1 }];
+    });
+    setCartOpen(true);
+  }
+
+  function removeFromCart(productId: string) {
+    setCartItems((current) => current.filter((item) => item.product.id !== productId));
+  }
+
+  function updateCartQuantity(productId: string, quantity: number) {
+    setCartItems((current) =>
+      current.map((item) =>
+        item.product.id === productId ? { ...item, quantity: Math.max(quantity, 1) } : item,
+      ),
+    );
+  }
+
+  function openCartProducts() {
+    for (const item of cartItems) {
+      window.open(item.product.url, "_blank", "noopener,noreferrer");
+    }
+  }
+
   return (
     <div className="min-h-screen beauty-shell" style={{ color: "var(--text)" }}>
       <header className="sticky top-0 z-50 border-b bg-white/82 backdrop-blur-2xl" style={{ borderColor: "rgba(240,213,230,0.75)" }}>
@@ -128,9 +164,25 @@ export default function Home() {
             <a className="transition-colors hover:text-[#15080e]" href="#products">Products</a>
             <a className="transition-colors hover:text-[#15080e]" href="#routine">Routine</a>
           </nav>
-          <a className="btn-grad rounded-full px-5 py-2.5 text-sm font-bold text-white" href="#scan">
-            Start scan
-          </a>
+          <div className="flex items-center gap-2">
+            <button
+              className="relative inline-flex h-10 items-center justify-center gap-2 rounded-full border bg-white px-4 text-sm font-bold"
+              onClick={() => setCartOpen(true)}
+              style={{ borderColor: "var(--border)", color: "var(--text)" }}
+              type="button"
+            >
+              <ShoppingBag size={16} />
+              Cart
+              {cartCount ? (
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-black text-white" style={{ background: "var(--accent)" }}>
+                  {cartCount}
+                </span>
+              ) : null}
+            </button>
+            <a className="btn-grad rounded-full px-5 py-2.5 text-sm font-bold text-white" href="#scan">
+              Start scan
+            </a>
+          </div>
         </div>
       </header>
 
@@ -215,7 +267,13 @@ export default function Home() {
           id="products"
           showDetails={!hasAnalysis}
           title="Products to buy"
-          visual={<ProductRecommendations products={analysis?.routine.products ?? []} />}
+          visual={(
+            <ProductRecommendations
+              cartProductIds={cartProductIds}
+              onAddToCart={addToCart}
+              products={analysis?.routine.products ?? []}
+            />
+          )}
         />
 
         <FeatureSection
@@ -257,6 +315,15 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      <ProductCart
+        items={cartItems}
+        onCheckout={openCartProducts}
+        onClose={() => setCartOpen(false)}
+        onRemove={removeFromCart}
+        onUpdateQuantity={updateCartQuantity}
+        open={cartOpen}
+      />
     </div>
   );
 }
