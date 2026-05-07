@@ -47,6 +47,7 @@ export default function Home() {
   const resultsRef = useRef<HTMLElement | null>(null);
 
   const canAnalyze = useMemo(() => slots.every((slot) => slot.file), [slots]);
+  const hasAnalysis = analysis !== null;
 
   function handlePhotoChange(role: ImageRole, file: File) {
     setSlots((current) =>
@@ -145,15 +146,19 @@ export default function Home() {
                 <a className="btn-grad rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-xl" href="#scan">
                   Start the scan
                 </a>
-                <a className="rounded-full border bg-white/70 px-7 py-3.5 text-sm font-bold transition-colors hover:bg-white" href="#how-it-works" style={{ borderColor: "var(--border)", color: "var(--text)" }}>
-                  See how it works
-                </a>
+                {!hasAnalysis ? (
+                  <a className="rounded-full border bg-white/70 px-7 py-3.5 text-sm font-bold transition-colors hover:bg-white" href="#how-it-works" style={{ borderColor: "var(--border)", color: "var(--text)" }}>
+                    See how it works
+                  </a>
+                ) : null}
               </div>
-              <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
-                <HeroPoint icon={<Camera size={17} />} label="Guided scan" />
-                <HeroPoint icon={<Sparkles size={17} />} label="Simple results" />
-                <HeroPoint icon={<ShoppingBag size={17} />} label="Products to buy" />
-              </div>
+              {!hasAnalysis ? (
+                <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
+                  <HeroPoint icon={<Camera size={17} />} label="Guided scan" />
+                  <HeroPoint icon={<Sparkles size={17} />} label="Simple results" />
+                  <HeroPoint icon={<ShoppingBag size={17} />} label="Products to buy" />
+                </div>
+              ) : null}
             </div>
 
             <div className="reveal-up delay-1">
@@ -178,22 +183,25 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how-it-works" className="section-process px-4 py-10 sm:px-6 lg:py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid overflow-hidden rounded-[2rem] border bg-white/76 shadow-sm md:grid-cols-4" style={{ borderColor: "var(--border)" }}>
-              <BenefitItem icon={<Camera size={20} />} title="Guided capture" text="Clean camera guidance." />
-              <BenefitItem icon={<Sparkles size={20} />} title="Cleaner signal" text="Balanced visual reading." />
-              <BenefitItem icon={<ShoppingBag size={20} />} title="Product match" text="A curated shelf based on concerns." />
-              <BenefitItem icon={<ClipboardList size={20} />} title="Daily ritual" text="Morning and evening steps." />
+        {!hasAnalysis ? (
+          <section id="how-it-works" className="section-process px-4 py-10 sm:px-6 lg:py-12">
+            <div className="mx-auto max-w-7xl">
+              <div className="grid overflow-hidden rounded-[2rem] border bg-white/76 shadow-sm md:grid-cols-4" style={{ borderColor: "var(--border)" }}>
+                <BenefitItem icon={<Camera size={20} />} title="Guided capture" text="Clean camera guidance." />
+                <BenefitItem icon={<Sparkles size={20} />} title="Cleaner signal" text="Balanced visual reading." />
+                <BenefitItem icon={<ShoppingBag size={20} />} title="Product match" text="A curated shelf based on concerns." />
+                <BenefitItem icon={<ClipboardList size={20} />} title="Daily ritual" text="Morning and evening steps." />
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
 
         <FeatureSection
           eyebrow="Skin reading"
           icon={<Sparkles size={18} />}
           id="results"
           refProp={resultsRef}
+          showDetails={!hasAnalysis}
           title="Your results"
           visual={<ResultReport analysis={analysis} />}
         />
@@ -203,6 +211,7 @@ export default function Home() {
           flipped
           icon={<ShoppingBag size={18} />}
           id="products"
+          showDetails={!hasAnalysis}
           title="Products to buy"
           visual={<ProductRecommendations products={analysis?.routine.products ?? []} />}
         />
@@ -211,6 +220,7 @@ export default function Home() {
           eyebrow="Routine builder"
           icon={<ClipboardList size={18} />}
           id="routine"
+          showDetails={!hasAnalysis}
           title="Your routine"
           visual={(
             <RoutinePreview
@@ -220,17 +230,19 @@ export default function Home() {
           )}
         />
 
-        <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-7xl rounded-[2.5rem] px-6 py-12 text-center sm:px-10" style={{ background: "var(--grad)" }}>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">Aster consultation</p>
-            <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
-              Start with your skin. Leave with a routine.
-            </h2>
-            <a className="mt-7 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-black shadow-xl transition-transform hover:-translate-y-1" href="#scan" style={{ color: "var(--accent)" }}>
-              Begin scan
-            </a>
-          </div>
-        </section>
+        {!hasAnalysis ? (
+          <section className="px-4 py-14 sm:px-6 lg:py-20">
+            <div className="mx-auto max-w-7xl rounded-[2.5rem] px-6 py-12 text-center sm:px-10" style={{ background: "var(--grad)" }}>
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/70">Aster consultation</p>
+              <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
+                Start with your skin. Leave with a routine.
+              </h2>
+              <a className="mt-7 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-black shadow-xl transition-transform hover:-translate-y-1" href="#scan" style={{ color: "var(--accent)" }}>
+                Begin scan
+              </a>
+            </div>
+          </section>
+        ) : null}
       </main>
 
       <footer className="px-4 py-10 sm:px-6">
@@ -275,6 +287,7 @@ function FeatureSection({
   icon,
   id,
   refProp,
+  showDetails = true,
   title,
   visual,
 }: {
@@ -283,6 +296,7 @@ function FeatureSection({
   icon: ReactNode;
   id: string;
   refProp?: React.RefObject<HTMLElement | null>;
+  showDetails?: boolean;
   title: string;
   visual: ReactNode;
 }) {
@@ -295,11 +309,13 @@ function FeatureSection({
             {eyebrow}
           </div>
           <h2 className="max-w-xl text-3xl font-black tracking-tight sm:text-5xl">{title}</h2>
-          <ul className="mt-7 space-y-3 text-sm font-semibold" style={{ color: "var(--text)" }}>
-            <FeatureCheck>Simple language for skincare decisions</FeatureCheck>
-            <FeatureCheck>Built around products and routine</FeatureCheck>
-            <FeatureCheck>Designed to reduce random product buying</FeatureCheck>
-          </ul>
+          {showDetails ? (
+            <ul className="mt-7 space-y-3 text-sm font-semibold" style={{ color: "var(--text)" }}>
+              <FeatureCheck>Simple language for skincare decisions</FeatureCheck>
+              <FeatureCheck>Built around products and routine</FeatureCheck>
+              <FeatureCheck>Designed to reduce random product buying</FeatureCheck>
+            </ul>
+          ) : null}
         </div>
         <div className={`feature-visual ${flipped ? "lg:order-1" : ""}`}>
           {visual}
