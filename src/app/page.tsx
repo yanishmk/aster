@@ -47,7 +47,6 @@ export default function Home() {
   const resultsRef = useRef<HTMLElement | null>(null);
 
   const canAnalyze = useMemo(() => slots.every((slot) => slot.file), [slots]);
-  const capturedCount = slots.filter((slot) => slot.file).length;
 
   function handlePhotoChange(role: ImageRole, file: File) {
     setSlots((current) =>
@@ -135,7 +134,7 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="section-home relative overflow-hidden">
+        <section id="scan" className="section-home relative scroll-mt-24 overflow-hidden">
           <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:py-10">
             <div className="reveal-up">
               <h1 className="max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
@@ -158,24 +157,6 @@ export default function Home() {
             </div>
 
             <div className="reveal-up delay-1">
-              <HeroAsterScanButton isAnalyzing={isAnalyzing} />
-            </div>
-          </div>
-        </section>
-
-        <section id="scan" className="section-scan scroll-mt-24 px-4 py-8 sm:px-6 lg:py-12">
-          <div className="mx-auto max-w-4xl">
-            <div className="semrush-style-visual">
-              {!isAnalyzing ? (
-                <div className="visual-toolbar">
-                  <div>
-                    <h2 className="text-xl font-black">Skin scan</h2>
-                  </div>
-                  <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
-                    {capturedCount ? `${capturedCount} ready` : "Ready"}
-                  </span>
-                </div>
-              ) : null}
               <ThreePhotoUpload
                 canAnalyze={canAnalyze}
                 isAnalyzing={isAnalyzing}
@@ -183,10 +164,11 @@ export default function Home() {
                 onCaptureComplete={runAnalysis}
                 onPhotoChange={handlePhotoChange}
                 slots={slots}
+                variant="hero"
               />
               {errorMessage ? (
                 <p
-                  className="mx-5 mb-5 rounded-2xl px-4 py-3 text-sm font-medium"
+                  className="mx-auto mt-4 max-w-xl rounded-2xl px-4 py-3 text-sm font-medium"
                   style={{ background: "#fff1f2", border: "1px solid #fecdd3", color: "#9f1239" }}
                 >
                   {errorMessage}
@@ -261,48 +243,6 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  );
-}
-
-function HeroAsterScanButton({
-  isAnalyzing,
-}: {
-  isAnalyzing: boolean;
-}) {
-  return (
-    <a
-      aria-label="Start Aster scan"
-      className={`aster-scan-logo group ${isAnalyzing ? "is-analyzing" : ""}`}
-      href="#scan"
-    >
-      <span className="aster-scan-pulse" />
-      <svg aria-hidden="true" className="aster-scan-flower h-full w-full" fill="none" viewBox="0 0 420 420">
-        <defs>
-          <linearGradient id="asterPetalMain" x1="72" x2="348" y1="64" y2="356">
-            <stop offset="0%" stopColor="#f59abc" />
-            <stop offset="48%" stopColor="#dc3c7d" />
-            <stop offset="100%" stopColor="#8f244d" />
-          </linearGradient>
-          <linearGradient id="asterPetalSoft" x1="90" x2="330" y1="84" y2="340">
-            <stop offset="0%" stopColor="#ffd5e3" />
-            <stop offset="100%" stopColor="#d84b86" />
-          </linearGradient>
-        </defs>
-        <path d="M210 196C176 142 176 81 210 54C244 81 244 142 210 196Z" fill="url(#asterPetalMain)" />
-        <path d="M224 204C278 170 339 170 366 210C339 244 278 244 224 216Z" fill="url(#asterPetalMain)" />
-        <path d="M210 224C244 278 244 339 210 366C176 339 176 278 210 224Z" fill="url(#asterPetalMain)" />
-        <path d="M196 216C142 250 81 250 54 210C81 176 142 176 196 204Z" fill="url(#asterPetalSoft)" />
-        <path d="M224 190C244 129 285 95 332 102C332 156 285 190 224 204Z" fill="#df6b9a" />
-        <path d="M230 230C291 244 325 285 318 332C264 332 230 291 216 230Z" fill="#b83263" />
-        <path d="M190 230C176 291 135 325 88 318C88 264 135 230 204 216Z" fill="#f1a9c4" />
-        <path d="M190 190C129 176 95 135 102 88C156 88 190 135 204 196Z" fill="#f7cade" />
-        <circle cx="210" cy="210" fill="#fff8fa" r="54" />
-      </svg>
-      <span className="aster-camera-center">
-        <Camera size={34} />
-      </span>
-      {isAnalyzing ? <span className="aster-scan-count">Analyzing</span> : null}
-    </a>
   );
 }
 
