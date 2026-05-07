@@ -25,8 +25,9 @@ export function ProductCart({
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + getProductPrice(item.product) * item.quantity, 0);
   const hasPricedItems = items.some((item) => getProductPrice(item.product) > 0);
+  const amazonCartReady = hasAmazonAssociateTag();
   const amazonCartUrl = buildAmazonCartUrl(items);
-  const otherRetailerItems = items.filter((item) => !isAmazonCartEligible(item.product));
+  const otherRetailerItems = items.filter((item) => !amazonCartReady || !isAmazonCartEligible(item.product));
 
   return (
     <div className={`cart-shell ${open ? "is-open" : ""}`} aria-hidden={!open}>
@@ -128,6 +129,11 @@ export function ProductCart({
                 Continue to Amazon cart
               </a>
             ) : null}
+            {items.length && !amazonCartReady ? (
+              <div className="rounded-xl px-3 py-2.5 text-xs font-semibold leading-5" style={{ background: "var(--accent-light)", color: "var(--text-2)" }}>
+                Add `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG` to enable a pre-filled Amazon cart.
+              </div>
+            ) : null}
             {otherRetailerItems.length ? (
               <button
                 className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border bg-white text-sm font-black disabled:cursor-not-allowed disabled:opacity-45"
@@ -226,6 +232,9 @@ function getProductPrice(product: Product) {
 }
 
 function buildAmazonCartUrl(items: CartItem[]) {
+  const associateTag = process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim();
+  if (!associateTag) return "";
+
   const amazonItems = items
     .map((item) => ({ ...item, asin: getAmazonAsin(item.product) }))
     .filter((item): item is CartItem & { asin: string } => Boolean(item.asin));
@@ -233,8 +242,7 @@ function buildAmazonCartUrl(items: CartItem[]) {
   if (!amazonItems.length) return "";
 
   const params = new URLSearchParams();
-  const associateTag = process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG;
-  if (associateTag) params.set("AssociateTag", associateTag);
+  params.set("AssociateTag", associateTag);
 
   amazonItems.forEach((item, index) => {
     const position = index + 1;
@@ -253,6 +261,10 @@ function getAmazonAsin(product: Product) {
 
 function isAmazonCartEligible(product: Product) {
   return Boolean(getAmazonAsin(product));
+}
+
+function hasAmazonAssociateTag() {
+  return Boolean(process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim());
 }
 
 function openRetailerPages(items: CartItem[]) {
