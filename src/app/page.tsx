@@ -147,12 +147,6 @@ export default function Home() {
     );
   }
 
-  function openCartProducts() {
-    for (const item of cartItems) {
-      window.open(item.product.url, "_blank", "noopener,noreferrer");
-    }
-  }
-
   return (
     <div className="min-h-screen beauty-shell" style={{ color: "var(--text)" }}>
       <header className="sticky top-0 z-50 border-b bg-white/82 backdrop-blur-2xl" style={{ borderColor: "rgba(240,213,230,0.75)" }}>
@@ -318,7 +312,6 @@ export default function Home() {
 
       <ProductCart
         items={cartItems}
-        onCheckout={openCartProducts}
         onClose={() => setCartOpen(false)}
         onRemove={removeFromCart}
         onUpdateQuantity={updateCartQuantity}

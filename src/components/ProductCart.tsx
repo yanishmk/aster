@@ -9,7 +9,6 @@ export type CartItem = {
 
 type ProductCartProps = {
   items: CartItem[];
-  onCheckout: () => void;
   onClose: () => void;
   onRemove: (productId: string) => void;
   onUpdateQuantity: (productId: string, quantity: number) => void;
@@ -18,7 +17,6 @@ type ProductCartProps = {
 
 export function ProductCart({
   items,
-  onCheckout,
   onClose,
   onRemove,
   onUpdateQuantity,
@@ -27,6 +25,8 @@ export function ProductCart({
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + getProductPrice(item.product) * item.quantity, 0);
   const hasPricedItems = items.some((item) => getProductPrice(item.product) > 0);
+  const amazonCartUrl = buildAmazonCartUrl(items);
+  const otherRetailerItems = items.filter((item) => !isAmazonCartEligible(item.product));
 
   return (
     <div className={`cart-shell ${open ? "is-open" : ""}`} aria-hidden={!open}>
@@ -116,17 +116,43 @@ export function ProductCart({
             <span className="text-sm font-bold" style={{ color: "var(--text-2)" }}>Estimated subtotal</span>
             <span className="text-2xl font-black">{hasPricedItems ? `$${subtotal.toFixed(2)}` : "View"}</span>
           </div>
-          <button
-            className="btn-grad flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-45"
-            disabled={!items.length}
-            onClick={onCheckout}
-            type="button"
-          >
-            <ShoppingBag size={16} />
-            Open all products
-          </button>
+          <div className="grid gap-2">
+            {amazonCartUrl ? (
+              <a
+                className="btn-grad flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-black text-white"
+                href={amazonCartUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <ShoppingBag size={16} />
+                Continue to Amazon cart
+              </a>
+            ) : null}
+            {otherRetailerItems.length ? (
+              <button
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border bg-white text-sm font-black disabled:cursor-not-allowed disabled:opacity-45"
+                disabled={!otherRetailerItems.length}
+                onClick={() => openRetailerPages(otherRetailerItems)}
+                style={{ borderColor: "var(--border)", color: "var(--text)" }}
+                type="button"
+              >
+                <ArrowUpRight size={16} />
+                Open other retailer pages
+              </button>
+            ) : null}
+            {!items.length ? (
+              <button
+                className="btn-grad flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-45"
+                disabled
+                type="button"
+              >
+                <ShoppingBag size={16} />
+                Checkout
+              </button>
+            ) : null}
+          </div>
           <p className="mt-3 text-xs leading-5" style={{ color: "var(--text-3)" }}>
-            Checkout happens on each retailer site. Prices may change.
+            Amazon items can open in a pre-filled Amazon cart. Other retailers complete checkout on their product pages.
           </p>
         </div>
       </aside>
@@ -197,6 +223,42 @@ function formatPrice(product: Product) {
 function getProductPrice(product: Product) {
   const amount = Number(product.price);
   return Number.isNaN(amount) ? 0 : amount;
+}
+
+function buildAmazonCartUrl(items: CartItem[]) {
+  const amazonItems = items
+    .map((item) => ({ ...item, asin: getAmazonAsin(item.product) }))
+    .filter((item): item is CartItem & { asin: string } => Boolean(item.asin));
+
+  if (!amazonItems.length) return "";
+
+  const params = new URLSearchParams();
+  const associateTag = process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG;
+  if (associateTag) params.set("AssociateTag", associateTag);
+
+  amazonItems.forEach((item, index) => {
+    const position = index + 1;
+    params.set(`ASIN.${position}`, item.asin);
+    params.set(`Quantity.${position}`, String(item.quantity));
+  });
+
+  return `https://www.amazon.com/gp/aws/cart/add.html?${params.toString()}`;
+}
+
+function getAmazonAsin(product: Product) {
+  if (product.retailer.toLowerCase() !== "amazon") return "";
+  const match = product.url.match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
+  return match?.[1] ?? "";
+}
+
+function isAmazonCartEligible(product: Product) {
+  return Boolean(getAmazonAsin(product));
+}
+
+function openRetailerPages(items: CartItem[]) {
+  for (const item of items) {
+    window.open(item.product.url, "_blank", "noopener,noreferrer");
+  }
 }
 
 function normalizeProductImage(imageUrl: string) {
