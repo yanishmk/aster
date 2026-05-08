@@ -9,6 +9,7 @@ import { ProductRecommendations } from "@/components/ProductRecommendations";
 import { ResultReport } from "@/components/ResultReport";
 import { RoutinePreview } from "@/components/RoutinePreview";
 import { ThreePhotoUpload } from "@/components/ThreePhotoUpload";
+import { DEMO_PRODUCTS } from "@/data/products";
 import type { AnalyzeSessionResponse, ImageRole, ImageValidation, PhotoSlot, Product } from "@/types/aster";
 
 const API_URL = normalizeApiUrl(process.env.NEXT_PUBLIC_SKIN_API_URL ?? "http://localhost:8000");
@@ -265,7 +266,7 @@ export default function Home() {
             <ProductRecommendations
               cartProductIds={cartProductIds}
               onAddToCart={addToCart}
-              products={analysis?.routine.products ?? []}
+              products={analysis?.routine.products ?? DEMO_PRODUCTS}
             />
           )}
         />
