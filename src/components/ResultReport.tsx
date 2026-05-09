@@ -12,6 +12,8 @@ export function ResultReport({ analysis }: ResultReportProps) {
   const clearCount = analysis?.result.not_detected.length ?? 0;
   const faceCareScore = analysis ? analysis.result.face_care_score ?? buildFaceCareScore(analysis) : null;
   const focus = analysis?.result.skin_profile.recommendation_focus ?? ["hydration"];
+  const primaryConcern = detected[0] ?? possible[0] ?? "Balanced";
+  const secondaryConcern = possible.find((item) => item !== primaryConcern);
 
   return (
     <div
@@ -38,7 +40,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
       <div className="px-6 pb-7 sm:px-8">
         {analysis ? (
-          <div className="grid gap-8 lg:grid-cols-[0.72fr_1fr] lg:items-center">
+          <div className="grid gap-8 lg:grid-cols-[0.68fr_1fr] lg:items-center">
             {faceCareScore ? (
               <div>
                 <div className="flex items-end gap-2">
@@ -60,51 +62,39 @@ export function ResultReport({ analysis }: ResultReportProps) {
               </div>
             ) : null}
 
-            <div className="lg:border-l lg:pl-8" style={{ borderColor: "rgba(242,215,228,0.9)" }}>
-              <p className="text-sm font-bold leading-7" style={{ color: "var(--text-2)" }}>
-                {detected.length
-                  ? `Your scan points to ${detected.join(", ").toLowerCase()} as the main visible focus.`
-                  : "Your scan did not show a strong visible concern."}
-                {possible.length ? ` We also noticed a softer signal around ${possible.join(", ").toLowerCase()}.` : ""}
-              </p>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {[...detected, ...possible].slice(0, 4).map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full px-4 py-2 text-sm font-bold capitalize"
-                    style={{
-                      background: "rgba(255,240,247,0.84)",
-                      border: "1px solid rgba(246,181,208,0.86)",
-                      color: "var(--accent)",
-                    }}
-                  >
-                    {item}
-                  </span>
-                ))}
+            <div className="grid gap-3 lg:border-l lg:pl-8" style={{ borderColor: "rgba(242,215,228,0.9)" }}>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <ResultMetric label="Main focus" value={primaryConcern} variant="accent" />
+                <ResultMetric label="Soft signal" value={secondaryConcern ?? "None"} />
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-2">
-                {focus.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full px-4 py-2 text-sm font-semibold capitalize"
-                    style={{ border: "1px solid rgba(242,215,228,0.94)", color: "var(--text-2)" }}
-                  >
-                    {item}
-                  </span>
-                ))}
+              <div
+                className="rounded-[1.25rem] px-4 py-4"
+                style={{ background: "rgba(255,255,255,0.72)", border: "1px solid rgba(242,215,228,0.88)" }}
+              >
+                <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: "var(--text-3)" }}>Routine focus</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {focus.slice(0, 3).map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full px-4 py-2 text-sm font-semibold capitalize"
+                      style={{ border: "1px solid rgba(242,215,228,0.94)", color: "var(--text-2)" }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               {clearCount ? (
-                <p className="mt-5 flex items-center gap-2 text-sm" style={{ color: "var(--text-2)" }}>
+                <p className="flex items-center gap-2 text-sm" style={{ color: "var(--text-2)" }}>
                   <CheckCircle2 size={16} style={{ color: "var(--accent)" }} />
                   {clearCount} other areas look balanced.
                 </p>
               ) : null}
 
               <a
-                className="btn-grad mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold text-white"
+                className="btn-grad mt-2 inline-flex h-11 w-fit items-center justify-center gap-2 rounded-full px-6 text-sm font-bold text-white"
                 href="#products"
               >
                 See matched products
@@ -119,6 +109,31 @@ export function ResultReport({ analysis }: ResultReportProps) {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function ResultMetric({
+  label,
+  value,
+  variant = "neutral",
+}: {
+  label: string;
+  value: string;
+  variant?: "accent" | "neutral";
+}) {
+  return (
+    <div
+      className="rounded-[1.25rem] px-4 py-4"
+      style={{
+        background: variant === "accent" ? "linear-gradient(135deg, #fff0f7, #ffffff)" : "rgba(255,255,255,0.72)",
+        border: variant === "accent" ? "1px solid rgba(246,181,208,0.92)" : "1px solid rgba(242,215,228,0.88)",
+      }}
+    >
+      <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: "var(--text-3)" }}>{label}</p>
+      <p className="mt-2 text-lg font-black capitalize" style={{ color: variant === "accent" ? "var(--accent)" : "var(--text)" }}>
+        {value}
+      </p>
     </div>
   );
 }
