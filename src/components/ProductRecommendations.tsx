@@ -1,4 +1,4 @@
-import { ArrowUpRight, Gem, Plus, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowUpRight, Plus, ShoppingBag, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 import { normalizeProductImage } from "@/lib/productImages";
@@ -30,7 +30,7 @@ export function ProductRecommendations({
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {products.slice(0, 6).map((product) => (
         <ProductCard
           inCart={cartProductIds.has(product.id)}
@@ -59,38 +59,25 @@ function ProductCard({
 
   return (
     <article
-      className="card-lift group flex min-h-full flex-col overflow-hidden rounded-[1.6rem]"
-      style={{
-        background: "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,250,252,0.94))",
-        border: "1px solid rgba(242,215,228,0.95)",
-        boxShadow: "0 18px 60px rgba(126,42,78,0.1)",
-      }}
+      className="card-lift flex min-h-full flex-col overflow-hidden rounded-2xl"
+      style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
       <div
-        className="relative flex h-64 items-center justify-center overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(circle at 74% 18%, rgba(228,41,130,0.13), transparent 8rem), linear-gradient(145deg, #fffafc 0%, #f6e8ef 100%)",
-        }}
+        className="relative flex h-52 items-center justify-center overflow-hidden"
+        style={{ background: "linear-gradient(145deg, #fff7fb 0%, #f8edf4 100%)" }}
       >
         <span
-          className="absolute left-4 top-4 rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] shadow-sm"
-          style={{ background: "rgba(255,255,255,0.86)", color: "var(--accent)", border: "1px solid rgba(242,215,228,0.82)" }}
+          className="absolute left-4 top-4 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase"
+          style={{ background: "rgba(255,255,255,0.82)", color: "var(--accent)" }}
         >
           {product.retailer}
-        </span>
-        <span
-          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 shadow-sm"
-          style={{ border: "1px solid rgba(242,215,228,0.82)", color: "var(--accent)" }}
-        >
-          <Gem size={15} />
         </span>
 
         {hasRealImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             alt={product.name}
-            className="h-full w-full object-contain p-7 transition duration-300 group-hover:scale-[1.035]"
+            className="h-full w-full object-contain p-5"
             onError={() => setImageFailed(true)}
             src={imageSrc}
           />
@@ -102,8 +89,8 @@ function ProductCard({
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-3">
           <span
-            className="rounded-full px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em]"
-            style={{ background: "var(--accent-light)", color: "var(--accent)", border: "1px solid var(--accent-border)" }}
+            className="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider"
+            style={{ background: "var(--accent-light)", color: "var(--accent)" }}
           >
             {product.category}
           </span>
@@ -112,7 +99,7 @@ function ProductCard({
           </p>
         </div>
 
-        <h3 className="mt-4 text-lg font-black leading-snug" style={{ color: "var(--text)" }}>
+        <h3 className="mt-3 text-base font-bold leading-snug" style={{ color: "var(--text)" }}>
           {product.name}
         </h3>
         <p className="mt-0.5 text-sm" style={{ color: "var(--text-2)" }}>{product.brand}</p>
@@ -126,9 +113,9 @@ function ProductCard({
             .slice(0, 2)
             .map((item) => (
               <span
-                className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-semibold capitalize"
+                className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold capitalize"
                 key={item}
-                style={{ background: "rgba(255,243,248,0.84)", border: "1px solid rgba(242,215,228,0.82)", color: "var(--text-2)" }}
+                style={{ background: "var(--bg-alt)", color: "var(--text-2)" }}
               >
                 <Sparkles size={11} />
                 {item}
@@ -139,7 +126,7 @@ function ProductCard({
         <div className="mt-5 grid gap-2">
           {onAddToCart ? (
             <button
-              className="btn-grad inline-flex h-12 items-center justify-center gap-2 rounded-full text-sm font-black text-white disabled:cursor-default disabled:opacity-70"
+              className="btn-grad inline-flex h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-white disabled:cursor-default disabled:opacity-70"
               disabled={inCart}
               onClick={() => onAddToCart(product)}
               type="button"
@@ -149,7 +136,7 @@ function ProductCard({
             </button>
           ) : null}
           <a
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-full border bg-white text-sm font-bold"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border text-sm font-bold"
             href={product.url}
             rel="noreferrer"
             style={{ borderColor: "var(--border)", color: "var(--text)" }}
