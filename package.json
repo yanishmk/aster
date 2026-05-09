@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "backend": "cd backend && python -m uvicorn app:app --host 127.0.0.1 --port 8000"
+    "backend": "cd backend && python -m uvicorn app:app --host 127.0.0.1 --port 8000",
+    "fetch:product-images": "node scripts/fetch-product-images.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.14.0",
