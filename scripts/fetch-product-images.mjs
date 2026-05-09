@@ -245,6 +245,7 @@ function findProductImageUrl(html, pageUrl) {
   if (landingImage) return landingImage;
 
   const candidates = [
+    ...extractSearchResultImages(html),
     ...extractJsonLdImages(html),
     ...extractMetaImages(html),
     ...extractAmazonDynamicImages(html),
@@ -288,6 +289,45 @@ function extractMetaImages(html) {
     if (content) images.push(decodeHtml(content));
   }
   return images;
+}
+
+function extractSearchResultImages(html) {
+  const images = [];
+  const tagPattern = /<img\b[^>]*>/gi;
+  for (const match of html.matchAll(tagPattern)) {
+    const tag = match[0];
+    const src = getHtmlAttribute(tag, "src");
+    const dataSrc = getHtmlAttribute(tag, "data-src");
+    const srcset = getHtmlAttribute(tag, "srcset") || getHtmlAttribute(tag, "data-srcset");
+
+    for (const candidate of [src, dataSrc, bestSrcsetImage(srcset)]) {
+      if (!candidate) continue;
+      const lower = candidate.toLowerCase();
+      if (
+        lower.includes("m.media-amazon.com") ||
+        lower.includes("images-na.ssl-images-amazon.com") ||
+        lower.includes("sephora.com/productimages") ||
+        lower.includes("sephora.net/productimages")
+      ) {
+        images.push(candidate);
+      }
+    }
+  }
+  return images;
+}
+
+function bestSrcsetImage(srcset) {
+  if (!srcset) return "";
+  const candidates = srcset
+    .split(",")
+    .map((part) => {
+      const [url, descriptor = ""] = part.trim().split(/\s+/, 2);
+      const score = Number.parseInt(descriptor.replace(/\D/g, ""), 10) || 0;
+      return { score, url };
+    })
+    .filter((candidate) => candidate.url);
+  candidates.sort((left, right) => right.score - left.score);
+  return candidates[0]?.url ?? "";
 }
 
 function extractJsonLdImages(html) {
@@ -408,7 +448,9 @@ function decodeHtml(value) {
     .replaceAll("&quot;", '"')
     .replaceAll("&#39;", "'")
     .replaceAll("&lt;", "<")
-    .replaceAll("&gt;", ">");
+    .replaceAll("&gt;", ">")
+    .replaceAll("\\u002F", "/")
+    .replaceAll("\\/", "/");
 }
 
 function sleep(milliseconds) {

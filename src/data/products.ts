@@ -178,7 +178,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "ascorbic acid 20%, vitamin E, ferulic acid",
     why: "High-potency vitamin C serum that brightens skin, fades dark spots, and protects against environmental damage.",
-    imageUrl: "/product-images/amazon_timeless_vitamin_c.svg",
+    imageUrl: "/product-images/amazon_timeless_vitamin_c.webp",
     url: "https://www.amazon.com/dp/B004CRQOBG",
   },
   {
@@ -198,7 +198,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "benzoyl peroxide 5.5%, LHA, niacinamide",
     why: "Targets breakouts, blackheads, and post-acne marks while preventing new blemishes from forming.",
-    imageUrl: "/product-images/amazon_lrp_effaclar_duo.svg",
+    imageUrl: "/product-images/amazon_lrp_effaclar_duo.webp",
     url: "https://www.amazon.com/dp/B00SNKGXIM",
   },
   {
