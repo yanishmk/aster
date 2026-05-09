@@ -50,8 +50,16 @@ async function main() {
 
     console.log(`[${index + 1}/${selectedRows.length}] ${productId}`);
     try {
-      const html = await fetchWithZenRows(apiKey, sourceUrl);
-      const imageUrl = findProductImageUrl(html, sourceUrl);
+      let pageUrl = sourceUrl;
+      let html = await fetchWithZenRows(apiKey, pageUrl);
+      const detailUrl = findAmazonDetailUrl(html, pageUrl);
+      if (detailUrl && detailUrl !== pageUrl) {
+        pageUrl = detailUrl;
+        row.product_url = detailUrl;
+        html = await fetchWithZenRows(apiKey, pageUrl);
+      }
+
+      const imageUrl = findProductImageUrl(html, pageUrl);
       if (!imageUrl) {
         failed.push([productId, "no image found"]);
         continue;
@@ -253,6 +261,33 @@ function findProductImageUrl(html, pageUrl) {
   ];
 
   return normalizeCandidates(candidates, pageUrl).find(isProbableProductImage) ?? "";
+}
+
+function findAmazonDetailUrl(html, pageUrl) {
+  const current = new URL(pageUrl);
+  if (!current.hostname.includes("amazon.")) return "";
+  if (/\/(?:dp|gp\/product)\/[A-Z0-9]{10}/i.test(current.pathname)) return pageUrl;
+
+  const linkPattern = /<a\b[^>]*href=["']([^"']*(?:\/dp\/|\/gp\/product\/)[A-Z0-9]{10}[^"']*)["'][^>]*>/gi;
+  for (const match of html.matchAll(linkPattern)) {
+    const href = decodeHtml(match[1]);
+    if (href.includes("/sspa/") || href.includes("slredirect")) continue;
+    const detailUrl = normalizeAmazonDetailUrl(href, pageUrl);
+    if (detailUrl) return detailUrl;
+  }
+
+  return "";
+}
+
+function normalizeAmazonDetailUrl(href, pageUrl) {
+  try {
+    const url = new URL(href, pageUrl);
+    const match = url.pathname.match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i);
+    if (!match) return "";
+    return `https://www.amazon.com/dp/${match[1].toUpperCase()}`;
+  } catch {
+    return "";
+  }
 }
 
 function extractAmazonLandingImages(html) {

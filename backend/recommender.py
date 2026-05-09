@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 from urllib.parse import quote
 
@@ -19,9 +20,17 @@ def split_tags(value: str | float) -> set[str]:
 
 def load_products(path: Path) -> pd.DataFrame:
     products = pd.read_csv(path)
+    products = products[
+        products["retailer"].fillna("").str.lower().eq("amazon")
+        & products["product_url"].fillna("").map(has_amazon_asin)
+    ].copy()
     for column in ["targets", "active_ingredients", "skin_types", "avoid_if"]:
         products[f"{column}_set"] = products[column].apply(split_tags)
     return products
+
+
+def has_amazon_asin(product_url: str) -> bool:
+    return bool(re.search(r"/(?:dp|gp/product)/[A-Z0-9]{10}", str(product_url), flags=re.IGNORECASE))
 
 
 def detected_concerns(predictions: list[dict], min_probability: float = 0.25) -> set[str]:
