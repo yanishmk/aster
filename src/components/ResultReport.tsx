@@ -10,6 +10,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
   const detected = analysis?.result.detected ?? [];
   const possible = analysis?.result.possible ?? [];
   const clearCount = analysis?.result.not_detected.length ?? 0;
+  const faceCareScore = analysis?.result.face_care_score;
   const focus = analysis?.result.skin_profile.recommendation_focus ?? ["hydration"];
 
   return (
@@ -35,6 +36,11 @@ export function ResultReport({ analysis }: ResultReportProps) {
         </div>
         {analysis ? (
           <div className="flex flex-wrap gap-2 text-xs font-bold" style={{ color: "var(--text-2)" }}>
+            {faceCareScore ? (
+              <span className="rounded-full bg-white px-3 py-1.5" style={{ border: "1px solid var(--border)" }}>
+                Face care {faceCareScore.score}/{faceCareScore.max}
+              </span>
+            ) : null}
             <span className="rounded-full bg-white px-3 py-1.5" style={{ border: "1px solid var(--border)" }}>
               {detected.length || "No"} detected
             </span>
@@ -100,6 +106,29 @@ export function ResultReport({ analysis }: ResultReportProps) {
               className="rounded-2xl p-5"
               style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}
             >
+              {faceCareScore ? (
+                <div className="mb-5 rounded-2xl bg-white p-4" style={{ border: "1px solid var(--border)" }}>
+                  <div className="flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.16em]" style={{ color: "var(--text-2)" }}>Face care score</p>
+                      <p className="mt-1 text-sm font-bold" style={{ color: "var(--text-2)" }}>{faceCareScore.label}</p>
+                    </div>
+                    <p className="text-4xl font-black leading-none" style={{ color: "var(--accent)" }}>
+                      {faceCareScore.score}
+                      <span className="text-base" style={{ color: "var(--text-2)" }}>/{faceCareScore.max}</span>
+                    </p>
+                  </div>
+                  <div className="mt-4 h-2 overflow-hidden rounded-full" style={{ background: "var(--accent-light)" }}>
+                    <div
+                      className="h-full rounded-full"
+                      style={{
+                        background: "var(--grad)",
+                        width: `${Math.max(8, Math.min(100, (faceCareScore.score / faceCareScore.max) * 100))}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : null}
               <p className="text-sm font-black uppercase tracking-[0.16em]" style={{ color: "var(--text-2)" }}>Recommendation focus</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {focus.map((item) => (

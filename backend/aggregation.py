@@ -57,7 +57,38 @@ def aggregate_predictions(per_image_predictions: dict[str, list[dict]], target_c
         "possible": possible,
         "not_detected": not_detected,
         "conditions": conditions,
+        "face_care_score": build_face_care_score(conditions),
         "skin_profile": build_skin_profile(detected, possible),
+    }
+
+
+def build_face_care_score(conditions: list[dict]) -> dict:
+    """Cosmetic readability score: 10 means fewer visible concern signals."""
+    score = 10.0
+
+    for condition in conditions:
+        average_probability = float(condition["averageProbability"])
+        status = condition["status"]
+        if status == "detected":
+            score -= 1.15 + min(average_probability, 1.0) * 0.45
+        elif status == "possible":
+            score -= 0.45 + min(average_probability, 1.0) * 0.25
+
+    rounded_score = max(1.0, min(10.0, round(score, 1)))
+
+    if rounded_score >= 8.5:
+        label = "Great"
+    elif rounded_score >= 7:
+        label = "Good"
+    elif rounded_score >= 5.5:
+        label = "Needs support"
+    else:
+        label = "Needs attention"
+
+    return {
+        "score": rounded_score,
+        "max": 10,
+        "label": label,
     }
 
 

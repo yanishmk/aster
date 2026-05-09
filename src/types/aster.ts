@@ -55,6 +55,12 @@ export type SkinProfile = {
   recommendation_focus: string[];
 };
 
+export type FaceCareScore = {
+  score: number;
+  max: number;
+  label: string;
+};
+
 export type ImageValidation = {
   role: ImageRole;
   ok: boolean;
@@ -70,6 +76,7 @@ export type AnalyzeSessionResponse = {
     possible: string[];
     not_detected: string[];
     conditions: AggregatedCondition[];
+    face_care_score: FaceCareScore;
     skin_profile: SkinProfile;
   };
   routine: {
