@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "backend": "cd backend && python -m uvicorn app:app --host 127.0.0.1 --port 8000",
+    "build:amazon-catalog": "node scripts/build-rainforest-amazon-catalog.mjs",
     "fetch:product-images": "node scripts/fetch-product-images.mjs",
     "validate:amazon-catalog": "node scripts/validate-amazon-catalog.mjs"
   },
