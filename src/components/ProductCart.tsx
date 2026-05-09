@@ -1,5 +1,6 @@
 import { ArrowUpRight, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 
+import { normalizeProductImage } from "@/lib/productImages";
 import type { Product } from "@/types/aster";
 
 export type CartItem = {
@@ -271,10 +272,4 @@ function openRetailerPages(items: CartItem[]) {
   for (const item of items) {
     window.open(item.product.url, "_blank", "noopener,noreferrer");
   }
-}
-
-function normalizeProductImage(imageUrl: string) {
-  if (!imageUrl) return "";
-  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) return imageUrl;
-  return imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
 }

@@ -1,6 +1,7 @@
 import { ArrowUpRight, Plus, ShoppingBag, Sparkles } from "lucide-react";
 import { useState } from "react";
 
+import { normalizeProductImage } from "@/lib/productImages";
 import type { Product } from "@/types/aster";
 
 type ProductRecommendationsProps = {
@@ -190,8 +191,3 @@ function formatPrice(product: Product) {
   return `${symbol}${amount.toFixed(amount % 1 === 0 ? 0 : 2)}`;
 }
 
-function normalizeProductImage(imageUrl: string) {
-  if (!imageUrl) return "";
-  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) return imageUrl;
-  return imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
-}

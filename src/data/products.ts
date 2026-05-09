@@ -18,7 +18,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "ceramides, hyaluronic acid, glycerin",
     why: "Gentle non-foaming cleanser that cleans without stripping the skin barrier. Ideal for dry to normal skin types.",
-    imageUrl: "/product-images/amazon_cerave_hydrating_cleanser.svg",
+    imageUrl: "/product-images/amazon_cerave_hydrating_cleanser.jpg",
     url: "https://www.amazon.com/dp/B01MSSDEPK",
   },
   {
@@ -38,7 +38,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "ceramides, hyaluronic acid, niacinamide",
     why: "Removes excess oil and dirt while maintaining the protective skin barrier. Best for normal to oily skin.",
-    imageUrl: "/product-images/amazon_cerave_foaming_cleanser.svg",
+    imageUrl: "/product-images/amazon_cerave_foaming_cleanser.jpg",
     url: "https://www.amazon.com/dp/B000YJ2SKO",
   },
   {
@@ -78,7 +78,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "hyaluronic acid, glycerin",
     why: "Lightweight water-gel moisturizer that delivers intense hydration without feeling heavy or greasy.",
-    imageUrl: "/product-images/amazon_neutrogena_hydro_boost.svg",
+    imageUrl: "/product-images/amazon_neutrogena_hydro_boost.jpg",
     url: "https://www.amazon.com/dp/B00NR1YQK4",
   },
   {
@@ -98,7 +98,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "zinc oxide 9%, niacinamide, hyaluronic acid",
     why: "Lightweight mineral sunscreen that calms and protects sensitive and acne-prone skin. Dermatologist-recommended.",
-    imageUrl: "/product-images/amazon_elta_md_uv_clear.svg",
+    imageUrl: "/product-images/amazon_elta_md_uv_clear.jpg",
     url: "https://www.amazon.com/dp/B002MSN3QQ",
   },
   {
@@ -138,7 +138,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "ceramides, niacinamide, prebiotic thermal water",
     why: "Restores and strengthens the skin barrier with ceramides while providing 48-hour moisture for sensitive skin.",
-    imageUrl: "/product-images/amazon_lrp_toleriane_double_repair.svg",
+    imageUrl: "/product-images/amazon_lrp_toleriane_double_repair.jpg",
     url: "https://www.amazon.com/dp/B071673C89",
   },
   {
@@ -158,7 +158,7 @@ export const DEMO_PRODUCTS: Product[] = [
     frequency: "daily",
     ingredients: "snail secretion filtrate 96%, sodium hyaluronate",
     why: "High-concentration snail mucin essence that deeply hydrates, repairs damage, and smooths skin texture.",
-    imageUrl: "/product-images/amazon_cosrx_snail_mucin.svg",
+    imageUrl: "/product-images/amazon_cosrx_snail_mucin.jpg",
     url: "https://www.amazon.com/dp/B00PBX3L7K",
   },
   {
