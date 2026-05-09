@@ -10,7 +10,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
   const detected = analysis?.result.detected ?? [];
   const possible = analysis?.result.possible ?? [];
   const clearCount = analysis?.result.not_detected.length ?? 0;
-  const faceCareScore = analysis?.result.face_care_score;
+  const faceCareScore = analysis ? analysis.result.face_care_score ?? buildFaceCareScore(analysis) : null;
   const focus = analysis?.result.skin_profile.recommendation_focus ?? ["hydration"];
 
   return (
@@ -163,4 +163,32 @@ export function ResultReport({ analysis }: ResultReportProps) {
       </div>
     </div>
   );
+}
+
+function buildFaceCareScore(analysis: AnalyzeSessionResponse) {
+  let score = 10;
+
+  for (const condition of analysis.result.conditions) {
+    if (condition.status === "detected") {
+      score -= 1.15 + Math.min(condition.averageProbability, 1) * 0.45;
+    } else if (condition.status === "possible") {
+      score -= 0.45 + Math.min(condition.averageProbability, 1) * 0.25;
+    }
+  }
+
+  const roundedScore = Math.max(1, Math.min(10, Number(score.toFixed(1))));
+  const label =
+    roundedScore >= 8.5
+      ? "Great"
+      : roundedScore >= 7
+        ? "Good"
+        : roundedScore >= 5.5
+          ? "Needs support"
+          : "Needs attention";
+
+  return {
+    label,
+    max: 10,
+    score: roundedScore,
+  };
 }
