@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Gem, Sparkles } from "lucide-react";
 
 import type { AnalyzeSessionResponse } from "@/types/aster";
 
@@ -15,56 +15,72 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
   return (
     <div
-      className="overflow-hidden rounded-2xl"
-      style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
+      className="overflow-hidden rounded-[1.75rem]"
+      style={{
+        background:
+          "linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,246,250,0.9) 46%, rgba(255,255,255,0.96))",
+        border: "1px solid rgba(242,215,228,0.95)",
+        boxShadow: "0 26px 90px rgba(126,42,78,0.14)",
+      }}
     >
       <div
-        className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6"
-        style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-alt)" }}
+        className="flex flex-col gap-5 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7"
+        style={{
+          borderBottom: "1px solid rgba(242,215,228,0.86)",
+          background:
+            "linear-gradient(120deg, rgba(255,255,255,0.78), rgba(255,239,247,0.72), rgba(255,247,238,0.7))",
+        }}
       >
         <div className="flex items-center gap-3">
           <span
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-white"
-            style={{ background: "var(--grad)" }}
+            className="flex h-12 w-12 items-center justify-center rounded-full text-white"
+            style={{
+              background: "linear-gradient(135deg, #f4a7c7 0%, #d51f78 45%, #8f164f 100%)",
+              boxShadow: "0 12px 30px rgba(213,31,120,0.28)",
+            }}
           >
-            <Sparkles size={18} />
+            <Gem size={20} />
           </span>
           <div>
-            <p className="font-black">Skin analysis results</p>
-            <p className="text-sm" style={{ color: "var(--text-2)" }}>Based on your 3-photo scan</p>
+            <p className="text-xs font-black uppercase tracking-[0.22em]" style={{ color: "var(--accent)" }}>Aster Skin Edit</p>
+            <p className="text-xl font-black leading-tight">Skin analysis results</p>
+            <p className="mt-0.5 text-sm" style={{ color: "var(--text-2)" }}>Based on your 3-photo scan</p>
           </div>
         </div>
         {analysis ? (
           <div className="flex flex-wrap gap-2 text-xs font-bold" style={{ color: "var(--text-2)" }}>
             {faceCareScore ? (
-              <span className="rounded-full bg-white px-3 py-1.5" style={{ border: "1px solid var(--border)" }}>
+              <span className="rounded-full bg-white px-3 py-1.5 shadow-sm" style={{ border: "1px solid var(--border)" }}>
                 Face care {faceCareScore.score}/{faceCareScore.max}
               </span>
             ) : null}
-            <span className="rounded-full bg-white px-3 py-1.5" style={{ border: "1px solid var(--border)" }}>
+            <span className="rounded-full bg-white px-3 py-1.5 shadow-sm" style={{ border: "1px solid var(--border)" }}>
               {detected.length || "No"} detected
             </span>
-            <span className="rounded-full bg-white px-3 py-1.5" style={{ border: "1px solid var(--border)" }}>
+            <span className="rounded-full bg-white px-3 py-1.5 shadow-sm" style={{ border: "1px solid var(--border)" }}>
               {clearCount} clear areas
             </span>
           </div>
         ) : null}
       </div>
 
-      <div className="p-5 sm:p-6">
+      <div className="p-5 sm:p-7">
         {analysis ? (
           <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr]">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.16em]" style={{ color: "var(--text-2)" }}>Detected concerns</p>
+            <div
+              className="rounded-[1.5rem] bg-white/80 p-5"
+              style={{ border: "1px solid rgba(242,215,228,0.72)", boxShadow: "0 18px 54px rgba(126,42,78,0.08)" }}
+            >
+              <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: "var(--text-2)" }}>Detected concerns</p>
               {detected.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-2">
                   {detected.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full px-4 py-1.5 text-sm font-bold capitalize"
+                      className="rounded-full px-4 py-2 text-sm font-bold capitalize shadow-sm"
                       style={{
-                        background: "var(--accent-light)",
-                        border: "1px solid var(--accent-border)",
+                        background: "linear-gradient(135deg, #fff0f7, #fffafc)",
+                        border: "1px solid rgba(246,181,208,0.92)",
                         color: "var(--accent)",
                       }}
                     >
@@ -94,7 +110,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
               ) : null}
 
               {clearCount ? (
-                <p className="mt-5 flex items-center gap-2 text-sm" style={{ color: "var(--text-2)" }}>
+                <p className="mt-6 flex items-center gap-2 rounded-2xl px-4 py-3 text-sm" style={{ background: "rgba(255,243,248,0.72)", color: "var(--text-2)" }}>
                   <CheckCircle2 size={16} style={{ color: "var(--accent)" }} />
                   Your skin looks clear in other areas.
                 </p>
@@ -103,11 +119,15 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
             {/* Focus panel */}
             <div
-              className="rounded-2xl p-5"
-              style={{ background: "var(--bg-alt)", border: "1px solid var(--border)" }}
+              className="rounded-[1.5rem] p-5"
+              style={{
+                background: "linear-gradient(160deg, rgba(255,242,248,0.92), rgba(255,255,255,0.9))",
+                border: "1px solid rgba(242,215,228,0.9)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.95), 0 20px 58px rgba(126,42,78,0.1)",
+              }}
             >
               {faceCareScore ? (
-                <div className="mb-5 rounded-2xl bg-white p-4" style={{ border: "1px solid var(--border)" }}>
+                <div className="mb-5 rounded-[1.35rem] bg-white p-5" style={{ border: "1px solid var(--border)", boxShadow: "0 18px 50px rgba(126,42,78,0.08)" }}>
                   <div className="flex items-end justify-between gap-4">
                     <div>
                       <p className="text-xs font-black uppercase tracking-[0.16em]" style={{ color: "var(--text-2)" }}>Face care score</p>
@@ -129,7 +149,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
                   </div>
                 </div>
               ) : null}
-              <p className="text-sm font-black uppercase tracking-[0.16em]" style={{ color: "var(--text-2)" }}>Recommendation focus</p>
+              <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: "var(--text-2)" }}>Recommendation focus</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {focus.map((item) => (
                   <span
