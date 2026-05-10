@@ -20,8 +20,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
       className="overflow-hidden rounded-[1.75rem]"
       style={{
         background:
-          "linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,248,251,0.92) 52%, rgba(255,255,255,0.98))",
-        border: "1px solid rgba(242,215,228,0.95)",
+          "linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,246,250,0.94) 44%, rgba(255,250,245,0.92) 100%)",
         boxShadow: "0 28px 90px rgba(126,42,78,0.12)",
       }}
     >
@@ -62,7 +61,10 @@ export function ResultReport({ analysis }: ResultReportProps) {
               </div>
             ) : null}
 
-            <div className="grid gap-3 lg:border-l lg:pl-8" style={{ borderColor: "rgba(242,215,228,0.9)" }}>
+            <div
+              className="grid gap-3 rounded-[1.5rem] p-4 lg:pl-5"
+              style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.68), rgba(255,239,247,0.54))" }}
+            >
               <div className="grid gap-3 sm:grid-cols-2">
                 <ResultMetric label="Main focus" value={primaryConcern} variant="accent" />
                 <ResultMetric label="Soft signal" value={secondaryConcern ?? "None"} />
@@ -70,7 +72,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
               <div
                 className="rounded-[1.25rem] px-4 py-4"
-                style={{ background: "rgba(255,255,255,0.72)", border: "1px solid rgba(242,215,228,0.88)" }}
+                style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,246,250,0.72))" }}
               >
                 <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: "var(--text-3)" }}>Routine focus</p>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -94,11 +96,11 @@ export function ResultReport({ analysis }: ResultReportProps) {
               ) : null}
 
               <a
-                className="btn-grad mt-2 inline-flex h-11 w-fit items-center justify-center gap-2 rounded-full px-6 text-sm font-bold text-white"
+                className="btn-grad mt-3 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full px-8 text-base font-black text-white sm:w-fit"
                 href="#products"
               >
                 See matched products
-                <ArrowRight size={15} />
+                <ArrowRight size={18} />
               </a>
             </div>
           </div>
@@ -126,8 +128,11 @@ function ResultMetric({
     <div
       className="rounded-[1.25rem] px-4 py-4"
       style={{
-        background: variant === "accent" ? "linear-gradient(135deg, #fff0f7, #ffffff)" : "rgba(255,255,255,0.72)",
-        border: variant === "accent" ? "1px solid rgba(246,181,208,0.92)" : "1px solid rgba(242,215,228,0.88)",
+        background:
+          variant === "accent"
+            ? "linear-gradient(135deg, rgba(255,232,243,0.96), rgba(255,255,255,0.82))"
+            : "linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,248,251,0.62))",
+        boxShadow: variant === "accent" ? "0 14px 36px rgba(223,40,123,0.1)" : "none",
       }}
     >
       <p className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: "var(--text-3)" }}>{label}</p>
