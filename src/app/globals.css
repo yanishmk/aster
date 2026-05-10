@@ -424,6 +424,53 @@ input {
   animation-delay: 0.12s;
 }
 
+.aster-score-number {
+  display: inline-block;
+  animation: score-rise 0.75s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  text-shadow: 0 18px 42px rgba(223, 40, 123, 0.16);
+}
+
+.aster-score-track {
+  position: relative;
+}
+
+.aster-score-fill {
+  position: relative;
+  width: var(--score-width, 0%);
+  animation: score-fill 0.9s 0.16s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  overflow: hidden;
+}
+
+.aster-score-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  animation: score-shine 1.6s 0.78s ease-out both;
+}
+
+@keyframes score-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes score-fill {
+  from { width: 0%; }
+  to { width: var(--score-width, 0%); }
+}
+
+@keyframes score-shine {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(260%); }
+}
+
 @supports (animation-timeline: view()) {
   .reveal-up {
     animation-timeline: view();

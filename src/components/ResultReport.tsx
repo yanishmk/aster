@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 
 import type { AnalyzeSessionResponse } from "@/types/aster";
+import type { CSSProperties } from "react";
 
 type ResultReportProps = {
   analysis: AnalyzeSessionResponse | null;
@@ -25,37 +26,34 @@ export function ResultReport({ analysis }: ResultReportProps) {
       }}
     >
       <div
-        className="px-6 pb-5 pt-6 sm:px-8"
+        className="px-6 pb-2 pt-6 sm:px-8"
         style={{
           background:
             "linear-gradient(120deg, rgba(255,255,255,0.78), rgba(255,244,250,0.66), rgba(255,250,246,0.7))",
         }}
       >
         <p className="text-xs font-black uppercase tracking-[0.24em]" style={{ color: "var(--accent)" }}>Aster Skin Edit</p>
-        <h3 className="mt-2 text-3xl font-black leading-tight sm:text-4xl" style={{ color: "var(--text)" }}>
-          Your skin result
-        </h3>
       </div>
 
-      <div className="px-6 pb-7 sm:px-8">
+      <div className="px-6 pb-7 pt-2 sm:px-8">
         {analysis ? (
           <div className="grid gap-8 lg:grid-cols-[0.68fr_1fr] lg:items-center">
             {faceCareScore ? (
               <div>
                 <div className="flex items-end gap-2">
-                  <span className="text-[6rem] font-black leading-none sm:text-[7rem]" style={{ color: "var(--accent)" }}>
+                  <span className="aster-score-number text-[6rem] font-black leading-none sm:text-[7rem]" style={{ color: "var(--accent)" }}>
                     {faceCareScore.score}
                   </span>
                   <span className="pb-4 text-2xl font-black" style={{ color: "var(--text-2)" }}>/{faceCareScore.max}</span>
                 </div>
                 <p className="mt-1 text-xl font-black" style={{ color: "var(--text)" }}>{faceCareScore.label}</p>
-                <div className="mt-5 h-2 overflow-hidden rounded-full" style={{ background: "rgba(223,40,123,0.12)" }}>
+                <div className="aster-score-track mt-5 h-2 overflow-hidden rounded-full" style={{ background: "rgba(223,40,123,0.12)" }}>
                   <div
-                    className="h-full rounded-full"
+                    className="aster-score-fill h-full rounded-full"
                     style={{
+                      "--score-width": `${Math.max(8, Math.min(100, (faceCareScore.score / faceCareScore.max) * 100))}%`,
                       background: "linear-gradient(90deg, #f3a7c6 0%, #df287b 48%, #8f164f 100%)",
-                      width: `${Math.max(8, Math.min(100, (faceCareScore.score / faceCareScore.max) * 100))}%`,
-                    }}
+                    } as CSSProperties}
                   />
                 </div>
               </div>
