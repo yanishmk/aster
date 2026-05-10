@@ -37,6 +37,7 @@ Frontend:
 
 ```env
 NEXT_PUBLIC_SKIN_API_URL=http://localhost:8000
+NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG=yourtag-20
 ```
 
 Backend:

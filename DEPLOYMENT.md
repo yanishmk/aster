@@ -19,6 +19,7 @@ skin-ai-site
 
 ```env
 NEXT_PUBLIC_SKIN_API_URL=https://YOUR-RAILWAY-BACKEND.up.railway.app
+NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG=yourtag-20
 ```
 
 5. Deploy.
