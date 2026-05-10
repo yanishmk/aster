@@ -1,5 +1,7 @@
 import { Moon, Sparkles, Sun } from "lucide-react";
+import { useState } from "react";
 
+import { normalizeProductImage } from "@/lib/productImages";
 import type { Product } from "@/types/aster";
 
 export function RoutinePreview({ morning, evening }: { morning: Product[]; evening: Product[] }) {
@@ -67,7 +69,7 @@ function RoutineColumn({
           {products.map((product, index) => (
             <li
               key={`${title}-${product.id}`}
-              className="grid grid-cols-[2.25rem_1fr] gap-3 py-3"
+              className="grid grid-cols-[2.25rem_3.5rem_1fr] gap-3 py-3"
               style={{ borderTop: index ? "1px solid rgba(242,215,228,0.5)" : "0" }}
             >
               <span
@@ -76,6 +78,7 @@ function RoutineColumn({
               >
                 {index + 1}
               </span>
+              <ProductThumb product={product} />
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-sm font-black capitalize" style={{ color: "var(--text)" }}>
@@ -103,6 +106,37 @@ function RoutineColumn({
           </p>
         </div>
       )}
+    </div>
+  );
+}
+
+function ProductThumb({ product }: { product: Product }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const imageSrc = normalizeProductImage(product.imageUrl);
+
+  if (!imageSrc || imageFailed) {
+    return <ProductThumbFallback product={product} />;
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      alt=""
+      className="h-14 w-14 rounded-2xl object-contain p-1.5"
+      onError={() => setImageFailed(true)}
+      src={imageSrc}
+      style={{ background: "rgba(255,255,255,0.72)" }}
+    />
+  );
+}
+
+function ProductThumbFallback({ product }: { product: Product }) {
+  return (
+    <div
+      className="flex h-14 w-14 items-center justify-center rounded-2xl text-xs font-black uppercase"
+      style={{ background: "rgba(255,255,255,0.72)", color: "var(--accent)" }}
+    >
+      {product.brand.slice(0, 2)}
     </div>
   );
 }
