@@ -182,8 +182,8 @@ export default function Home() {
           <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:py-10">
             <div className="reveal-up">
               <h1 className="max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
-                Stop buying the wrong skincare.
-                <span className="block grad-text">Save money with the right routine.</span>
+                Find the right products for
+                <span className="block grad-text">your skin today.</span>
               </h1>
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a className="luxury-cta luxury-cta-primary" href="#scan">
