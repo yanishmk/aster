@@ -479,11 +479,7 @@ function FrontFaceGuide() {
         <path d="M18 58L50 12L82 58L50 132L18 58ZM27 32L50 70L73 32M27 100L50 70L73 100M27 32L27 100M73 32L73 100" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
         <path d="M18 58L37 58L50 70L63 58L82 58M37 58L27 100M63 58L73 100M37 58L50 12M63 58L50 12" stroke="rgba(255,255,255,0.42)" strokeWidth="0.65" />
       </g>
-      <path d="M50 12C30 12 18 30 18 58C18 93 34 126 50 132C66 126 82 93 82 58C82 30 70 12 50 12Z" stroke="rgba(34,211,238,0.92)" strokeLinecap="round" strokeWidth="2.4" />
-      <path d="M28 55C34 50 43 50 49 55M51 55C57 50 66 50 72 55" stroke="rgba(255,255,255,0.68)" strokeLinecap="round" strokeWidth="1.2" />
-      <ellipse cx="37" cy="58" rx="7" ry="3.5" stroke="rgba(96,165,250,0.76)" strokeWidth="1.1" />
-      <ellipse cx="63" cy="58" rx="7" ry="3.5" stroke="rgba(244,114,182,0.72)" strokeWidth="1.1" />
-      <path d="M37 105C45 110 55 110 63 105" stroke="rgba(34,211,238,0.86)" strokeLinecap="round" strokeWidth="1.5" />
+      <path d="M50 12C30 12 18 30 18 58C18 93 34 126 50 132C66 126 82 93 82 58C82 30 70 12 50 12Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeWidth="2" />
     </svg>
   );
 }
@@ -506,10 +502,7 @@ function SideFaceGuide() {
         <path d="M45 13L22 61L56 132L81 72L45 13ZM29 35L53 70L72 40M36 100L53 70L72 100M29 35L36 100M72 40L72 100" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
         <path d="M22 61L43 61L53 70L66 62L81 72M43 61L36 100M66 62L72 100M43 61L45 13M66 62L45 13" stroke="rgba(255,255,255,0.42)" strokeWidth="0.65" />
       </g>
-      <path d="M45 13C29 18 20 36 22 61C25 92 40 121 56 132C72 118 80 96 81 72C82 49 70 27 45 13Z" stroke="rgba(34,211,238,0.92)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" />
-      <path d="M55 56C61 53 68 55 73 61" stroke="rgba(96,165,250,0.72)" strokeLinecap="round" strokeWidth="1.2" />
-      <ellipse cx="65" cy="79" fill="rgba(244,114,182,0.1)" rx="11" ry="18" />
-      <path d="M53 107C60 112 69 110 75 104" stroke="rgba(34,211,238,0.78)" strokeLinecap="round" strokeWidth="1.4" />
+      <path d="M45 13C29 18 20 36 22 61C25 92 40 121 56 132C72 118 80 96 81 72C82 49 70 27 45 13Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
     </svg>
   );
 }
@@ -532,8 +525,6 @@ function CloseupGuide() {
         <path d="M70 13V92M44 20L52 82M96 20L88 82" stroke="rgba(255,255,255,0.38)" strokeWidth="0.65" />
       </g>
       <path d="M30 24C48 12 92 12 110 24C126 36 127 65 110 78C92 92 49 92 30 78C13 65 14 36 30 24Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeWidth="2.1" />
-      <circle cx="70" cy="52" fill="rgba(244,114,182,0.1)" r="18" />
-      <circle cx="70" cy="52" r="27" stroke="rgba(244,114,182,0.34)" strokeWidth="1" />
     </svg>
   );
 }
