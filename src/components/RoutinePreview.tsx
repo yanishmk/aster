@@ -122,9 +122,10 @@ function ProductThumb({ product }: { product: Product }) {
     // eslint-disable-next-line @next/next/no-img-element
     <img
       alt=""
-      className="routine-product-photo h-14 w-14 object-contain p-1.5"
+      className="h-14 w-14 rounded-2xl object-contain p-1.5"
       onError={() => setImageFailed(true)}
       src={imageSrc}
+      style={{ background: "rgba(255,255,255,0.72)" }}
     />
   );
 }
@@ -132,8 +133,8 @@ function ProductThumb({ product }: { product: Product }) {
 function ProductThumbFallback({ product }: { product: Product }) {
   return (
     <div
-      className="routine-product-photo flex h-14 w-14 items-center justify-center text-xs font-black uppercase"
-      style={{ color: "var(--text-2)" }}
+      className="flex h-14 w-14 items-center justify-center rounded-2xl text-xs font-black uppercase"
+      style={{ background: "rgba(255,255,255,0.72)", color: "var(--accent)" }}
     >
       {product.brand.slice(0, 2)}
     </div>

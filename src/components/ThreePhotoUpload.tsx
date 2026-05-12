@@ -438,8 +438,8 @@ function AnalyzingLogo() {
 
 function GuideOverlay({ role }: { role: ImageRole }) {
   return (
-    <div className="pointer-events-none absolute inset-0 bg-black/[0.03]">
-      <div className="absolute inset-0 border-[10px] border-black/10 md:border-[14px]" />
+    <div className="pointer-events-none absolute inset-0 bg-black/[0.02]">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_34%,rgba(0,0,0,0.18)_100%)]" />
       {role === "closeup" ? <CloseupGuide /> : role === "side" ? <SideFaceGuide /> : <FrontFaceGuide />}
     </div>
   );
@@ -464,23 +464,31 @@ function CaptureProgress({ progress, ready }: { progress: number; ready: boolean
 function FrontFaceGuide() {
   return (
     <svg
-      className="absolute left-1/2 top-1/2 h-[78%] max-h-[520px] w-[48%] min-w-[210px] max-w-[360px] -translate-x-1/2 -translate-y-1/2"
+      className="absolute left-1/2 top-1/2 h-[80%] max-h-[520px] w-[48%] min-w-[210px] max-w-[360px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_18px_rgba(244,114,182,0.38)]"
       fill="none"
       preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 100 140"
     >
       <path
         d="M50 12C31 12 19 29 19 57C19 93 34 126 50 131C66 126 81 93 81 57C81 29 69 12 50 12Z"
-        className="drop-shadow-[0_0_18px_rgba(244,114,182,0.55)]"
-        stroke="rgba(255,255,255,0.95)"
-        strokeDasharray="5 4"
-        strokeLinecap="round"
-        strokeWidth="2"
+        fill="rgba(255,255,255,0.06)"
       />
-      <path d="M30 62C38 58 44 58 49 62" stroke="rgba(255,255,255,0.78)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M51 62C57 58 64 58 72 62" stroke="rgba(255,255,255,0.78)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M50 67C47 78 47 86 50 94" stroke="rgba(255,255,255,0.62)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M39 109C46 113 55 113 62 109" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path
+        d="M50 12C31 12 19 29 19 57C19 93 34 126 50 131C66 126 81 93 81 57C81 29 69 12 50 12Z"
+        stroke="rgba(244,114,182,0.7)"
+        strokeLinecap="round"
+        strokeWidth="4.5"
+      />
+      <path
+        d="M50 12C31 12 19 29 19 57C19 93 34 126 50 131C66 126 81 93 81 57C81 29 69 12 50 12Z"
+        stroke="rgba(255,255,255,0.95)"
+        strokeLinecap="round"
+        strokeWidth="2.2"
+      />
+      <ellipse cx="37" cy="80" fill="rgba(244,114,182,0.16)" rx="13" ry="18" />
+      <ellipse cx="63" cy="80" fill="rgba(244,114,182,0.16)" rx="13" ry="18" />
+      <path d="M35 33C42 28 58 28 65 33" stroke="rgba(255,255,255,0.68)" strokeLinecap="round" strokeWidth="1.4" />
+      <path d="M35 103C43 109 57 109 65 103" stroke="rgba(255,255,255,0.72)" strokeLinecap="round" strokeWidth="1.4" />
     </svg>
   );
 }
@@ -488,23 +496,32 @@ function FrontFaceGuide() {
 function SideFaceGuide() {
   return (
     <svg
-      className="absolute left-1/2 top-1/2 h-[78%] max-h-[520px] w-[44%] min-w-[200px] max-w-[340px] -translate-x-1/2 -translate-y-1/2"
+      className="absolute left-1/2 top-1/2 h-[80%] max-h-[520px] w-[44%] min-w-[200px] max-w-[340px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_18px_rgba(244,114,182,0.38)]"
       fill="none"
       preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 100 140"
     >
       <path
         d="M52 12C33 15 22 31 24 57C27 86 38 113 55 130C70 120 80 100 82 75C84 56 77 43 66 35C62 25 58 17 52 12Z"
-        className="drop-shadow-[0_0_18px_rgba(244,114,182,0.55)]"
-        stroke="rgba(255,255,255,0.95)"
-        strokeDasharray="5 4"
+        fill="rgba(255,255,255,0.06)"
+      />
+      <path
+        d="M52 12C33 15 22 31 24 57C27 86 38 113 55 130C70 120 80 100 82 75C84 56 77 43 66 35C62 25 58 17 52 12Z"
+        stroke="rgba(244,114,182,0.7)"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="2"
+        strokeWidth="4.5"
       />
-      <path d="M59 56C65 55 70 58 73 63" stroke="rgba(255,255,255,0.78)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M71 66C82 74 82 84 70 90" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M56 111C64 115 71 113 76 108" stroke="rgba(255,255,255,0.66)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
+      <path
+        d="M52 12C33 15 22 31 24 57C27 86 38 113 55 130C70 120 80 100 82 75C84 56 77 43 66 35C62 25 58 17 52 12Z"
+        stroke="rgba(255,255,255,0.95)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.2"
+      />
+      <ellipse cx="59" cy="80" fill="rgba(244,114,182,0.16)" rx="15" ry="24" />
+      <path d="M57 52C64 51 70 55 74 62" stroke="rgba(255,255,255,0.72)" strokeLinecap="round" strokeWidth="1.3" />
+      <path d="M56 110C64 115 72 113 77 107" stroke="rgba(255,255,255,0.68)" strokeLinecap="round" strokeWidth="1.3" />
     </svg>
   );
 }
@@ -512,25 +529,30 @@ function SideFaceGuide() {
 function CloseupGuide() {
   return (
     <svg
-      className="absolute left-1/2 top-1/2 h-[54%] max-h-[360px] w-[58%] min-w-[250px] max-w-[520px] -translate-x-1/2 -translate-y-1/2"
+      className="absolute left-1/2 top-1/2 h-[58%] max-h-[380px] w-[60%] min-w-[250px] max-w-[520px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_18px_rgba(244,114,182,0.38)]"
       fill="none"
       preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 140 100"
     >
-      <rect
-        className="drop-shadow-[0_0_18px_rgba(244,114,182,0.55)]"
-        height="62"
-        rx="20"
-        stroke="rgba(255,255,255,0.95)"
-        strokeDasharray="5 4"
-        strokeWidth="2"
-        width="98"
-        x="21"
-        y="19"
+      <path
+        d="M32 26C48 12 92 12 108 26C125 41 124 63 108 76C91 91 49 91 32 76C16 62 16 41 32 26Z"
+        fill="rgba(255,255,255,0.07)"
       />
-      <path d="M42 42C58 34 82 34 98 42" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M42 60C59 68 82 68 99 60" stroke="rgba(255,255,255,0.68)" strokeDasharray="4 4" strokeLinecap="round" strokeWidth="1.2" />
-      <path d="M70 26V74" stroke="rgba(255,255,255,0.48)" strokeDasharray="3 4" strokeLinecap="round" strokeWidth="1" />
+      <path
+        d="M32 26C48 12 92 12 108 26C125 41 124 63 108 76C91 91 49 91 32 76C16 62 16 41 32 26Z"
+        stroke="rgba(244,114,182,0.7)"
+        strokeLinecap="round"
+        strokeWidth="4.5"
+      />
+      <path
+        d="M32 26C48 12 92 12 108 26C125 41 124 63 108 76C91 91 49 91 32 76C16 62 16 41 32 26Z"
+        stroke="rgba(255,255,255,0.95)"
+        strokeLinecap="round"
+        strokeWidth="2.2"
+      />
+      <path d="M40 43C56 35 84 35 100 43" stroke="rgba(255,255,255,0.58)" strokeLinecap="round" strokeWidth="1.2" />
+      <path d="M40 61C57 70 83 70 100 61" stroke="rgba(255,255,255,0.58)" strokeLinecap="round" strokeWidth="1.2" />
+      <circle cx="70" cy="52" fill="rgba(244,114,182,0.12)" r="22" />
     </svg>
   );
 }

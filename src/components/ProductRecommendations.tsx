@@ -63,7 +63,8 @@ function ProductCard({
       style={{ border: "1px solid var(--border)", background: "var(--surface)" }}
     >
       <div
-        className="product-photo-stage relative flex h-52 items-center justify-center overflow-hidden"
+        className="relative flex h-52 items-center justify-center overflow-hidden"
+        style={{ background: "linear-gradient(145deg, #fff7fb 0%, #f8edf4 100%)" }}
       >
         <span
           className="absolute left-4 top-4 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase"
@@ -76,7 +77,7 @@ function ProductCard({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             alt={product.name}
-            className="product-photo h-full w-full object-contain p-5"
+            className="h-full w-full object-contain p-5"
             onError={() => setImageFailed(true)}
             src={imageSrc}
           />
@@ -160,10 +161,21 @@ function ProductMockup({ product }: { product: Product }) {
     .toUpperCase();
 
   return (
-    <div className="product-photo-fallback relative flex h-36 w-28 items-center justify-center">
+    <div className="relative flex h-36 w-28 items-center justify-center rounded-2xl shadow-lg">
+      <div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          background: "linear-gradient(160deg, #ffffff 0%, #fff0f7 52%, #ffd4e8 100%)",
+          border: "1px solid rgba(240,39,123,0.22)",
+        }}
+      />
+      <div
+        className="absolute left-1/2 top-5 h-10 w-10 -translate-x-1/2 rounded-full"
+        style={{ background: "var(--grad-soft)", border: "1px solid var(--accent-border)" }}
+      />
       <div className="relative px-3 text-center">
-        <p className="text-2xl font-black" style={{ color: "var(--text)" }}>{initials}</p>
-        <p className="mt-2 text-[10px] font-bold uppercase leading-tight" style={{ color: "var(--text-3)" }}>
+        <p className="text-2xl font-black" style={{ color: "var(--accent)" }}>{initials}</p>
+        <p className="mt-2 text-[10px] font-bold uppercase leading-tight" style={{ color: "var(--text-2)" }}>
           {product.category}
         </p>
       </div>
