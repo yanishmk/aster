@@ -32,7 +32,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
             "linear-gradient(120deg, rgba(255,255,255,0.78), rgba(255,244,250,0.66), rgba(255,250,246,0.7))",
         }}
       >
-        <p className="text-xs font-black uppercase tracking-[0.24em]" style={{ color: "var(--accent)" }}>Aster Skin Edit</p>
+        <p className="text-xs font-black uppercase tracking-[0.24em]" style={{ color: "var(--accent)" }}>Buy smarter, waste less</p>
       </div>
 
       <div className="px-6 pb-7 pt-2 sm:px-8">

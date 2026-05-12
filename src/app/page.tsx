@@ -173,9 +173,6 @@ export default function Home() {
                 </span>
               ) : null}
             </button>
-            <a className="btn-grad rounded-full px-5 py-2.5 text-sm font-bold text-white" href="#scan">
-              Start scan
-            </a>
           </div>
         </div>
       </header>
@@ -185,17 +182,17 @@ export default function Home() {
           <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:py-10">
             <div className="reveal-up">
               <h1 className="max-w-2xl text-5xl font-black leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
-                Find the right products for
-                <span className="block grad-text">your skin today.</span>
+                Stop buying the wrong skincare.
+                <span className="block grad-text">Save money with the right routine.</span>
               </h1>
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <a className="luxury-cta luxury-cta-primary" href="#scan">
-                  Start the scan
+                  Find my best products
                   <ArrowRight size={17} strokeWidth={1.8} />
                 </a>
                 {!hasAnalysis ? (
                   <a className="luxury-cta luxury-cta-secondary" href="#how-it-works">
-                    See how it works
+                    See why it helps
                     <ArrowRight size={15} strokeWidth={1.7} />
                   </a>
                 ) : null}
@@ -381,9 +378,9 @@ function FeatureSection({
           <h2 className="max-w-xl text-3xl font-black tracking-tight sm:text-5xl">{title}</h2>
           {showDetails ? (
             <ul className="mt-7 space-y-3 text-sm font-semibold" style={{ color: "var(--text)" }}>
-              <FeatureCheck>Simple language for skincare decisions</FeatureCheck>
-              <FeatureCheck>Built around products and routine</FeatureCheck>
-              <FeatureCheck>Designed to reduce random product buying</FeatureCheck>
+              <FeatureCheck>Spend less on products that do not fit your skin</FeatureCheck>
+              <FeatureCheck>Build a simple routine before you buy</FeatureCheck>
+              <FeatureCheck>Choose with confidence instead of guessing</FeatureCheck>
             </ul>
           ) : null}
         </div>
