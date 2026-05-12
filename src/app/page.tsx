@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, CheckCircle2, ClipboardList, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowRight, Camera, CheckCircle2, ClipboardList, ShoppingBag, Sparkles } from "lucide-react";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import { AsterLogo } from "@/components/AsterLogo";
@@ -188,23 +188,18 @@ export default function Home() {
                 Find the right products for
                 <span className="block grad-text">your skin today.</span>
               </h1>
-              <div className="mt-7 flex flex-wrap items-center gap-3">
-                <a className="btn-grad rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-xl" href="#scan">
+              <div className="mt-8 flex flex-wrap items-center gap-6">
+                <a className="luxury-cta luxury-cta-primary" href="#scan">
                   Start the scan
+                  <ArrowRight size={17} strokeWidth={1.8} />
                 </a>
                 {!hasAnalysis ? (
-                  <a className="rounded-full border bg-white/70 px-7 py-3.5 text-sm font-bold transition-colors hover:bg-white" href="#how-it-works" style={{ borderColor: "var(--border)", color: "var(--text)" }}>
+                  <a className="luxury-cta luxury-cta-secondary" href="#how-it-works">
                     See how it works
+                    <ArrowRight size={15} strokeWidth={1.7} />
                   </a>
                 ) : null}
               </div>
-              {!hasAnalysis ? (
-                <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3">
-                  <HeroPoint icon={<Camera size={17} />} label="Guided scan" />
-                  <HeroPoint icon={<Sparkles size={17} />} label="Simple results" />
-                  <HeroPoint icon={<ShoppingBag size={17} />} label="Products to buy" />
-                </div>
-              ) : null}
             </div>
 
             <div className="reveal-up delay-1">
@@ -317,17 +312,6 @@ export default function Home() {
         onUpdateQuantity={updateCartQuantity}
         open={cartOpen}
       />
-    </div>
-  );
-}
-
-function HeroPoint({ icon, label }: { icon: ReactNode; label: string }) {
-  return (
-    <div className="flex items-center gap-2 rounded-2xl border bg-white/70 px-4 py-3 text-sm font-bold shadow-sm" style={{ borderColor: "var(--border)" }}>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: "var(--accent-light)", color: "var(--accent)" }}>
-        {icon}
-      </span>
-      {label}
     </div>
   );
 }
