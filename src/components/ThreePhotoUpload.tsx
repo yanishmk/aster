@@ -474,12 +474,12 @@ function FrontFaceGuide() {
           <path d="M50 12C30 12 18 30 18 58C18 93 34 126 50 132C66 126 82 93 82 58C82 30 70 12 50 12Z" />
         </clipPath>
       </defs>
-      <g clipPath="url(#frontFaceMeshClip)" opacity="0.78">
-        <path d="M19 34H81M18 50H82M19 66H81M23 82H77M29 98H71M39 116H61" stroke="rgba(255,255,255,0.42)" strokeWidth="0.7" />
-        <path d="M26 18L21 57L32 96L50 132M40 13L38 58L43 99L50 132M60 13L62 58L57 99L50 132M74 18L79 57L68 96L50 132" stroke="rgba(255,255,255,0.42)" strokeWidth="0.7" />
-        <path d="M21 57L38 58L19 34M38 58L62 58L40 13M62 58L79 57L60 13M79 57L68 96L82 58M68 96L57 99L61 116M57 99L43 99L50 132M43 99L32 96L39 116M32 96L21 57L23 82M38 58L43 99L23 82M62 58L57 99L77 82M38 58L50 70L62 58M43 99L50 70L57 99" stroke="rgba(34,211,238,0.38)" strokeWidth="0.75" />
+      <g clipPath="url(#frontFaceMeshClip)" opacity="0.74">
+        <path d="M50 12V132M18 58H82M27 32H73M27 100H73" stroke="rgba(255,255,255,0.38)" strokeWidth="0.65" />
+        <path d="M18 58L50 12L82 58L50 132L18 58ZM27 32L50 70L73 32M27 100L50 70L73 100M27 32L27 100M73 32L73 100" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
+        <path d="M18 58L37 58L50 70L63 58L82 58M37 58L27 100M63 58L73 100M37 58L50 12M63 58L50 12" stroke="rgba(255,255,255,0.42)" strokeWidth="0.65" />
       </g>
-      <path d="M50 12C30 12 18 30 18 58C18 93 34 126 50 132C66 126 82 93 82 58C82 30 70 12 50 12Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeWidth="1.8" />
+      <path d="M50 12C30 12 18 30 18 58C18 93 34 126 50 132C66 126 82 93 82 58C82 30 70 12 50 12Z" stroke="rgba(34,211,238,0.92)" strokeLinecap="round" strokeWidth="2.4" />
       <path d="M28 55C34 50 43 50 49 55M51 55C57 50 66 50 72 55" stroke="rgba(255,255,255,0.68)" strokeLinecap="round" strokeWidth="1.2" />
       <ellipse cx="37" cy="58" rx="7" ry="3.5" stroke="rgba(96,165,250,0.76)" strokeWidth="1.1" />
       <ellipse cx="63" cy="58" rx="7" ry="3.5" stroke="rgba(244,114,182,0.72)" strokeWidth="1.1" />
@@ -501,12 +501,12 @@ function SideFaceGuide() {
           <path d="M45 13C29 18 20 36 22 61C25 92 40 121 56 132C72 118 80 96 81 72C82 49 70 27 45 13Z" />
         </clipPath>
       </defs>
-      <g clipPath="url(#sideFaceMeshClip)" opacity="0.78">
-        <path d="M23 35H72M22 51H79M24 67H81M29 83H78M36 99H72M46 116H63" stroke="rgba(255,255,255,0.42)" strokeWidth="0.7" />
-        <path d="M31 19L24 61L37 100L56 132M45 13L43 61L47 103L56 132M59 22L64 62L61 101L56 132M72 40L80 72L72 99L56 132" stroke="rgba(255,255,255,0.42)" strokeWidth="0.7" />
-        <path d="M24 61L43 61L23 35M43 61L64 62L45 13M64 62L80 72L59 22M80 72L72 99L61 101M61 101L47 103L56 132M47 103L37 100L46 116M37 100L24 61L29 83M43 61L47 103L29 83M64 62L61 101L78 83M43 61L54 72L64 62M47 103L54 72L61 101" stroke="rgba(34,211,238,0.38)" strokeWidth="0.75" />
+      <g clipPath="url(#sideFaceMeshClip)" opacity="0.74">
+        <path d="M45 13L56 132M22 61H81M29 35H72M36 100H72" stroke="rgba(255,255,255,0.38)" strokeWidth="0.65" />
+        <path d="M45 13L22 61L56 132L81 72L45 13ZM29 35L53 70L72 40M36 100L53 70L72 100M29 35L36 100M72 40L72 100" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
+        <path d="M22 61L43 61L53 70L66 62L81 72M43 61L36 100M66 62L72 100M43 61L45 13M66 62L45 13" stroke="rgba(255,255,255,0.42)" strokeWidth="0.65" />
       </g>
-      <path d="M45 13C29 18 20 36 22 61C25 92 40 121 56 132C72 118 80 96 81 72C82 49 70 27 45 13Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+      <path d="M45 13C29 18 20 36 22 61C25 92 40 121 56 132C72 118 80 96 81 72C82 49 70 27 45 13Z" stroke="rgba(34,211,238,0.92)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" />
       <path d="M55 56C61 53 68 55 73 61" stroke="rgba(96,165,250,0.72)" strokeLinecap="round" strokeWidth="1.2" />
       <ellipse cx="65" cy="79" fill="rgba(244,114,182,0.1)" rx="11" ry="18" />
       <path d="M53 107C60 112 69 110 75 104" stroke="rgba(34,211,238,0.78)" strokeLinecap="round" strokeWidth="1.4" />
@@ -528,11 +528,10 @@ function CloseupGuide() {
         </clipPath>
       </defs>
       <g clipPath="url(#skinPatchMeshClip)" opacity="0.82">
-        <path d="M20 34H120M18 50H122M20 66H120" stroke="rgba(255,255,255,0.4)" strokeWidth="0.75" />
-        <path d="M34 18L30 78M52 14L51 89M70 13V92M88 14L89 89M106 18L110 78" stroke="rgba(255,255,255,0.38)" strokeWidth="0.75" />
-        <path d="M20 34L51 50L34 18M51 50L88 14L70 50M70 50L120 34M18 50L51 50L30 78M51 50L70 92L70 50M70 50L110 78L122 50M30 78L70 66L110 78M51 50L70 66L89 50" stroke="rgba(34,211,238,0.38)" strokeWidth="0.75" />
+        <path d="M18 50H122M30 24L70 52L110 24M30 78L70 52L110 78M30 24L30 78M110 24L110 78M50 18L70 52L90 18M50 86L70 52L90 86" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
+        <path d="M70 13V92M44 20L52 82M96 20L88 82" stroke="rgba(255,255,255,0.38)" strokeWidth="0.65" />
       </g>
-      <path d="M30 24C48 12 92 12 110 24C126 36 127 65 110 78C92 92 49 92 30 78C13 65 14 36 30 24Z" stroke="rgba(34,211,238,0.88)" strokeLinecap="round" strokeWidth="1.7" />
+      <path d="M30 24C48 12 92 12 110 24C126 36 127 65 110 78C92 92 49 92 30 78C13 65 14 36 30 24Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeWidth="2.1" />
       <circle cx="70" cy="52" fill="rgba(244,114,182,0.1)" r="18" />
       <circle cx="70" cy="52" r="27" stroke="rgba(244,114,182,0.34)" strokeWidth="1" />
     </svg>
