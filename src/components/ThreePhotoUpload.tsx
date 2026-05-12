@@ -475,11 +475,11 @@ function FrontFaceGuide() {
         </clipPath>
       </defs>
       <g clipPath="url(#frontFaceMeshClip)" opacity="0.74">
-        <path d="M50 12V132M18 58H82M27 32H73M27 100H73" stroke="rgba(255,255,255,0.38)" strokeWidth="0.65" />
-        <path d="M18 58L50 12L82 58L50 132L18 58ZM27 32L50 70L73 32M27 100L50 70L73 100M27 32L27 100M73 32L73 100" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
-        <path d="M18 58L37 58L50 70L63 58L82 58M37 58L27 100M63 58L73 100M37 58L50 12M63 58L50 12" stroke="rgba(255,255,255,0.42)" strokeWidth="0.65" />
+        <path d="M50 12V132M18 58H82M24 43H76M27 82H73M32 113H68" stroke="rgba(255,255,255,0.38)" strokeWidth="0.6" />
+        <path d="M18 58L50 12L82 58L50 132L18 58ZM24 43L50 70L76 43M27 82L50 70L73 82M32 113L50 70L68 113M24 43L27 82L32 113M76 43L73 82L68 113" stroke="rgba(34,211,238,0.44)" strokeWidth="0.7" />
+        <path d="M18 58L37 58L50 70L63 58L82 58M37 58L24 43M63 58L76 43M37 58L27 82M63 58L73 82M27 82L32 113M73 82L68 113M24 43L50 12M76 43L50 12M32 113L50 132M68 113L50 132" stroke="rgba(255,255,255,0.42)" strokeWidth="0.6" />
       </g>
-      <path d="M50 12C30 12 18 30 18 58C18 93 34 126 50 132C66 126 82 93 82 58C82 30 70 12 50 12Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeWidth="2" />
+      <path d="M50 12C30 12 18 30 18 58C18 93 34 126 50 132C66 126 82 93 82 58C82 30 70 12 50 12Z" stroke="rgba(34,211,238,0.92)" strokeLinecap="round" strokeWidth="2.7" />
     </svg>
   );
 }
@@ -494,15 +494,15 @@ function SideFaceGuide() {
     >
       <defs>
         <clipPath id="sideFaceMeshClip">
-          <path d="M45 13C29 18 20 36 22 61C25 92 40 121 56 132C72 118 80 96 81 72C82 49 70 27 45 13Z" />
+          <path d="M52 12C32 12 20 30 20 58C20 93 36 126 52 132C68 126 84 93 84 58C84 30 72 12 52 12Z" />
         </clipPath>
       </defs>
       <g clipPath="url(#sideFaceMeshClip)" opacity="0.74">
-        <path d="M45 13L56 132M22 61H81M29 35H72M36 100H72" stroke="rgba(255,255,255,0.38)" strokeWidth="0.65" />
-        <path d="M45 13L22 61L56 132L81 72L45 13ZM29 35L53 70L72 40M36 100L53 70L72 100M29 35L36 100M72 40L72 100" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
-        <path d="M22 61L43 61L53 70L66 62L81 72M43 61L36 100M66 62L72 100M43 61L45 13M66 62L45 13" stroke="rgba(255,255,255,0.42)" strokeWidth="0.65" />
+        <path d="M52 12V132M20 58H84M28 43H76M31 82H77M36 113H70" stroke="rgba(255,255,255,0.38)" strokeWidth="0.6" />
+        <path d="M20 58L52 12L84 58L52 132L20 58ZM28 43L54 70L76 43M31 82L54 70L77 82M36 113L54 70L70 113M28 43L31 82L36 113M76 43L77 82L70 113" stroke="rgba(34,211,238,0.44)" strokeWidth="0.7" />
+        <path d="M20 58L40 58L54 70L66 58L84 58M40 58L28 43M66 58L76 43M40 58L31 82M66 58L77 82M31 82L36 113M77 82L70 113M28 43L52 12M76 43L52 12M36 113L52 132M70 113L52 132" stroke="rgba(255,255,255,0.42)" strokeWidth="0.6" />
       </g>
-      <path d="M45 13C29 18 20 36 22 61C25 92 40 121 56 132C72 118 80 96 81 72C82 49 70 27 45 13Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+      <path d="M52 12C32 12 20 30 20 58C20 93 36 126 52 132C68 126 84 93 84 58C84 30 72 12 52 12Z" stroke="rgba(34,211,238,0.92)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.7" />
     </svg>
   );
 }
@@ -510,21 +510,21 @@ function SideFaceGuide() {
 function CloseupGuide() {
   return (
     <svg
-      className="absolute left-1/2 top-1/2 h-[58%] max-h-[380px] w-[60%] min-w-[250px] max-w-[520px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_18px_rgba(34,211,238,0.2)]"
+      className="absolute left-1/2 top-1/2 h-[58%] max-h-[380px] w-[62%] min-w-[250px] max-w-[520px] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_18px_rgba(34,211,238,0.2)]"
       fill="none"
       preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 140 100"
     >
       <defs>
         <clipPath id="skinPatchMeshClip">
-          <path d="M30 24C48 12 92 12 110 24C126 36 127 65 110 78C92 92 49 92 30 78C13 65 14 36 30 24Z" />
+          <rect height="62" rx="18" width="104" x="18" y="19" />
         </clipPath>
       </defs>
       <g clipPath="url(#skinPatchMeshClip)" opacity="0.82">
-        <path d="M18 50H122M30 24L70 52L110 24M30 78L70 52L110 78M30 24L30 78M110 24L110 78M50 18L70 52L90 18M50 86L70 52L90 86" stroke="rgba(34,211,238,0.42)" strokeWidth="0.75" />
-        <path d="M70 13V92M44 20L52 82M96 20L88 82" stroke="rgba(255,255,255,0.38)" strokeWidth="0.65" />
+        <path d="M18 35H122M18 50H122M18 65H122M36 19V81M58 19V81M82 19V81M104 19V81" stroke="rgba(255,255,255,0.36)" strokeWidth="0.6" />
+        <path d="M18 35L58 50L36 19M58 50L104 19L82 50M82 50L122 35M18 50L58 50L36 81M58 50L82 81L82 50M82 50L104 81L122 50M18 65L58 50L36 81M58 50L82 65L104 81M82 50L122 65" stroke="rgba(34,211,238,0.44)" strokeWidth="0.7" />
       </g>
-      <path d="M30 24C48 12 92 12 110 24C126 36 127 65 110 78C92 92 49 92 30 78C13 65 14 36 30 24Z" stroke="rgba(34,211,238,0.9)" strokeLinecap="round" strokeWidth="2.1" />
+      <rect height="62" rx="18" stroke="rgba(34,211,238,0.92)" strokeLinecap="round" strokeWidth="2.6" width="104" x="18" y="19" />
     </svg>
   );
 }
