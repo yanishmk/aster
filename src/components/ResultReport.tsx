@@ -8,16 +8,29 @@ type ResultReportProps = {
 };
 
 export function ResultReport({ analysis }: ResultReportProps) {
-  const detected = analysis?.result.detected ?? [];
-  const possible = analysis?.result.possible ?? [];
-  const faceCareScore = analysis ? analysis.result.face_care_score ?? buildFaceCareScore(analysis) : null;
+  if (!analysis) {
+    return (
+      <div
+        className="rounded-2xl p-14 text-center"
+        style={{ border: "2px dashed var(--border)" }}
+      >
+        <Sparkles className="mx-auto mb-3 opacity-20" size={28} />
+        <p className="font-bold" style={{ color: "var(--text-2)" }}>No results yet</p>
+        <p className="mt-1 text-sm" style={{ color: "var(--text-3)" }}>
+          Complete the 3-photo analysis to see your real skin results.
+        </p>
+      </div>
+    );
+  }
+
+  const detected = analysis.result.detected;
+  const possible = analysis.result.possible;
+  const faceCareScore = analysis.result.face_care_score ?? buildFaceCareScore(analysis);
   const score = formatDisplayScore(faceCareScore);
-  const focus = analysis?.result.skin_profile.recommendation_focus ?? ["hydration", "protection", "balance"];
+  const focus = analysis.result.skin_profile.recommendation_focus;
   const primaryConcern = detected[0] ?? possible[0] ?? "Balanced";
-  const statusTitle = analysis ? buildStatusTitle(primaryConcern, detected.length) : "Your skin is healthy!";
-  const statusText = analysis
-    ? buildStatusText(detected.length, possible.length)
-    : "Keep going with your routine.";
+  const statusTitle = buildStatusTitle(primaryConcern, detected.length);
+  const statusText = buildStatusText(detected.length, possible.length);
   const recommendationItems = buildRecommendationItems(focus);
 
   return (
@@ -29,7 +42,7 @@ export function ResultReport({ analysis }: ResultReportProps) {
           </span>
           Aster
         </span>
-        <span className="aster-results-pill">{analysis ? "Analysis ready" : "Preview"}</span>
+        <span className="aster-results-pill">Analysis ready</span>
       </div>
 
       <div className="aster-results-content">
@@ -56,9 +69,9 @@ export function ResultReport({ analysis }: ResultReportProps) {
 
           <a
             className="btn-grad mt-7 inline-flex h-13 w-full items-center justify-center gap-2 rounded-xl px-6 text-sm font-black text-white sm:w-fit"
-            href={analysis ? "#products" : "#scan"}
+            href="#products"
           >
-            {analysis ? "View my routine" : "Start my scan"}
+            View my routine
             <ArrowRight size={16} />
           </a>
         </div>
@@ -102,9 +115,7 @@ function RecommendationBubble({
   );
 }
 
-function formatDisplayScore(faceCareScore: ReturnType<typeof buildFaceCareScore> | null) {
-  if (!faceCareScore) return { label: "Healthy", value: 87 };
-
+function formatDisplayScore(faceCareScore: ReturnType<typeof buildFaceCareScore>) {
   const max = faceCareScore.max || 10;
   const normalized = max <= 10 ? (faceCareScore.score / max) * 100 : faceCareScore.score;
   return {

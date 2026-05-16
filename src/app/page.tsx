@@ -234,16 +234,17 @@ export default function Home() {
           </section>
         ) : null}
 
-        <FeatureSection
-          eyebrow="Skin reading"
-          icon={<Sparkles size={18} />}
-          id="results"
-          compact={hasAnalysis}
-          refProp={resultsRef}
-          showDetails={!hasAnalysis}
-          title="Your results"
-          visual={<ResultReport analysis={analysis} />}
-        />
+        {hasAnalysis ? (
+          <FeatureSection
+            eyebrow="Skin reading"
+            icon={<Sparkles size={18} />}
+            id="results"
+            compact
+            refProp={resultsRef}
+            title="Your results"
+            visual={<ResultReport analysis={analysis} />}
+          />
+        ) : null}
 
         <FeatureSection
           eyebrow="Product shelf"
