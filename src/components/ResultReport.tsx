@@ -31,20 +31,11 @@ export function ResultReport({ analysis }: ResultReportProps) {
   const primaryConcern = detected[0] ?? possible[0] ?? "Balanced";
   const statusTitle = buildStatusTitle(primaryConcern, detected.length);
   const statusText = buildStatusText(detected.length, possible.length);
+  const anomalySummary = buildAnomalySummary(detected, possible);
   const recommendationItems = buildRecommendationItems(focus);
 
   return (
     <div className="aster-results-panel">
-      <div className="aster-results-header">
-        <span className="inline-flex items-center gap-2 text-sm font-black">
-          <span className="aster-mini-logo">
-            <Sparkles size={13} />
-          </span>
-          Aster
-        </span>
-        <span className="aster-results-pill">Analysis ready</span>
-      </div>
-
       <div className="aster-results-content">
         <div className="aster-results-copy">
           <p className="text-xs font-black uppercase tracking-[0.22em]" style={{ color: "var(--accent)" }}>
@@ -56,6 +47,11 @@ export function ResultReport({ analysis }: ResultReportProps) {
             <p className="mt-2 max-w-md text-sm font-medium leading-6" style={{ color: "var(--text-2)" }}>
               {statusText}
             </p>
+          </div>
+
+          <div className={`aster-anomaly-box ${anomalySummary.hasDetected ? "is-detected" : "is-clear"}`}>
+            <p className="text-sm font-black">{anomalySummary.title}</p>
+            <p className="mt-1 text-sm font-medium leading-6">{anomalySummary.text}</p>
           </div>
 
           <div className="mt-5">
@@ -132,6 +128,30 @@ function buildStatusText(detectedCount: number, possibleCount: number) {
   if (!detectedCount && !possibleCount) return "Keep going with your routine.";
   if (detectedCount) return "Aster built a focused routine for your skin.";
   return "Aster noticed a soft signal worth supporting.";
+}
+
+function buildAnomalySummary(detected: string[], possible: string[]) {
+  if (detected.length) {
+    return {
+      hasDetected: true,
+      title: "Anomalies detected",
+      text: `Detected: ${detected.join(", ")}.`,
+    };
+  }
+
+  if (possible.length) {
+    return {
+      hasDetected: false,
+      title: "No confirmed anomalies detected",
+      text: `Possible signs to watch: ${possible.join(", ")}.`,
+    };
+  }
+
+  return {
+    hasDetected: false,
+    title: "No anomalies detected",
+    text: "Aster did not detect visible skin concerns in this analysis.",
+  };
 }
 
 function buildRecommendationItems(focus: string[]) {
