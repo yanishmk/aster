@@ -1,4 +1,4 @@
-import { ArrowRight, Droplets, Menu, Scale, ShieldCheck, Sparkles, Sun, type LucideIcon } from "lucide-react";
+import { ArrowRight, Droplets, Scale, ShieldCheck, Sparkles, Sun, type LucideIcon } from "lucide-react";
 
 import type { AnalyzeSessionResponse } from "@/types/aster";
 import type { CSSProperties } from "react";
@@ -21,51 +21,33 @@ export function ResultReport({ analysis }: ResultReportProps) {
   const recommendationItems = buildRecommendationItems(focus);
 
   return (
-    <div className="aster-phone-scene">
-      <div className="aster-phone">
-        <div className="aster-phone-notch" />
-        <div className="aster-phone-screen">
-          <div className="aster-phone-status">
-            <span>9:41</span>
-            <span className="aster-phone-signals">LTE 100%</span>
-          </div>
+    <div className="aster-results-panel">
+      <div className="aster-results-header">
+        <span className="inline-flex items-center gap-2 text-sm font-black">
+          <span className="aster-mini-logo">
+            <Sparkles size={13} />
+          </span>
+          Aster
+        </span>
+        <span className="aster-results-pill">{analysis ? "Analysis ready" : "Preview"}</span>
+      </div>
 
-          <div className="aster-app-topbar">
-            <span className="inline-flex items-center gap-2 text-xs font-black">
-              <span className="aster-mini-logo">
-                <Sparkles size={12} />
-              </span>
-              Aster
-            </span>
-            <Menu size={16} strokeWidth={2.4} />
-          </div>
-
-          <h3 className="mt-5 text-3xl font-black leading-none tracking-tight">Results</h3>
-
-          <div className="mt-5 flex justify-center">
-            <div
-              className="aster-score-ring"
-              style={{
-                "--score-angle": `${Math.round((score.value / 100) * 360)}deg`,
-              } as CSSProperties}
-            >
-              <div className="aster-score-inner">
-                <span>{score.value}</span>
-                <small>Skin Score</small>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-7 border-b pb-4" style={{ borderColor: "rgba(242, 215, 228, 0.95)" }}>
-            <p className="text-base font-black leading-tight">{statusTitle}</p>
-            <p className="mt-1 text-sm font-medium" style={{ color: "var(--text-2)" }}>
+      <div className="aster-results-content">
+        <div className="aster-results-copy">
+          <p className="text-xs font-black uppercase tracking-[0.22em]" style={{ color: "var(--accent)" }}>
+            Skin score
+          </p>
+          <h3 className="mt-2 text-4xl font-black leading-none tracking-tight sm:text-5xl">Results</h3>
+          <div className="mt-5 border-b pb-5" style={{ borderColor: "rgba(242, 215, 228, 0.95)" }}>
+            <p className="text-xl font-black leading-tight">{statusTitle}</p>
+            <p className="mt-2 max-w-md text-sm font-medium leading-6" style={{ color: "var(--text-2)" }}>
               {statusText}
             </p>
           </div>
 
           <div className="mt-5">
             <p className="text-base font-black">Recommendations</p>
-            <div className="mt-4 grid grid-cols-3 gap-3">
+            <div className="mt-4 grid max-w-sm grid-cols-3 gap-3">
               {recommendationItems.map((item) => (
                 <RecommendationBubble item={item} key={item.label} />
               ))}
@@ -73,12 +55,26 @@ export function ResultReport({ analysis }: ResultReportProps) {
           </div>
 
           <a
-            className="btn-grad mt-7 inline-flex h-13 w-full items-center justify-center gap-2 rounded-xl px-6 text-sm font-black text-white"
+            className="btn-grad mt-7 inline-flex h-13 w-full items-center justify-center gap-2 rounded-xl px-6 text-sm font-black text-white sm:w-fit"
             href={analysis ? "#products" : "#scan"}
           >
             {analysis ? "View my routine" : "Start my scan"}
             <ArrowRight size={16} />
           </a>
+        </div>
+
+        <div className="aster-results-score-wrap">
+          <div
+            className="aster-score-ring"
+            style={{
+              "--score-angle": `${Math.round((score.value / 100) * 360)}deg`,
+            } as CSSProperties}
+          >
+            <div className="aster-score-inner">
+              <span>{score.value}</span>
+              <small>Skin Score</small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
